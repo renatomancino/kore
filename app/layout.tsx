@@ -13,15 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kore-orpin-one.vercel.app"),
   title: "Kore — Diamo forma alle idee",
   description: "Kore è una creative agency agile: branding, social, content, web, advertising ed eventi.",
-  openGraph: {
-    title: "Kore — Diamo forma alle idee",
-    description: "Strategia, design e movimento. Una creative agency agile, da Napoli ovunque.",
-    type: "website",
-    locale: "it_IT",
-  },
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",
