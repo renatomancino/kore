@@ -11,11 +11,14 @@ test("keeps the Kore identity and complete editorial structure", async () => {
 
   assert.match(layout, /Kore — Diamo forma alle idee/);
   assert.match(layout, /lang="it"/);
-  assert.match(page, /Diamo forma/);
+  assert.match(page, /Strategia,/);
+  assert.match(page, /e idee vive/);
   assert.match(page, /Non facciamo/);
   assert.match(page, /Come lavoriamo/);
   assert.match(page, /id="contatti"/);
-  assert.match(page, /Nessun cliente inventato/);
+  assert.match(page, /Centro Revisioni TRIM/);
+  assert.match(page, /Osteria Annunziata/);
+  assert.match(page, /Il Meridiano Sport/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.doesNotMatch(page + layout, /SkeletonPreview|codex-preview/);
 });
@@ -35,5 +38,41 @@ test("is configured as a native Vercel Next.js project", async () => {
     access(new URL("../public/kore-brand.png", import.meta.url)),
     access(new URL("../public/favicon.png", import.meta.url)),
     access(new URL("../public/images/designer.jpg", import.meta.url)),
+    access(new URL("../public/brand/kore-logo-coral.png", import.meta.url)),
+    access(new URL("../public/clients/osteria-annunziata.jpg", import.meta.url)),
+    access(new URL("../public/partners/metropolis.png", import.meta.url)),
   ]);
+});
+
+test("provides a projects archive and individual case-study routes", async () => {
+  const [home, archive, detail, data] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/progetti/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/progetti/[slug]/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/project-data.ts", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(home, /Vedi tutti i progetti/);
+  assert.match(home, /href="\/progetti"/);
+  assert.match(archive, /Progetti con/);
+  assert.match(archive, /projects\.map/);
+  assert.match(detail, /generateStaticParams/);
+  assert.match(detail, /generateMetadata/);
+  assert.match(data, /trim-identita-digitale/);
+  assert.match(data, /osteria-annunziata-territorio/);
+});
+
+test("includes a vertical, video-ready showreel in the home page", async () => {
+  const [home, showreel, css] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/video-showcase.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(home, /<VideoShowcase \/>/);
+  assert.match(showreel, /IntersectionObserver/);
+  assert.match(showreel, /playsInline/);
+  assert.match(showreel, /Slot video pronto/);
+  assert.match(css, /scroll-snap-type:\s*y mandatory/);
+  assert.match(css, /aspect-ratio:\s*9 \/ 16/);
 });
