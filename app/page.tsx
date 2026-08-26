@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { VesuvioMare } from "./ornaments";
 
 const services = [
   { name: "Branding", note: "Diamo un’identità alle idee.", image: "/images/designer.jpg" },
@@ -173,7 +174,11 @@ export default function Home() {
       </section>
 
       <section className="story" id="mondo">
-        <div className="story-title"><p className="kicker">Kore / La storia</p><h2>Le persone giuste.<br />Per il progetto giusto.</h2></div>
+        <div className="story-title">
+          <p className="kicker">Kore / La storia</p>
+          <h2>Le persone giuste.<br />Per il progetto giusto.</h2>
+          <img className="story-portrait" src="/images/cammeo.webp" alt="" width={620} height={807} />
+        </div>
         <div className="story-copy">
           <p>Kore non è un ufficio pieno di persone che fingono di essere un’agenzia.</p>
           <p>È una struttura agile che mette insieme le competenze giuste per ogni progetto. Una regia unica, un network vivo, nessuna formula prefabbricata.</p>
@@ -187,7 +192,7 @@ export default function Home() {
       </section>
 
       <section className="location" id="dove">
-        <div className="map-art" aria-hidden="true"><span>40.786</span><span>14.369</span><div className="map-pin">K</div><p>Vesuvio<br />Mediterraneo</p></div>
+        <div className="map-art" aria-hidden="true"><span>40.786</span><span>14.369</span><VesuvioMare /><div className="map-pin">K</div><p>Vesuvio<br />Mediterraneo</p></div>
         <div className="location-copy"><p className="kicker">Siamo qui</p><h2>Ma lavoriamo<br />ovunque.</h2><p>Torre del Greco — Napoli<br />Campania — Italia</p><a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Torre+del+Greco" target="_blank" rel="noreferrer">Apri la mappa ↗</a></div>
       </section>
 
@@ -200,6 +205,9 @@ export default function Home() {
       </section>
 
       <footer>
+        <div className="coral-reef-wrap" aria-hidden="true">
+          <img className="coral-art" src="/images/corallo.webp" alt="" width={960} height={750} />
+        </div>
         <div className="wordmark footer-mark">KORE</div>
         <div className="footer-links"><span>Marketing</span><span>Web design</span><span>Communication</span><span>AI solutions</span></div>
         <div className="footer-meta"><span>Privacy · Cookie · P.IVA</span><span>© {new Date().getFullYear()} Kore Studio</span></div>

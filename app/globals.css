@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
-:root { --red: #fd4042; --cream: #ffebc5; --ink: #17120d; --paper: #f6f0e5; --line: rgba(23,18,13,.24); }
+:root { --red: #fd4042; --corallo: #fd4042; --cream: #ffebc5; --ink: #17120d; --paper: #f6f0e5; --line: rgba(23,18,13,.24); }
+/* --corallo e --red sono lo stesso valore: il rosso del sito e' il corallo di Torre del Greco. */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; overflow-x: hidden; background: var(--red); color: var(--cream); font-family: Arial, Helvetica, sans-serif; }
@@ -11,18 +12,18 @@ img { display: block; width: 100%; }
 
 .site-header { position: fixed; z-index: 50; inset: 0 0 auto; height: 76px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; color: white; mix-blend-mode: difference; }
 .wordmark { font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; letter-spacing: -.12em; transform: scaleX(1.08); transform-origin: left; }
-.wordmark-small { font-size: 31px; line-height: 1; }
+.wordmark-small { font-size: 26px; line-height: 1; }
 .menu-toggle { border: 0; padding: 10px 0; color: inherit; background: transparent; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .menu-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
 
 .hero { min-height: 100svh; position: relative; overflow: hidden; background: var(--red); }
 .hero-art { position: absolute; inset: 0; background: url('/kore-brand.png') center/cover no-repeat; transform: scale(1.02); animation: breathe 9s ease-in-out infinite alternate; }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(40,10,5,.48) 0%, rgba(40,10,5,.07) 49%, transparent 72%); }
-.hero-copy { position: relative; z-index: 2; min-height: 100svh; padding: 14vh 5vw 8vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
-.eyebrow, .kicker { margin: 0 0 20px; text-transform: uppercase; letter-spacing: .14em; font-size: clamp(10px, .8vw, 13px); }
-.hero h1, .section-heading h2, .many-things > h2, .numbers > h2, .case-copy h2, .process > h2, .story h2, .partners h2, .location h2, .final-cta h2 { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; letter-spacing: -.075em; }
-.hero h1 { max-width: 900px; font-size: clamp(70px, 11vw, 190px); line-height: .78; }
-.hero-cta { margin-top: 38px; display: inline-flex; gap: 34px; align-items: center; padding: 16px 18px; background: var(--cream); color: var(--red); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; transition: transform .2s ease, background .2s ease; }
+.hero-copy { position: relative; z-index: 2; min-height: 100svh; padding: 14vh 5vw 9vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
+.eyebrow, .kicker { margin: 0 0 20px; text-transform: uppercase; letter-spacing: .14em; font-size: clamp(11px, .75vw, 13px); }
+.hero h1, .section-heading h2, .many-things > h2, .numbers > h2, .case-copy h2, .process > h2, .story h2, .partners h2, .location h2, .final-cta h2 { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; letter-spacing: -.035em; }
+.hero h1 { max-width: 680px; font-size: clamp(44px, 5.4vw, 96px); line-height: .92; }
+.hero-cta { margin-top: 44px; display: inline-flex; gap: 34px; align-items: center; padding: 15px 22px; background: var(--cream); color: var(--red); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; transition: transform .2s ease, background .2s ease; }
 .hero-cta:hover { transform: translateY(-3px); background: white; }
 .scroll-cue { position: absolute; z-index: 3; right: 24px; bottom: 28px; text-transform: uppercase; letter-spacing: .14em; font-size: 10px; writing-mode: vertical-rl; }
 
@@ -30,125 +31,280 @@ img { display: block; width: 100%; }
 .menu-panel.is-open { transform: translateY(0); visibility: visible; transition-delay: 0s; }
 .menu-column { display: flex; flex-direction: column; align-items: flex-start; }
 .menu-column p { margin: 0 0 22px; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
-.menu-column a { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(32px, 4.7vw, 72px); line-height: 1.04; letter-spacing: -.04em; transition: color .2s ease, transform .2s ease; }
+.menu-column a { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(26px, 3.2vw, 50px); line-height: 1.12; letter-spacing: -.02em; transition: color .2s ease, transform .2s ease; }
 .menu-column a:hover, .menu-column a:focus { color: var(--red); transform: translateX(8px); outline: none; }
 .menu-column .menu-contact { margin-top: auto; color: var(--red); }
 
 .marquee { overflow: hidden; padding: 17px 0 13px; border-block: 1px solid var(--ink); background: var(--cream); color: var(--ink); }
-.marquee-track { display: flex; width: max-content; white-space: nowrap; font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; font-size: clamp(26px, 4vw, 60px); letter-spacing: -.04em; text-transform: uppercase; animation: marquee 22s linear infinite; }
+.marquee-track { display: flex; width: max-content; white-space: nowrap; font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; font-size: clamp(20px, 2.6vw, 40px); letter-spacing: -.015em; text-transform: uppercase; animation: marquee 22s linear infinite; }
 .marquee-track span { padding-right: .25em; }
 
-.section-pad { padding: 10vw 5vw; }
+.section-pad { padding: clamp(62px, 5.6vw, 104px) 5vw; }
 .section-heading { display: grid; grid-template-columns: 1.5fr .8fr; column-gap: 4vw; align-items: end; }
 .section-heading .kicker { grid-column: 1 / -1; }
-.section-heading h2 { color: var(--ink); font-size: clamp(64px, 10vw, 170px); line-height: .78; }
-.content-note { max-width: 310px; margin: 0 0 8px; padding-left: 22px; border-left: 1px solid currentColor; color: var(--ink); font-size: 13px; line-height: 1.5; }
+.section-heading h2 { color: var(--ink); font-size: clamp(36px, 4.6vw, 80px); line-height: .95; }
+.content-note { max-width: 330px; margin: 0 0 8px; padding-left: 22px; border-left: 1px solid currentColor; color: var(--ink); font-size: 14px; line-height: 1.65; }
 
 .clients { background: var(--red); color: var(--cream); }
-.client-stage { display: grid; grid-template-columns: .8fr 1.2fr; gap: 3vw; margin-top: 8vw; }
-.client-preview { position: relative; min-height: 510px; overflow: hidden; background: var(--ink); }
+.client-stage { display: grid; grid-template-columns: .8fr 1.2fr; gap: 3vw; margin-top: clamp(34px, 3.4vw, 60px); }
+.client-preview { position: relative; min-height: 370px; overflow: hidden; background: var(--ink); }
 .client-preview img { position: absolute; inset: 0; height: 100%; object-fit: cover; filter: saturate(.35) contrast(1.1); transition: transform .5s ease, filter .3s ease; }
 .client-preview::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(23,18,13,.72), transparent 60%); }
 .client-preview p { position: absolute; z-index: 2; inset: auto 24px 20px; margin: 0; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
 .client-stage:hover .client-preview img { transform: scale(1.03); filter: saturate(.9) contrast(1.05); }
 .logo-wall { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
-.logo-wall button { min-height: 170px; border: 0; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: transparent; color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: background .2s ease, color .2s ease; }
+.logo-wall button { min-height: 128px; border: 0; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: transparent; color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: background .2s ease, color .2s ease; }
 .logo-wall button:hover, .logo-wall button:focus { background: var(--ink); color: var(--cream); outline: none; }
-.logo-wall span { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(30px, 4vw, 60px); font-weight: 900; letter-spacing: -.05em; }
-.logo-wall small { margin-top: 8px; text-transform: uppercase; letter-spacing: .12em; opacity: .55; }
+.logo-wall span { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.8vw, 42px); font-weight: 900; letter-spacing: -.02em; }
+.logo-wall small { margin-top: 10px; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; opacity: .55; }
 
 .many-things { background: var(--cream); color: var(--ink); }
-.many-things > h2 { font-size: clamp(70px, 13vw, 220px); line-height: .76; }
-.service-explorer { display: grid; grid-template-columns: .8fr 1.2fr; gap: 5vw; margin-top: 9vw; align-items: start; }
+.many-things > h2 { font-size: clamp(40px, 5.4vw, 96px); line-height: .92; }
+.service-explorer { display: grid; grid-template-columns: .8fr 1.2fr; gap: 5vw; margin-top: clamp(38px, 3.8vw, 68px); align-items: start; }
 .service-list { border-top: 1px solid var(--line); }
 .service-list button { width: 100%; padding: 13px 0 10px; border: 0; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; justify-content: space-between; background: transparent; color: inherit; cursor: pointer; text-align: left; }
-.service-list button span:first-child { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(31px, 4.2vw, 67px); line-height: 1; font-weight: 900; letter-spacing: -.05em; transition: transform .25s ease; }
+.service-list button span:first-child { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.9vw, 46px); line-height: 1.05; font-weight: 900; letter-spacing: -.02em; transition: transform .25s ease; }
 .service-list button span:last-child { font-size: 10px; letter-spacing: .12em; opacity: .55; }
 .service-list button:hover span:first-child, .service-list button.active span:first-child { transform: translateX(16px); color: var(--red); }
-.service-visual { position: sticky; top: 88px; min-height: 650px; overflow: hidden; background: var(--ink); color: var(--cream); }
+.service-visual { position: sticky; top: 88px; min-height: 440px; overflow: hidden; background: var(--ink); color: var(--cream); }
 .service-visual img { position: absolute; inset: 0; height: 100%; object-fit: cover; filter: saturate(.55) contrast(1.12); }
 .service-visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(23,18,13,.86), transparent 60%); }
 .service-visual > div { position: absolute; z-index: 2; inset: auto 30px 28px; }
 .service-visual p { margin: 0 0 10px; text-transform: uppercase; letter-spacing: .14em; font-size: 10px; }
-.service-visual h3 { max-width: 570px; margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(38px, 5vw, 76px); line-height: .9; letter-spacing: -.055em; }
+.service-visual h3 { max-width: 500px; margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.8vw, 42px); line-height: 1.04; letter-spacing: -.025em; }
 
 .service-editorial { background: var(--paper); color: var(--ink); }
-.editorial-card { min-height: 76svh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
-.editorial-card > img { height: 100%; min-height: 76svh; object-fit: cover; filter: saturate(.7) contrast(1.08); }
-.card-copy { padding: 7vw 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; }
+.editorial-card { min-height: 58svh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+.editorial-card > img { height: 100%; min-height: 58svh; object-fit: cover; filter: saturate(.7) contrast(1.08); }
+.card-copy { padding: clamp(48px, 4.4vw, 82px) 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; }
 .card-copy span { text-transform: uppercase; letter-spacing: .14em; font-size: 10px; }
-.card-copy h2 { margin: auto 0 24px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(72px, 11vw, 180px); line-height: .72; letter-spacing: -.08em; }
-.card-copy p { max-width: 520px; margin: 0 0 40px; font-size: clamp(20px, 2.1vw, 34px); line-height: 1.1; }
+.card-copy h2 { margin: auto 0 28px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(38px, 4.8vw, 84px); line-height: .92; letter-spacing: -.035em; }
+.card-copy p { max-width: 480px; margin: 0 0 44px; font-size: clamp(17px, 1.5vw, 24px); line-height: 1.35; }
 .card-copy a, .text-link { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; border-bottom: 1px solid currentColor; padding-bottom: 7px; }
 .cream-card { background: var(--cream); }
 .dark-card { background: var(--ink); color: var(--cream); }
 .red-card { background: var(--red); color: var(--cream); }
 
 .numbers { background: var(--ink); color: var(--cream); }
-.numbers > h2 { max-width: 1300px; font-size: clamp(53px, 8vw, 130px); line-height: .86; }
+.numbers > h2 { max-width: 900px; font-size: clamp(32px, 4vw, 66px); line-height: 1; }
 .numbers h2 em, .final-cta h2 em { color: var(--red); font-weight: 900; }
-.numbers-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 9vw; border-top: 1px solid rgba(255,235,197,.4); border-left: 1px solid rgba(255,235,197,.4); }
-.metric { min-height: 390px; padding: 22px; display: flex; flex-direction: column; border-right: 1px solid rgba(255,235,197,.4); border-bottom: 1px solid rgba(255,235,197,.4); }
+.numbers-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: clamp(38px, 3.8vw, 68px); border-top: 1px solid rgba(255,235,197,.4); border-left: 1px solid rgba(255,235,197,.4); }
+.metric { min-height: 264px; padding: 24px; display: flex; flex-direction: column; border-right: 1px solid rgba(255,235,197,.4); border-bottom: 1px solid rgba(255,235,197,.4); }
 .metric > span { font-size: 10px; letter-spacing: .14em; opacity: .55; }
-.metric strong { margin: auto 0; color: var(--red); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(50px, 7vw, 105px); line-height: .7; letter-spacing: -.06em; }
-.metric p { max-width: 230px; margin: 0; font-size: 12px; line-height: 1.5; text-transform: uppercase; letter-spacing: .08em; }
+.metric strong { margin: auto 0; color: var(--red); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(32px, 3.6vw, 58px); line-height: .9; letter-spacing: -.02em; }
+.metric p { max-width: 240px; margin: 0; font-size: 11px; line-height: 1.7; text-transform: uppercase; letter-spacing: .16em; }
 
-.case-study { min-height: 100svh; display: grid; grid-template-columns: 1.15fr .85fr; background: var(--cream); color: var(--ink); }
-.case-image { min-height: 100svh; overflow: hidden; }
+.case-study { min-height: 74svh; display: grid; grid-template-columns: 1.15fr .85fr; background: var(--cream); color: var(--ink); }
+.case-image { min-height: 74svh; overflow: hidden; }
 .case-image img { height: 100%; object-fit: cover; }
-.case-copy { padding: 8vw 5vw; display: flex; flex-direction: column; align-items: flex-start; }
-.case-copy h2 { font-size: clamp(70px, 10vw, 155px); line-height: .75; }
+.case-copy { padding: clamp(52px, 4.8vw, 88px) 5vw; display: flex; flex-direction: column; align-items: flex-start; }
+.case-copy h2 { font-size: clamp(38px, 4.6vw, 76px); line-height: .94; }
 .case-copy dl { width: 100%; margin: auto 0 6vw; }
 .case-copy dl > div { display: grid; grid-template-columns: .4fr 1fr; gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
 .case-copy dt { text-transform: uppercase; letter-spacing: .12em; font-size: 10px; }
-.case-copy dd { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(20px, 2vw, 32px); line-height: 1.05; }
+.case-copy dd { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(17px, 1.5vw, 24px); line-height: 1.25; }
 
 .process { background: var(--red); color: var(--ink); }
-.process > h2 { font-size: clamp(62px, 10vw, 160px); line-height: .79; }
-.timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 9vw; }
+.process > h2 { font-size: clamp(34px, 4.4vw, 76px); line-height: .95; }
+.timeline { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: clamp(38px, 3.8vw, 68px); }
 .timeline::before { content: ""; position: absolute; left: 0; right: 0; top: 54px; height: 1px; background: var(--ink); }
-.timeline article { position: relative; min-height: 280px; padding: 0 2vw 0 0; }
+.timeline article { position: relative; min-height: 200px; padding: 0 2vw 0 0; }
 .timeline article > span { font-size: 11px; letter-spacing: .14em; }
 .timeline-dot { position: relative; z-index: 2; width: 13px; height: 13px; margin: 32px 0 48px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 8px var(--red); }
-.timeline h3 { margin: 0 0 12px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(28px, 3.1vw, 52px); line-height: .9; letter-spacing: -.04em; }
-.timeline p { max-width: 220px; margin: 0; font-size: 13px; line-height: 1.45; }
+.timeline h3 { margin: 0 0 14px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(22px, 2.3vw, 38px); line-height: 1; letter-spacing: -.02em; }
+.timeline p { max-width: 230px; margin: 0; font-size: 14px; line-height: 1.6; }
 
-.story { min-height: 92svh; padding: 10vw 5vw; display: grid; grid-template-columns: 1.15fr .85fr; gap: 8vw; background: var(--paper); color: var(--ink); }
-.story h2 { font-size: clamp(65px, 9vw, 145px); line-height: .79; }
-.story-copy { padding-top: 7vw; }
-.story-copy p { margin: 0 0 38px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(27px, 3.2vw, 50px); line-height: 1.04; letter-spacing: -.03em; }
+.story { min-height: 0; padding: clamp(62px, 5.6vw, 104px) 5vw; display: grid; grid-template-columns: 1.15fr .85fr; gap: 6vw; background: var(--paper); color: var(--ink); }
+.story h2 { font-size: clamp(36px, 4.4vw, 74px); line-height: .95; }
+.story-copy { padding-top: clamp(20px, 2.4vw, 44px); }
+.story-copy p { margin: 0 0 34px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(19px, 2vw, 32px); line-height: 1.3; letter-spacing: -.01em; }
 .story-copy .name-origin { padding-top: 30px; border-top: 1px solid var(--line); color: var(--red); }
 
 .partners { background: var(--cream); color: var(--ink); border-top: 1px solid var(--line); }
-.partners h2 { max-width: 1300px; font-size: clamp(50px, 8vw, 125px); line-height: .84; }
-.partner-line { margin-top: 8vw; display: flex; flex-wrap: wrap; gap: 10px; }
-.partner-line span { padding: 13px 18px 11px; border: 1px solid var(--ink); border-radius: 100px; text-transform: uppercase; letter-spacing: .1em; font-size: 11px; }
+.partners h2 { max-width: 880px; font-size: clamp(30px, 3.8vw, 62px); line-height: 1; }
+.partner-line { margin-top: clamp(34px, 3.4vw, 60px); display: flex; flex-wrap: wrap; gap: 10px; }
+.partner-line span { padding: 12px 20px 10px; border: 1px solid var(--ink); border-radius: 100px; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; }
 
-.location { min-height: 88svh; display: grid; grid-template-columns: 1.2fr .8fr; background: var(--ink); color: var(--cream); }
-.map-art { position: relative; min-height: 88svh; overflow: hidden; background-color: #241d17; background-image: linear-gradient(rgba(255,235,197,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255,235,197,.14) 1px, transparent 1px); background-size: 56px 56px; }
+.location { min-height: 68svh; display: grid; grid-template-columns: 1.2fr .8fr; background: var(--ink); color: var(--cream); }
+.map-art { position: relative; min-height: 68svh; overflow: hidden; background-color: #241d17; background-image: linear-gradient(rgba(255,235,197,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255,235,197,.14) 1px, transparent 1px); background-size: 56px 56px; }
 .map-art::after { content: ""; position: absolute; width: 70%; aspect-ratio: 1; border: 1px solid var(--red); border-radius: 50%; top: 15%; left: 14%; box-shadow: 0 0 0 15vw rgba(253,64,66,.04), 0 0 0 30vw rgba(253,64,66,.03); }
-.map-art > span { position: absolute; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(70px, 12vw, 190px); color: rgba(255,235,197,.09); font-weight: 900; }
+.map-art > span { position: absolute; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(40px, 5.4vw, 92px); color: rgba(255,235,197,.09); font-weight: 900; }
 .map-art > span:first-child { top: 4%; left: -2%; }
 .map-art > span:nth-child(2) { right: -2%; bottom: 2%; }
 .map-art p { position: absolute; left: 30px; bottom: 24px; margin: 0; text-transform: uppercase; letter-spacing: .13em; font-size: 10px; }
-.map-pin { position: absolute; z-index: 2; top: 46%; left: 51%; width: 74px; height: 74px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--red); color: var(--cream); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: 35px; font-weight: 900; }
+.map-pin { position: absolute; z-index: 2; top: 63%; left: 33%; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--red); color: var(--cream); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: 26px; font-weight: 900; }
 .map-pin::first-letter { transform: rotate(45deg); }
-.location-copy { padding: 8vw 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
-.location h2 { font-size: clamp(62px, 8vw, 126px); line-height: .8; }
-.location-copy > p:not(.kicker) { margin: 50px 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(23px, 2.5vw, 40px); line-height: 1.15; }
+.location-copy { padding: clamp(52px, 4.8vw, 88px) 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
+.location h2 { font-size: clamp(34px, 4vw, 66px); line-height: .96; }
+.location-copy > p:not(.kicker) { margin: 46px 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(18px, 1.8vw, 28px); line-height: 1.35; }
 
-.final-cta { padding: 9vw 5vw 4vw; background: var(--red); color: var(--ink); }
-.final-cta h2 { font-size: clamp(80px, 15vw, 230px); line-height: .72; }
+.final-cta { padding: clamp(58px, 5.2vw, 96px) 5vw clamp(28px, 2.6vw, 46px); background: var(--red); color: var(--ink); }
+.final-cta h2 { font-size: clamp(42px, 6vw, 104px); line-height: .92; }
 .final-cta h2 em { color: var(--cream); }
-.giant-link { margin-top: 8vw; padding: 24px 0 16px; border-block: 1px solid var(--ink); display: flex; align-items: center; justify-content: space-between; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(60px, 11vw, 170px); line-height: .8; font-weight: 900; letter-spacing: -.06em; }
+.giant-link { margin-top: clamp(34px, 3.4vw, 60px); padding: 24px 0 16px; border-block: 1px solid var(--ink); display: flex; align-items: center; justify-content: space-between; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(30px, 4vw, 68px); line-height: .96; font-weight: 900; letter-spacing: -.02em; }
 .giant-link span { transition: transform .25s ease; }
 .giant-link:hover span { transform: rotate(45deg); }
-.contact-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 22px 0; text-transform: uppercase; letter-spacing: .1em; font-size: 10px; }
+.contact-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 26px 0; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; }
 
-footer { padding: 6vw 5vw 28px; background: var(--cream); color: var(--ink); }
-.footer-mark { display: inline-block; font-size: clamp(110px, 27vw, 430px); line-height: .7; }
-.footer-links { margin: 7vw 0; display: flex; flex-wrap: wrap; gap: 10px 34px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 3vw, 46px); }
-.footer-meta { padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: .1em; font-size: 9px; }
+footer { padding: clamp(44px, 4vw, 74px) 5vw 28px; background: var(--cream); color: var(--ink); }
+.footer-mark { display: inline-block; font-size: clamp(60px, 11vw, 168px); line-height: .82; }
+.footer-links { margin: clamp(34px, 3.4vw, 60px) 0; display: flex; flex-wrap: wrap; gap: 12px 40px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(19px, 2vw, 32px); }
+.footer-meta { padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: .18em; font-size: 10px; }
+
+/* ============================================================
+   Torre del Greco — corallo, cammeo, Vesuvio e mare
+   Tutti i segni si disegnano da soli entrando nel viewport
+   (animazione guidata dallo scroll, CSS puro, zero JS).
+   L'ordine dei figli e' l'ordine del disegno: dalla base
+   verso le punte, cosi' a meta' corsa sembra crescita e non
+   pezzi staccati.
+   ============================================================ */
+
+/* UNA linea temporale per segno, ancorata all'SVG: con animation-timeline: view()
+   ogni tratto calcolerebbe la propria sull'area di se' stesso, quindi le fasce
+   non si distribuiscono e il disegno non si scandisce. */
+.draw { display: block; width: 100%; height: auto; overflow: visible; color: inherit;
+        view-timeline-name: --segno; view-timeline-axis: block; }
+.draw path, .draw ellipse {
+  fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round;
+  /* NIENTE vector-effect: non-scaling-stroke qui. Con quello attivo il
+     tratteggio viene calcolato in pixel schermo e pathLength="1" smette di
+     valere: stroke-dasharray: 1 diventa "un pixel", cioe' una punteggiatura
+     fittissima che sembra continua dove il tratto e' spesso e si spezza dove
+     e' sottile. Il disegno non si completa mai. Spessori in unita' del viewBox,
+     tarati sotto per ogni segno. */
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: coral-grow linear both;
+  animation-timeline: --segno;
+  animation-range: cover 8% cover 20%;
+}
+.draw > :nth-child(1) { animation-range: cover 8% cover 19%; }
+.draw > :nth-child(2) { animation-range: cover 9.2% cover 20.2%; }
+.draw > :nth-child(3) { animation-range: cover 10.4% cover 21.4%; }
+.draw > :nth-child(4) { animation-range: cover 11.6% cover 22.6%; }
+.draw > :nth-child(5) { animation-range: cover 12.8% cover 23.8%; }
+.draw > :nth-child(6) { animation-range: cover 14% cover 25%; }
+.draw > :nth-child(7) { animation-range: cover 15.2% cover 26.2%; }
+.draw > :nth-child(8) { animation-range: cover 16.4% cover 27.4%; }
+.draw > :nth-child(9) { animation-range: cover 17.6% cover 28.6%; }
+.draw > :nth-child(10) { animation-range: cover 18.8% cover 29.8%; }
+.draw > :nth-child(11) { animation-range: cover 20% cover 31%; }
+.draw > :nth-child(12) { animation-range: cover 21.2% cover 32.2%; }
+.draw > :nth-child(13) { animation-range: cover 22.4% cover 33.4%; }
+.draw > :nth-child(14) { animation-range: cover 23.6% cover 34.6%; }
+.draw > :nth-child(15) { animation-range: cover 24.8% cover 35.8%; }
+.draw > :nth-child(16) { animation-range: cover 26% cover 37%; }
+.draw > :nth-child(17) { animation-range: cover 27.2% cover 38.2%; }
+.draw > :nth-child(18) { animation-range: cover 28.4% cover 39.4%; }
+.draw > :nth-child(19) { animation-range: cover 29.6% cover 40.6%; }
+.draw > :nth-child(20) { animation-range: cover 30.8% cover 41.8%; }
+.draw > :nth-child(21) { animation-range: cover 32% cover 43%; }
+.draw > :nth-child(22) { animation-range: cover 33.2% cover 44.2%; }
+.draw > :nth-child(23) { animation-range: cover 34.4% cover 45.4%; }
+.draw > :nth-child(24) { animation-range: cover 35.6% cover 46.6%; }
+.draw > :nth-child(25) { animation-range: cover 36.8% cover 47.8%; }
+.draw > :nth-child(26) { animation-range: cover 38% cover 49%; }
+.draw > :nth-child(27) { animation-range: cover 39.2% cover 50.2%; }
+.draw > :nth-child(28) { animation-range: cover 40.4% cover 51.4%; }
+.draw > :nth-child(29) { animation-range: cover 41.6% cover 52.6%; }
+.draw > :nth-child(30) { animation-range: cover 42.8% cover 53.8%; }
+.draw > :nth-child(31) { animation-range: cover 44% cover 55%; }
+.draw > :nth-child(32) { animation-range: cover 45.2% cover 56.2%; }
+.draw > :nth-child(33) { animation-range: cover 46.4% cover 57.4%; }
+.draw > :nth-child(34) { animation-range: cover 47.6% cover 58.6%; }
+.draw > :nth-child(35) { animation-range: cover 48.8% cover 59.8%; }
+.draw > :nth-child(36) { animation-range: cover 50% cover 61%; }
+.draw > :nth-child(37) { animation-range: cover 51.2% cover 62.2%; }
+.draw > :nth-child(38) { animation-range: cover 52.4% cover 63.4%; }
+.draw > :nth-child(39) { animation-range: cover 53.6% cover 64.6%; }
+.draw > :nth-child(40) { animation-range: cover 54.8% cover 65.8%; }
+.draw > :nth-child(41) { animation-range: cover 56% cover 67%; }
+.draw > :nth-child(42) { animation-range: cover 57.2% cover 68.2%; }
+.draw > :nth-child(43) { animation-range: cover 58.4% cover 69.4%; }
+.draw > :nth-child(44) { animation-range: cover 59.6% cover 70.6%; }
+.draw > :nth-child(45) { animation-range: cover 60.8% cover 71.8%; }
+.draw > :nth-child(46) { animation-range: cover 62% cover 73%; }
+.draw > :nth-child(47) { animation-range: cover 63.2% cover 74.2%; }
+.draw > :nth-child(48) { animation-range: cover 64.4% cover 75.4%; }
+.draw > :nth-child(49) { animation-range: cover 65.6% cover 76.6%; }
+.draw > :nth-child(50) { animation-range: cover 66.8% cover 77.8%; }
+.draw > :nth-child(51) { animation-range: cover 68% cover 79%; }
+.draw > :nth-child(52) { animation-range: cover 69.2% cover 80.2%; }
+
+/* La ghiera di perle non puo' usare il tratteggio per comparire
+   (lo sta gia' usando per essere perle): entra in dissolvenza. */
+.draw .beads {
+  stroke-width: 4; stroke-dasharray: 0 .0215; stroke-dashoffset: 0;
+  animation: bead-in linear both;
+  animation-timeline: --segno;
+  animation-range: cover 34% cover 50%;
+}
+@keyframes coral-grow { to { stroke-dashoffset: 0; } }
+@keyframes bead-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* Browser senza animazioni da scroll (oggi Firefox): tutto resta disegnato. */
+@supports not (animation-timeline: view()) {
+  .draw path, .draw ellipse { stroke-dashoffset: 0; animation: none; }
+  .draw .beads { opacity: 1; }
+}
+
+/* Spessori: ogni segno ha un viewBox diverso, quindi una scala diversa.
+   Tarati perche' il tratto renda circa 1px alla dimensione reale. */
+
+
+/* Il corallo: illustrazione fornita, servita come immagine. Nessuna
+   animazione di scroll: sta li' e basta. */
+.coral-art { display: block; width: auto; height: 100%; }
+
+/* Il corallo grande, in fondo al sito sulla destra. */
+/* NIENTE overflow:hidden qui: renderebbe il footer un contenitore di
+   scorrimento e view() si ancorerebbe a lui invece che alla pagina,
+   uccidendo l'animazione del corallo. Il corallo e' dimensionato in
+   altezza apposta per stare dentro senza bisogno di ritaglio. */
+footer { position: relative; }
+footer > *:not(.coral-reef-wrap) { position: relative; z-index: 1; }
+.coral-reef-wrap {
+  position: absolute; z-index: 0; pointer-events: none;
+  right: 4vw; bottom: 76px;
+  /* dimensionato in ALTEZZA: il footer e' piu' basso del disegno, e a
+     larghezza fissa le punte dei rami finivano tagliate dal bordo. */
+  height: min(74%, 330px); width: auto;
+  /* NIENTE opacita' ridotta: era giusta per un segno a filo, ma su un pezzo
+     reso a volume lo rende traslucido, ed e' esattamente cio' che smonta
+     l'illusione dell'oggetto appoggiato sulla pagina. */
+}
+.coral-reef-wrap .coral-art { width: auto; height: 100%; }
+
+/* Il cammeo: illustrazione fornita. Profilo di fanciulla, cioe' il significato
+   di Kore — sta accanto alla riga che lo spiega, non e' un ornamento a caso.
+   Nessuna animazione di scroll. */
+.story-title { display: flex; flex-direction: column; align-items: flex-start; }
+.story-portrait {
+  display: block; height: auto;
+  margin-top: clamp(40px, 4.2vw, 76px); width: min(72%, 216px);
+}
+
+/* Il Vesuvio e il mare, nel riquadro "dove". */
+.map-art .vesuvio {
+  position: absolute; z-index: 1; left: 4%; bottom: 7%;
+  width: 92%; color: var(--cream); opacity: 1;
+}
+/* Il riquadro ha gia' una griglia color crema: senza gerarchia di spessore
+   il vulcano ci si perde dentro. La montagna e' il soggetto, il mare il fondo. */
+.map-art .vesuvio > :nth-child(-n+8) { stroke-width: 1.3; opacity: .95; }
+.map-art .vesuvio > :nth-child(n+9) { stroke-width: .7; opacity: .45; }
+
+
+@media (max-width: 900px) {
+  .coral-reef-wrap { height: min(62%, 205px); bottom: 74px; right: 2vw; }
+}
+@media (max-width: 600px) {
+  .story-portrait { width: min(52%, 150px); }
+  /* Su mobile il footer non ha uno spazio libero a destra: i link occupano
+     tutta la larghezza. Un'illustrazione piena schiacciata dietro al testo
+     sembra un errore, non una scelta, quindi qui non compare. */
+  .coral-reef-wrap { display: none; }
+}
 
 @keyframes marquee { to { transform: translateX(-50%); } }
 @keyframes breathe { to { transform: scale(1.06); } }
@@ -156,52 +312,52 @@ footer { padding: 6vw 5vw 28px; background: var(--cream); color: var(--ink); }
 @media (max-width: 900px) {
   .section-heading, .client-stage, .service-explorer, .story, .location, .case-study { grid-template-columns: 1fr; }
   .content-note { margin-top: 35px; }
-  .client-preview { min-height: 60vw; }
+  .client-preview { min-height: 52vw; }
   .service-visual { position: relative; top: auto; min-height: 72vw; order: -1; }
   .editorial-card { grid-template-columns: 1fr; }
   .editorial-card > img { min-height: 58vw; max-height: 72vw; }
   .editorial-card.dark-card > img { order: 2; }
   .card-copy { min-height: 60vw; }
-  .case-image { min-height: 65vw; }
+  .case-image { min-height: 56vw; }
   .timeline { grid-template-columns: 1fr 1fr; gap: 50px 0; }
   .timeline::before { display: none; }
   .timeline-dot { margin: 22px 0 30px; box-shadow: none; }
   .story-copy { padding-top: 0; }
   .map-art { min-height: 65vw; }
   .numbers-grid { grid-template-columns: 1fr; }
-  .metric { min-height: 290px; }
+  .metric { min-height: 224px; }
   .contact-strip { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 600px) {
   .site-header { height: 64px; padding-inline: 16px; }
-  .hero-copy { padding: 20vh 18px 10vh; }
-  .hero h1 { font-size: clamp(64px, 22vw, 120px); }
+  .hero-copy { padding: 18vh 18px 11vh; }
+  .hero h1 { font-size: clamp(46px, 15vw, 82px); }
   .hero::after { background: linear-gradient(0deg, rgba(40,10,5,.65), transparent 75%); }
   .hero-art { background-position: 58% center; }
   .scroll-cue { display: none; }
   .menu-panel { grid-template-columns: 1fr; gap: 40px; padding: 95px 24px 40px; overflow: auto; }
-  .menu-column a { font-size: clamp(30px, 10vw, 48px); }
-  .section-pad { padding: 24vw 18px; }
+  .menu-column a { font-size: clamp(26px, 8vw, 40px); }
+  .section-pad { padding: 15vw 18px; }
   .logo-wall { grid-template-columns: 1fr; }
   .logo-wall button { min-height: 120px; }
-  .service-list button span:first-child { font-size: 40px; }
-  .service-visual { min-height: 105vw; }
+  .service-list button span:first-child { font-size: 30px; }
+  .service-visual { min-height: 76vw; }
   .editorial-card, .story { min-height: auto; }
-  .card-copy { min-height: 100vw; padding: 18vw 18px; }
-  .card-copy h2 { font-size: 22vw; }
-  .editorial-card > img { min-height: 85vw; max-height: none; }
-  .case-copy { padding: 22vw 18px; }
+  .card-copy { min-height: 72vw; padding: 13vw 18px; }
+  .card-copy h2 { font-size: 12.5vw; }
+  .editorial-card > img { min-height: 64vw; max-height: none; }
+  .case-copy { padding: 14vw 18px; }
   .case-copy dl { margin: 70px 0; }
   .case-copy dl > div { grid-template-columns: 1fr; }
   .timeline { grid-template-columns: 1fr; }
   .timeline article { min-height: auto; }
-  .story { padding: 24vw 18px; }
-  .location-copy { padding: 22vw 18px; }
-  .map-art { min-height: 100vw; }
-  .final-cta { padding: 24vw 18px 12vw; }
+  .story { padding: 15vw 18px; }
+  .location-copy { padding: 14vw 18px; }
+  .map-art { min-height: 76vw; }
+  .final-cta { padding: 15vw 18px 8vw; }
   .contact-strip { grid-template-columns: 1fr; }
-  footer { padding: 18vw 18px 24px; }
+  footer { padding: 12vw 18px 24px; }
   .footer-meta { gap: 20px; flex-direction: column; }
 }
 
