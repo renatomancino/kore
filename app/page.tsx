@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { VesuvioMare } from "./ornaments";
+import { ScrollEffects } from "./scroll-effects";
 
 const services = [
   { name: "Branding", note: "Diamo un’identità alle idee.", image: "/images/designer.jpg" },
@@ -12,6 +13,14 @@ const services = [
   { name: "Advertising", note: "Portiamo le idee dove devono arrivare.", image: "/images/stage.jpg" },
   { name: "Eventi", note: "Creiamo momenti che restano.", image: "/images/event.jpg" },
   { name: "Content", note: "Diamo ritmo, voce e consistenza.", image: "/images/camera.jpg" },
+];
+
+const caseSlides = [
+  { image: "/images/designer.jpg", name: "Progetto 01", note: "Branding" },
+  { image: "/images/event.jpg", name: "Progetto 02", note: "Eventi" },
+  { image: "/images/camera.jpg", name: "Progetto 03", note: "Video" },
+  { image: "/kore-brand.png", name: "Progetto 04", note: "Identità" },
+  { image: "/images/stage.jpg", name: "Progetto 05", note: "Advertising" },
 ];
 
 const clientSlots = [
@@ -47,6 +56,8 @@ export default function Home() {
 
   return (
     <main>
+      <ScrollEffects />
+      <a className="salta-al-contenuto" href="#top">Salta al contenuto</a>
       <header className="site-header">
         <a className="wordmark wordmark-small" href="#top" aria-label="Kore, home">KORE</a>
         <button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen((open) => !open)}>
@@ -164,6 +175,28 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="case-scroll" aria-label="Progetti in evidenza">
+        <div className="case-stage">
+          <div className="case-row case-row-a">
+            {[...caseSlides, ...caseSlides].map((s, i) => (
+              <figure className="case-card" key={`a${i}`}>
+                <img src={s.image} alt="" />
+                <figcaption><strong>{s.name}</strong><span>{s.note} · da inserire</span></figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="case-row case-row-b">
+            {[...caseSlides, ...caseSlides].reverse().map((s, i) => (
+              <figure className="case-card" key={`b${i}`}>
+                <img src={s.image} alt="" />
+                <figcaption><strong>{s.name}</strong><span>{s.note} · da inserire</span></figcaption>
+              </figure>
+            ))}
+          </div>
+          <div className="case-badge" aria-hidden="true"><span>Case study</span></div>
+        </div>
+      </section>
+
       <section className="process section-pad" id="metodo">
         <p className="kicker">Come lavoriamo</p><h2>Un processo chiaro.<br />Ogni volta diverso.</h2>
         <div className="timeline">
@@ -197,7 +230,11 @@ export default function Home() {
       </section>
 
       <section className="final-cta" id="contatti">
-        <p className="kicker">Il prossimo progetto</p><h2>Hai un’idea?<br /><em>Parliamone.</em></h2>
+        <p className="kicker">Il prossimo progetto</p>
+        <h2 className="cta-alzati">
+          <span className="riga">Hai un’idea?</span>
+          <span className="riga"><em>Parliamone.</em></span>
+        </h2>
         <a className="giant-link" href="mailto:">Iniziamo <span>↗</span></a>
         <div className="contact-strip">
           <span>Email · da inserire</span><span>Telefono · da inserire</span><span>Instagram · da collegare</span><span>LinkedIn · da collegare</span>
