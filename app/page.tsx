@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { VesuvioMare } from "./ornaments";
+import { projects } from "./project-data";
 import { ScrollEffects } from "./scroll-effects";
+import { VideoShowcase } from "./video-showcase";
 
 const services = [
   { name: "Branding", note: "Diamo un’identità alle idee.", image: "/images/designer.jpg" },
@@ -15,21 +18,13 @@ const services = [
   { name: "Content", note: "Diamo ritmo, voce e consistenza.", image: "/images/camera.jpg" },
 ];
 
-const caseSlides = [
-  { image: "/images/designer.jpg", name: "Progetto 01", note: "Branding" },
-  { image: "/images/event.jpg", name: "Progetto 02", note: "Eventi" },
-  { image: "/images/camera.jpg", name: "Progetto 03", note: "Video" },
-  { image: "/kore-brand.png", name: "Progetto 04", note: "Identità" },
-  { image: "/images/stage.jpg", name: "Progetto 05", note: "Advertising" },
-];
-
 const clientSlots = [
-  { name: "Logo 01", project: "Preview progetto · Branding", image: "/images/designer.jpg" },
-  { name: "Logo 02", project: "Preview progetto · Social", image: "/images/event.jpg" },
-  { name: "Logo 03", project: "Preview progetto · Web", image: "/kore-brand.png" },
-  { name: "Logo 04", project: "Preview progetto · Eventi", image: "/images/stage.jpg" },
-  { name: "Logo 05", project: "Preview progetto · Content", image: "/images/camera.jpg" },
-  { name: "Logo 06", project: "Preview progetto · Advertising", image: "/images/event.jpg" },
+  { name: "Centro Revisioni TRIM", project: "Centro Revisioni TRIM", image: "/clients/trim.png", tone: "light" },
+  { name: "L’isola che non c’è", project: "L’isola che non c’è", image: "/clients/isola-che-non-ce.png", tone: "dark" },
+  { name: "Panariello", project: "Panariello · Falegnameria sartoriale", image: "/clients/panariello.png", tone: "light" },
+  { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.jpg", tone: "light" },
+  { name: "Primobanco", project: "Primobanco", image: "/clients/primobanco.png", tone: "light" },
+  { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.jpg", tone: "light" },
 ];
 
 const process = [
@@ -39,10 +34,17 @@ const process = [
   ["04", "Facciamo crescere", "Misuriamo, miglioriamo, sviluppiamo."],
 ];
 
+const heroServices = [
+  { label: "Branding", serviceIndex: 0 },
+  { label: "Creative direction", serviceIndex: 1 },
+  { label: "Content", serviceIndex: 7 },
+];
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeService, setActiveService] = useState(0);
   const [activeClient, setActiveClient] = useState(0);
+  const [activeHeroService, setActiveHeroService] = useState(1);
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => event.key === "Escape" && setMenuOpen(false);
@@ -59,18 +61,63 @@ export default function Home() {
       <ScrollEffects />
       <a className="salta-al-contenuto" href="#top">Salta al contenuto</a>
       <header className="site-header">
-        <a className="wordmark wordmark-small" href="#top" aria-label="Kore, home">KORE</a>
+        <a className="header-brand" href="#top" aria-label="Kore Studio, home">
+          <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
+        </a>
         <button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen((open) => !open)}>
           <span>{menuOpen ? "Chiudi" : "Menu"}</span><span className="menu-dot" aria-hidden="true" />
         </button>
       </header>
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="hero-art" aria-hidden="true" />
+        <div className="hero-art" aria-hidden="true">
+          <div className="hero-halo hero-halo-one" />
+          <div className="hero-halo hero-halo-two" />
+          <figure className="hero-object hero-object-coral">
+            <img src="/images/corallo.webp" alt="" />
+          </figure>
+          <figure className="hero-object hero-object-cameo">
+            <img src="/images/cammeo.webp" alt="" />
+          </figure>
+          <figure className="hero-object hero-object-production">
+            <img src="/images/camera.jpg" alt="" />
+          </figure>
+          <span className="hero-pearl hero-pearl-one" />
+          <span className="hero-pearl hero-pearl-two" />
+          <span className="hero-pearl hero-pearl-three" />
+        </div>
         <div className="hero-copy">
-          <p className="eyebrow">Creative agency · Napoli / Ovunque</p>
-          <h1 id="hero-title">Diamo forma<br />alle idee.</h1>
-          <a className="hero-cta" href="#contatti">Raccontaci la tua idea <span aria-hidden="true">↗</span></a>
+          <p className="eyebrow">Creative agency · Torre del Greco / Ovunque</p>
+          <h1 id="hero-title">
+            <span>Strategia,</span>
+            <span>immagini</span>
+            <span className="hero-title-accent">e idee vive.</span>
+          </h1>
+          <div className="hero-actions">
+            <p>Una regia creativa per brand, contenuti, esperienze e progetti digitali che lasciano il segno.</p>
+            <a className="hero-cta" href="#contatti">Raccontaci la tua idea <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div className="hero-service-wheel" aria-label="Seleziona un’area creativa">
+          {heroServices.map((item, index) => {
+            const offset = (index - activeHeroService + heroServices.length) % heroServices.length;
+            const slot = offset === 0 ? "current" : offset === 1 ? "right" : "left";
+            return (
+              <button
+                type="button"
+                className={slot === "current" ? "is-current" : ""}
+                data-slot={slot}
+                key={item.label}
+                aria-pressed={index === activeHeroService}
+                onClick={() => {
+                  setActiveHeroService(index);
+                  setActiveService(item.serviceIndex);
+                }}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </div>
         <div className="scroll-cue" aria-hidden="true">Scorri ↓</div>
       </section>
@@ -84,6 +131,7 @@ export default function Home() {
         </div>
         <div className="menu-column">
           <p>Kore</p>
+          <Link href="/progetti" onClick={() => setMenuOpen(false)}>Progetti</Link>
           <a href="#mondo" onClick={() => setMenuOpen(false)}>Il nostro mondo</a>
           <a href="#numeri" onClick={() => setMenuOpen(false)}>Numeri</a>
           <a href="#partner" onClick={() => setMenuOpen(false)}>Partner</a>
@@ -91,28 +139,29 @@ export default function Home() {
         </div>
       </nav>
 
-      <div className="marquee" aria-label="I servizi Kore">
-        <div className="marquee-track">
-          <span>Branding ✦ Social ✦ Video ✦ Web ✦ Adv ✦ Eventi ✦ Content ✦ </span>
-          <span aria-hidden="true">Branding ✦ Social ✦ Video ✦ Web ✦ Adv ✦ Eventi ✦ Content ✦ </span>
-        </div>
-      </div>
+      <nav className="service-index-bar" aria-label="Indice dei servizi Kore">
+        {services.map((service, index) => (
+          <a href="#servizi" key={service.name} onClick={() => setActiveService(index)}>
+            <span>0{index + 1}</span>{service.name}
+          </a>
+        ))}
+      </nav>
 
       <section className="clients section-pad" id="clienti">
         <div className="section-heading">
           <p className="kicker">Chi ci ha dato fiducia</p>
           <h2>Facciamo cose<br />con loro.</h2>
-          <p className="content-note">Struttura pronta per i loghi e i progetti reali. Nessun cliente inventato.</p>
+          <p className="content-note">Brand e realtà del territorio che hanno scelto la regia creativa di Kore.</p>
         </div>
         <div className="client-stage">
-          <div className="client-preview">
-            <img src={clientSlots[activeClient].image} alt="" />
+          <div className={`client-preview ${clientSlots[activeClient].tone}`}>
+            <img src={clientSlots[activeClient].image} alt={clientSlots[activeClient].name} />
             <p>{clientSlots[activeClient].project}</p>
           </div>
           <div className="logo-wall">
             {clientSlots.map((client, index) => (
               <button key={client.name} onMouseEnter={() => setActiveClient(index)} onFocus={() => setActiveClient(index)} onClick={() => setActiveClient(index)}>
-                <span>{client.name}</span><small>Da inserire</small>
+                <img src={client.image} alt="" /><small>{client.name}</small>
               </button>
             ))}
           </div>
@@ -137,21 +186,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="service-editorial" aria-label="Servizi in evidenza">
-        <article className="editorial-card cream-card">
-          <div className="card-copy"><span>01 / Identità</span><h2>Branding</h2><p>Diamo un’identità alle idee, dal primo segno a ogni punto di contatto.</p><a href="#contatti">Scopri →</a></div>
-          <img src="/images/designer.jpg" alt="Designer al lavoro davanti al computer" />
-        </article>
-        <article className="editorial-card dark-card">
-          <img src="/images/camera.jpg" alt="Backstage di una produzione video" />
-          <div className="card-copy"><span>02 / Racconto</span><h2>Content</h2><p>Foto, video e parole che fanno sentire la voce del brand.</p><a href="#contatti">Scopri →</a></div>
-        </article>
-        <article className="editorial-card red-card">
-          <div className="card-copy"><span>03 / Esperienze</span><h2>Eventi</h2><p>Dalla strategia al palco: costruiamo momenti da ricordare.</p><a href="#contatti">Scopri →</a></div>
-          <img src="/images/stage.jpg" alt="Allestimento tecnico di un evento" />
-        </article>
-      </section>
-
       <section className="numbers section-pad" id="numeri">
         <p className="kicker">Risultati, non decorazioni</p>
         <h2>Non ci piace parlare di numeri.<br /><em>Ma questi dicono qualcosa.</em></h2>
@@ -162,40 +196,39 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="case-study" id="progetti">
-        <div className="case-image"><img src="/kore-brand.png" alt="Sistema visivo Kore in rosso corallo e crema" /></div>
-        <div className="case-copy">
-          <p className="kicker">Case study / 001</p><h2>Kore<br />su Kore.</h2>
-          <dl>
-            <div><dt>Obiettivo</dt><dd>Rendere riconoscibile una struttura agile e multidisciplinare.</dd></div>
-            <div><dt>Cosa abbiamo fatto</dt><dd>Voce, sistema visivo, ritmo e una presenza digitale che si muove.</dd></div>
-            <div><dt>Risultato</dt><dd>Un’identità che non ha bisogno di stare ferma per farsi ricordare.</dd></div>
-          </dl>
-          <a className="text-link" href="#contatti">Vedi il progetto →</a>
+      <section className="selected-projects section-pad" id="progetti">
+        <div className="selected-projects-heading">
+          <div>
+            <p className="kicker">Progetti selezionati</p>
+            <h2>Il lavoro parla.<br /><em>Noi gli diamo voce.</em></h2>
+          </div>
+          <p>Una selezione di identità, contenuti e progetti costruiti insieme ai nostri clienti.</p>
         </div>
+
+        <div className="selected-projects-grid">
+          {projects.slice(0, 3).map((project, index) => (
+            <Link className={`project-teaser project-teaser-${project.tone}`} href={`/progetti/${project.slug}`} key={project.slug}>
+              <div className="project-teaser-image">
+                <img src={project.cover} alt={`Progetto ${project.client}`} />
+                <span>0{index + 1}</span>
+              </div>
+              <div className="project-teaser-copy">
+                <p>{project.category} · {project.year}</p>
+                <h3>{project.client}</h3>
+                <span>{project.title} ↗</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <Link className="all-projects-link" href="/progetti">
+          <span>Archivio completo</span>
+          <strong>Vedi tutti i progetti</strong>
+          <i aria-hidden="true">↗</i>
+        </Link>
       </section>
 
-      <section className="case-scroll" aria-label="Progetti in evidenza">
-        <div className="case-stage">
-          <div className="case-row case-row-a">
-            {[...caseSlides, ...caseSlides].map((s, i) => (
-              <figure className="case-card" key={`a${i}`}>
-                <img src={s.image} alt="" />
-                <figcaption><strong>{s.name}</strong><span>{s.note} · da inserire</span></figcaption>
-              </figure>
-            ))}
-          </div>
-          <div className="case-row case-row-b">
-            {[...caseSlides, ...caseSlides].reverse().map((s, i) => (
-              <figure className="case-card" key={`b${i}`}>
-                <img src={s.image} alt="" />
-                <figcaption><strong>{s.name}</strong><span>{s.note} · da inserire</span></figcaption>
-              </figure>
-            ))}
-          </div>
-          <div className="case-badge" aria-hidden="true"><span>Case study</span></div>
-        </div>
-      </section>
+      <VideoShowcase />
 
       <section className="process section-pad" id="metodo">
         <p className="kicker">Come lavoriamo</p><h2>Un processo chiaro.<br />Ogni volta diverso.</h2>
@@ -220,8 +253,20 @@ export default function Home() {
       </section>
 
       <section className="partners section-pad" id="partner">
-        <p className="kicker">Network & partner</p><h2>Non dobbiamo sapere fare tutto.<br />Dobbiamo sapere chi chiamare.</h2>
-        <div className="partner-line"><span>Strategia</span><span>Produzione</span><span>Tech</span><span>Media</span><span>Territorio</span></div>
+        <div className="partner-intro">
+          <p className="kicker">Network & partner</p>
+          <h2>Le connessioni giuste,<br />quando servono.</h2>
+        </div>
+        <div className="partner-rail" aria-label="Partner Kore">
+          <div>
+            <img src="/partners/il-meridiano-sport.png" alt="Il Meridiano Sport" />
+            <span>Partner editoriale</span>
+          </div>
+          <div>
+            <img src="/partners/metropolis.png" alt="Metropolis" />
+            <span>Media partner</span>
+          </div>
+        </div>
       </section>
 
       <section className="location" id="dove">
@@ -241,13 +286,49 @@ export default function Home() {
         </div>
       </section>
 
-      <footer>
-        <div className="coral-reef-wrap" aria-hidden="true">
-          <img className="coral-art" src="/images/corallo.webp" alt="" width={960} height={750} />
+      <footer className="site-footer">
+        <div className="footer-particles" aria-hidden="true">
+          {Array.from({ length: 12 }, (_, index) => (
+            <span className={`footer-particle footer-particle-${index + 1}`} key={index} />
+          ))}
         </div>
-        <div className="wordmark footer-mark">KORE</div>
-        <div className="footer-links"><span>Marketing</span><span>Web design</span><span>Communication</span><span>AI solutions</span></div>
-        <div className="footer-meta"><span>Privacy · Cookie · P.IVA</span><span>© {new Date().getFullYear()} Kore Studio</span></div>
+
+        <div className="footer-topline">
+          <div className="footer-positioning">
+            <p>Strategia, immagine<br />e idee vive.</p>
+            <span>Creative agency · Torre del Greco / ovunque</span>
+          </div>
+
+          <div className="footer-directory">
+            <div>
+              <p>Studio</p>
+              <span>Torre del Greco — Napoli</span>
+              <span>Campania — Italia</span>
+            </div>
+            <nav aria-label="Navigazione footer">
+              <p>Esplora</p>
+              <a href="#servizi">Servizi</a>
+              <Link href="/progetti">Progetti</Link>
+              <a href="#metodo">Metodo</a>
+              <a href="#mondo">Agenzia</a>
+            </nav>
+            <div>
+              <p>Contatti</p>
+              <a href="#contatti">Email · da inserire</a>
+              <a href="#contatti">Instagram</a>
+              <a href="#contatti">LinkedIn</a>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-official-logo">
+          <img src="/brand/kore-logo-cream.png" alt="Kore Studio - marketing e comunicazione" />
+        </div>
+
+        <div className="footer-legal">
+          <span>Privacy · Cookie · P.IVA</span>
+          <span>© {new Date().getFullYear()} Kore Studio</span>
+        </div>
       </footer>
     </main>
   );

@@ -6,7 +6,7 @@ import { useEffect } from "react";
  * elementi su 19 e ogni foto del sito si assestava entrando — ripetizione,
  * non significato. */
 const DA_SCOPRIRE = [
-  ".section-heading h2", ".many-things > h2", ".numbers > h2", ".case-copy h2",
+  ".section-heading h2", ".many-things > h2", ".numbers > h2",
   ".process > h2", ".story h2", ".partners h2", ".location h2",
   ".card-copy h2", ".service-visual h3", ".cta-alzati",
 ].join(",");
