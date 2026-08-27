@@ -5,6 +5,7 @@ import Link from "next/link";
 import { VesuvioMare } from "./ornaments";
 import { projects } from "./project-data";
 import { ScrollEffects } from "./scroll-effects";
+import { SiteFooter } from "./site-footer";
 import { VideoShowcase } from "./video-showcase";
 
 const services = [
@@ -22,9 +23,9 @@ const clientSlots = [
   { name: "Centro Revisioni TRIM", project: "Centro Revisioni TRIM", image: "/clients/trim.png", tone: "light" },
   { name: "L’isola che non c’è", project: "L’isola che non c’è", image: "/clients/isola-che-non-ce.png", tone: "dark" },
   { name: "Panariello", project: "Panariello · Falegnameria sartoriale", image: "/clients/panariello.png", tone: "light" },
-  { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.jpg", tone: "light" },
+  { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.png", tone: "light" },
   { name: "Primobanco", project: "Primobanco", image: "/clients/primobanco.png", tone: "light" },
-  { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.jpg", tone: "light" },
+  { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.png", tone: "dark" },
 ];
 
 const process = [
@@ -286,50 +287,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="site-footer">
-        <div className="footer-particles" aria-hidden="true">
-          {Array.from({ length: 12 }, (_, index) => (
-            <span className={`footer-particle footer-particle-${index + 1}`} key={index} />
-          ))}
-        </div>
-
-        <div className="footer-topline">
-          <div className="footer-positioning">
-            <p>Strategia, immagine<br />e idee vive.</p>
-            <span>Creative agency · Torre del Greco / ovunque</span>
-          </div>
-
-          <div className="footer-directory">
-            <div>
-              <p>Studio</p>
-              <span>Torre del Greco — Napoli</span>
-              <span>Campania — Italia</span>
-            </div>
-            <nav aria-label="Navigazione footer">
-              <p>Esplora</p>
-              <a href="#servizi">Servizi</a>
-              <Link href="/progetti">Progetti</Link>
-              <a href="#metodo">Metodo</a>
-              <a href="#mondo">Agenzia</a>
-            </nav>
-            <div>
-              <p>Contatti</p>
-              <a href="#contatti">Email · da inserire</a>
-              <a href="#contatti">Instagram</a>
-              <a href="#contatti">LinkedIn</a>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-official-logo">
-          <img src="/brand/kore-logo-cream.png" alt="Kore Studio - marketing e comunicazione" />
-        </div>
-
-        <div className="footer-legal">
-          <span>Privacy · Cookie · P.IVA</span>
-          <span>© {new Date().getFullYear()} Kore Studio</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

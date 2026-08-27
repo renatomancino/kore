@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "../project-data";
+import { SiteFooter } from "../site-footer";
 
 export const metadata: Metadata = {
   title: "Progetti — Kore Studio",
@@ -51,10 +52,7 @@ export default function ProjectsPage() {
         <Link href="/#contatti">Parliamone <span aria-hidden="true">↗</span></Link>
       </section>
 
-      <footer className="archive-footer">
-        <img src="/brand/kore-logo-cream.png" alt="Kore Studio - marketing e comunicazione" />
-        <div><span>Torre del Greco · Napoli</span><span>© {new Date().getFullYear()} Kore Studio</span></div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }

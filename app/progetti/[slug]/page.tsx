@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "../../project-data";
+import { SiteFooter } from "../../site-footer";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
@@ -74,6 +75,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <strong>{nextProject.client}</strong>
         <i aria-hidden="true">→</i>
       </Link>
+
+      <SiteFooter />
     </main>
   );
 }
