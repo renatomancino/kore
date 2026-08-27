@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "../../project-data";
 import { SiteFooter } from "../../site-footer";
+import { SiteMenu } from "../../site-menu";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
@@ -37,7 +38,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         <Link className="archive-brand" href="/" aria-label="Kore Studio, torna alla home">
           <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
         </Link>
-        <Link className="archive-home-link" href="/progetti">Tutti i progetti <span aria-hidden="true">↖</span></Link>
+        <div className="testata-comandi">
+          <Link className="archive-home-link" href="/progetti">Tutti i progetti <span aria-hidden="true">↖</span></Link>
+          <SiteMenu />
+        </div>
       </header>
 
       <article>

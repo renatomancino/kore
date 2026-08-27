@@ -2,9 +2,10 @@
  * Territorial ornaments — Torre del Greco.
  *
  * The town is the world capital of coral and cameo carving, it sits at the foot
- * of Vesuvius and it faces the bay. What is left here is the volcano with its
- * bay, drawn as 1px line work that draws itself on scroll. The coral and the
- * cameo are supplied illustrations, served as images from public/images.
+ * of Vesuvius and it faces the bay. The volcano with its bay is drawn as 1px
+ * line work that draws itself on scroll. The coral and the cameo are supplied
+ * illustrations, served as images from public/images.
+
  *
  * Every path carries pathLength="1" so one dash rule animates them all whatever
  * their real length, and the order of the children is the order they are drawn

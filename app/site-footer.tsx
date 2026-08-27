@@ -19,6 +19,11 @@ export function SiteFooter() {
         {Array.from({ length: 12 }, (_, index) => (
           <span className={`footer-particle footer-particle-${index + 1}`} key={index} />
         ))}
+        {/* Il corallo sta qui e non nell'hero: ritagliato dall'angolo, dietro
+            a tutto e con le perle che gli passano davanti, da' profondita' al
+            fondo pagina invece di occupare spazio in apertura. */}
+        <img className="footer-coral" src="/images/corallo.webp" alt="" />
+        <img className="footer-coral footer-coral-alto" src="/images/corallo.webp" alt="" />
       </div>
 
       <div className="footer-topline">

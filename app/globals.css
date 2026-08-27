@@ -269,38 +269,11 @@ footer { padding: clamp(44px, 4vw, 74px) 5vw 28px; background: var(--cream); col
 /* Spessori: ogni segno ha un viewBox diverso, quindi una scala diversa.
    Tarati perche' il tratto renda circa 1px alla dimensione reale. */
 
-
 /* Il corallo: illustrazione fornita, servita come immagine. Nessuna
    animazione di scroll: sta li' e basta. */
 .coral-art { display: block; width: auto; height: 100%; }
 
-/* Il corallo grande, in fondo al sito sulla destra. */
-/* NIENTE overflow:hidden qui: renderebbe il footer un contenitore di
-   scorrimento e view() si ancorerebbe a lui invece che alla pagina,
-   uccidendo l'animazione del corallo. Il corallo e' dimensionato in
-   altezza apposta per stare dentro senza bisogno di ritaglio. */
-footer { position: relative; }
-footer > *:not(.coral-reef-wrap) { position: relative; z-index: 1; }
-.coral-reef-wrap {
-  position: absolute; z-index: 0; pointer-events: none;
-  right: 4vw; bottom: 76px;
-  /* dimensionato in ALTEZZA: il footer e' piu' basso del disegno, e a
-     larghezza fissa le punte dei rami finivano tagliate dal bordo. */
-  height: min(74%, 330px); width: auto;
-  /* NIENTE opacita' ridotta: era giusta per un segno a filo, ma su un pezzo
-     reso a volume lo rende traslucido, ed e' esattamente cio' che smonta
-     l'illusione dell'oggetto appoggiato sulla pagina. */
-}
-.coral-reef-wrap .coral-art { width: auto; height: 100%; }
-
-/* Il cammeo: illustrazione fornita. Profilo di fanciulla, cioe' il significato
-   di Kore — sta accanto alla riga che lo spiega, non e' un ornamento a caso.
-   Nessuna animazione di scroll. */
 .story-title { display: flex; flex-direction: column; align-items: flex-start; }
-.story-portrait {
-  display: block; height: auto;
-  margin-top: clamp(40px, 4.2vw, 76px); width: min(72%, 216px);
-}
 
 /* Il Vesuvio e il mare, nel riquadro "dove". */
 .map-art .vesuvio {
@@ -311,18 +284,6 @@ footer > *:not(.coral-reef-wrap) { position: relative; z-index: 1; }
    il vulcano ci si perde dentro. La montagna e' il soggetto, il mare il fondo. */
 .map-art .vesuvio > :nth-child(-n+8) { stroke-width: 1.3; opacity: .95; }
 .map-art .vesuvio > :nth-child(n+9) { stroke-width: .7; opacity: .45; }
-
-
-@media (max-width: 900px) {
-  .coral-reef-wrap { height: min(62%, 205px); bottom: 74px; right: 2vw; }
-}
-@media (max-width: 600px) {
-  .story-portrait { width: min(52%, 150px); }
-  /* Su mobile il footer non ha uno spazio libero a destra: i link occupano
-     tutta la larghezza. Un'illustrazione piena schiacciata dietro al testo
-     sembra un errore, non una scelta, quindi qui non compare. */
-  .coral-reef-wrap { display: none; }
-}
 
 /* Lenis chiede queste due righe: senza, con un'altezza imposta su
    html/body lo scorrimento inerziale puo' comportarsi male. */
@@ -481,32 +442,6 @@ html.lenis.lenis-stopped { overflow: clip; }
   will-change: transform;
 }
 .hero-object img { width: 100%; height: 100%; object-fit: cover; }
-.hero-object-coral {
-  width: clamp(170px, 22vw, 390px);
-  aspect-ratio: 1.28;
-  left: 5vw;
-  top: 20%;
-  transform: rotate(-9deg);
-}
-.hero-object-coral img { object-fit: contain; }
-.hero-object-cameo {
-  width: clamp(110px, 12vw, 210px);
-  aspect-ratio: .77;
-  right: 8vw;
-  top: 14%;
-  transform: rotate(10deg);
-}
-.hero-object-production {
-  width: clamp(130px, 15vw, 270px);
-  aspect-ratio: 1;
-  right: 11vw;
-  bottom: 14%;
-  border: 9px solid var(--cream);
-  border-radius: 44% 56% 61% 39% / 53% 39% 61% 47%;
-  overflow: hidden;
-  transform: rotate(-8deg);
-}
-.hero-object-production img { filter: saturate(.55) contrast(1.08); }
 .hero-pearl {
   position: absolute;
   display: block;
@@ -518,6 +453,21 @@ html.lenis.lenis-stopped { overflow: clip; }
 .hero-pearl-one { width: clamp(44px, 5vw, 84px); left: 23vw; bottom: 13%; }
 .hero-pearl-two { width: clamp(32px, 3vw, 52px); right: 31vw; top: 12%; }
 .hero-pearl-three { width: clamp(24px, 2.2vw, 40px); left: 29vw; top: 17%; }
+/* Il cammeo — la targa KORE disegnata per il sito — non e' un oggetto in
+   scena: e' della stessa famiglia delle perle e fluttua con loro. Rotazione e spostamento stanno su proprieta'
+   separate (`rotate` / `translate`) invece che su una sola `transform`, cosi'
+   l'animazione non azzera l'inclinazione di partenza. */
+.hero-cameo {
+  position: absolute;
+  aspect-ratio: .752;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 15px rgba(86,18,14,.36));
+  will-change: translate;
+}
+.hero-cameo-one { width: clamp(40px, 4.4vw, 76px); left: 9vw; top: 32%; rotate: -8deg; --cameo-speed: 7.5s; }
+.hero-cameo-two { width: clamp(26px, 2.8vw, 48px); right: 13vw; top: 21%; rotate: 9deg; --cameo-speed: 6s; --cameo-delay: -2.5s; }
+.hero-cameo-three { width: clamp(22px, 2.4vw, 42px); left: 14vw; bottom: 11%; rotate: -4deg; --cameo-speed: 8.5s; --cameo-delay: -4s; }
+.hero-cameo-quattro { width: clamp(64px, 7.2vw, 118px); right: 11vw; bottom: 16%; rotate: 6deg; --cameo-speed: 9.5s; --cameo-delay: -1.5s; }
 .hero-copy {
   position: relative;
   z-index: 3;
@@ -555,15 +505,44 @@ html.lenis.lenis-stopped { overflow: clip; }
   gap: 30px;
 }
 .hero-actions p { max-width: 370px; margin: 0; color: var(--ink); font-size: 14px; line-height: 1.55; text-align: left; }
+/* E' l'unica azione della prima schermata, quindi deve pesare quanto pesa:
+   prima era una pillola da 11px accanto a un titolo alto 150. */
 .hero-cta {
   flex: 0 0 auto;
   margin: 0;
+  padding: 11px 11px 11px clamp(24px, 2.2vw, 34px);
+  gap: clamp(16px, 1.6vw, 26px);
   border: 1px solid var(--ink);
   border-radius: 100px;
   background: var(--ink);
   color: var(--cream);
+  font-size: clamp(12px, 1vw, 14px);
+  letter-spacing: .13em;
+  font-weight: 700;
+  /* L'ombra la stacca dal rosso: senza, la pillola sembra stampata sul fondo
+     invece che appoggiata sopra. */
+  box-shadow: 0 16px 32px rgba(70,12,12,.3);
+  transition: transform .2s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
 }
-.hero-cta:hover { background: var(--cream); color: var(--ink); }
+/* La freccia in un disco suo: e' quello che la fa leggere come un tasto e non
+   come una scritta con un segno accanto. */
+.hero-cta span {
+  width: clamp(38px, 3.4vw, 50px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: clamp(15px, 1.3vw, 19px);
+  transition: background .25s ease, color .25s ease, transform .3s ease;
+}
+.hero-cta:hover {
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 0 22px 40px rgba(70,12,12,.34);
+}
+.hero-cta:hover span { background: var(--ink); color: var(--cream); transform: rotate(45deg); }
 /* Indice servizi statico: niente marquee automatico o stelline decorative. */
 .service-index-bar {
   display: flex;
@@ -711,20 +690,20 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-object-coral { animation: hero-float-a 7s ease-in-out infinite alternate; }
-  .hero-object-cameo { animation: hero-float-b 8s ease-in-out infinite alternate; }
-  .hero-object-production { animation: hero-float-c 6.5s ease-in-out infinite alternate; }
+
   .hero-pearl { animation: hero-pearl 5s ease-in-out infinite alternate; }
+  .hero-cameo { animation: hero-cameo-float var(--cameo-speed, 7s) ease-in-out var(--cameo-delay, 0s) infinite alternate; }
 }
 @keyframes hero-float-a { to { transform: translate(1.5vw, -18px) rotate(-4deg); } }
 @keyframes hero-float-b { to { transform: translate(-1vw, 20px) rotate(5deg); } }
 @keyframes hero-float-c { to { transform: translate(-1.4vw, -12px) rotate(-2deg); } }
 @keyframes hero-pearl { to { transform: translateY(-14px); } }
+@keyframes hero-cameo-float { to { translate: 0 -16px; } }
 
 @media (max-width: 900px) {
-  .hero-object-coral { left: -4vw; top: 24%; }
-  .hero-object-cameo { right: 2vw; }
-  .hero-object-production { right: 2vw; bottom: 18%; }
+  .hero-cameo-one { left: 2vw; top: 30%; }
+  .hero-cameo-two { right: 4vw; }
+  .hero-cameo-quattro { right: 3vw; bottom: 18%; }
   .footer-shell { grid-template-columns: 1fr; }
   .footer-brand-card { min-height: 470px; }
   .footer-info-card { min-height: 560px; }
@@ -737,9 +716,14 @@ html.lenis.lenis-stopped { overflow: clip; }
   .hero-title-accent { transform: none; }
   .hero-actions { width: 100%; margin-top: 48px; flex-direction: column; }
   .hero-actions p { max-width: 300px; text-align: center; }
-  .hero-object-coral { width: 140px; left: -38px; top: 22%; }
-  .hero-object-cameo { width: 90px; right: -10px; top: 18%; }
-  .hero-object-production { width: 102px; right: -22px; bottom: 25%; border-width: 6px; }
+  /* A 4vw finiva sotto la "S" di Strategia (19x55px di sovrapposizione).
+     Entra dal bordo: resta un ornamento che galleggia, senza toccare il titolo. */
+  .hero-cameo-one { width: 58px; left: -3vw; top: 27%; }
+  .hero-cameo-two { width: 38px; right: 6vw; top: 16%; }
+  /* Su mobile il tasto occupa tutta la larghezza: questi due gli finivano
+     sotto (35x31 e 46x62 di sovrapposizione). Scendono sotto la sua riga. */
+  .hero-cameo-three { width: 32px; left: 6vw; bottom: 11%; }
+  .hero-cameo-quattro { width: 82px; right: 4vw; bottom: 5%; }
   .hero-pearl-one { left: 5vw; bottom: 22%; }
   .hero-pearl-two { right: 23vw; top: 12%; }
   .service-index-bar a { min-width: 124px; padding: 14px 16px 12px; }
@@ -757,9 +741,29 @@ html.lenis.lenis-stopped { overflow: clip; }
 
 /* Asset ufficiali: logo Kore, clienti e partner. */
 .site-header { mix-blend-mode: normal; }
-.header-brand { display: block; width: clamp(112px, 10vw, 150px); padding: 5px 9px; border-radius: 10px; background: rgba(255,236,197,.94); line-height: 0; box-shadow: 0 5px 18px rgba(23,18,13,.08); }
+/* Niente targa sotto al marchio: era un rettangolo panna con ombra, cioe' uno
+   sfondo fisso — e uno sfondo fisso e' esattamente cio' che impedisce al logo
+   di prendere il colore di quello che ha sotto. */
+.header-brand { position: relative; display: block; width: clamp(112px, 10vw, 150px); line-height: 0; }
 .header-brand img { width: 100%; height: auto; }
-.menu-toggle { padding: 11px 15px; border-radius: 100px; background: var(--ink); color: var(--cream); }
+/* Il corallo sta sopra alla panna e viene scoperto da una maschera a fasce
+   calcolata sullo sfondo: se il logo sta a cavallo di due sezioni, il taglio
+   cade sul confine e il marchio e' due tinte insieme.
+   Finche' la misura non parte resta la panna, tinta giusta sull'hero rosso
+   da cui la pagina apre. */
+.header-brand .brand-corallo { position: absolute; inset: 0; opacity: 0; }
+.site-header[data-logo] .brand-corallo { opacity: 1; }
+/* 11px davano un tasto alto 40: sotto i 44 minimi per un bersaglio da dito.
+   E z-index 41 perche' ora il tasto e il pannello sono fratelli: senza, il
+   pannello (40) copre il «Chiudi» e si esce solo con Esc o con un link. */
+.menu-toggle {
+  position: relative;
+  z-index: 41;
+  padding: 13px 16px;
+  border-radius: 100px;
+  background: var(--ink);
+  color: var(--cream);
+}
 
 .client-preview { display: grid; place-items: center; padding: clamp(34px, 5vw, 76px); }
 .client-preview.light { background: #fffaf0; }
@@ -876,10 +880,10 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-directory a,
 .footer-directory span {
   /* Erano alti 18px: meno della meta' dei 44 minimi per un bersaglio
-     toccabile. L'imbottitura verticale li porta a 40 senza cambiare
+     toccabile. L'imbottitura verticale li porta a 45 senza cambiare
      ne' il corpo ne' l'aspetto. */
   margin-bottom: 0;
-  padding: 11px 0;
+  padding: 13px 0;
   color: rgba(255,236,197,.76);
   font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(12px, 1vw, 15px);
@@ -916,6 +920,30 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-particle-9 { --particle-size: 5px; --particle-speed: 6.5s; --particle-delay: -2s; left: 13%; top: 78%; }
 .footer-particle-10 { --particle-size: 10px; --particle-speed: 9.5s; --particle-delay: -7s; left: 37%; top: 82%; }
 .footer-particle-11 { --particle-size: 7px; --particle-speed: 8s; --particle-delay: -4s; left: 71%; top: 79%; }
+.footer-coral {
+  /* Ritagliato dall'angolo in basso a destra: la parte che esce dal footer e'
+     quello che gli da' scala. Sta nello stesso strato delle perle, quindi le
+     perle gli passano davanti e la scena acquista profondita'. */
+  position: absolute;
+  right: -20vw;
+  bottom: -40%;
+  width: clamp(260px, 37.5vw, 620px);
+  opacity: .7;
+  filter: drop-shadow(0 20px 34px rgba(0,0,0,.6));
+  /* Fuori inquadratura la base in pietra: e' chiara (168,108,97) e la riga
+     legale ci passava sopra a 2,03:1. Restano solo i rami, scuri. La
+     sfumatura cade dentro la parte visibile, non nel ritaglio, e da' distanza. */
+  mask-image: linear-gradient(to top, transparent 34%, #000 62%);
+}
+/* Lo stesso corallo capovolto nell'angolo opposto: ribaltando anche la
+   posizione, ritaglio e sfumatura si specchiano da soli. */
+.footer-coral-alto {
+  right: auto;
+  bottom: auto;
+  left: -20vw;
+  top: -40%;
+  transform: rotate(180deg);
+}
 .footer-particle-12 { --particle-size: 12px; --particle-speed: 11s; --particle-delay: -3s; left: 94%; top: 74%; }
 .footer-official-logo {
   /* Stava su una riga tutta sua: 262px, il 45% dell'altezza del footer,
@@ -934,7 +962,9 @@ html.lenis.lenis-stopped { overflow: clip; }
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  color: rgba(255,236,197,.5);
+  /* Era a .5: 4,82:1 sul nero, gia' al limite prima ancora che il corallo
+     gli passasse dietro. A .72 regge anche sopra i rami. */
+  color: rgba(255,236,197,.72);
   text-transform: uppercase;
   letter-spacing: .16em;
   font-size: 11px;
@@ -962,18 +992,24 @@ html.lenis.lenis-stopped { overflow: clip; }
   .partner-rail > div { min-height: 124px; padding: 18px 12px; }
   .partner-rail img { height: 46px; }
   .partner-rail > div:last-child img { height: 44px; }
-  .site-footer { min-height: 760px; padding: 62px 18px 24px; }
+  /* Il min-height era rimasto solo qui: su mobile teneva il footer a 919px,
+     piu' alto che su desktop. Come sopra, l'altezza la fa il contenuto. */
+  .site-footer { padding: 62px 18px 24px; }
   .footer-positioning p { font-size: 38px; }
   .footer-directory { grid-template-columns: 1fr 1fr; gap: 36px 24px; }
   .footer-directory > div:last-child { grid-column: 1 / -1; }
   .footer-particle:nth-child(n+9) { display: none; }
   .footer-official-logo { margin-top: 12px; }
-  .footer-official-logo img { width: 92vw; max-width: 560px; }
+  /* Era 92vw: 359px di larghezza per 159 di altezza, cioe' un sesto del
+     footer mobile occupato dal logo. Stessa correzione fatta su desktop. */
+  .footer-official-logo img { width: min(190px, 50vw); }
   .footer-legal { flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .footer-particle { animation: none; }
+  .hero-cta, .hero-cta span { transition: none; }
+  .hero-cta:hover { transform: none; }
 }
 
 /* Progetti selezionati in home. */
@@ -2032,7 +2068,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-legal { font-family: Arial, Helvetica, sans-serif; }
 .footer-directory a,
 .footer-directory > div > span {
-  padding-block: 9px;
+  /* 9px davano link alti 39: sotto i 44 minimi per un bersaglio da dito.
+     13px li portano a 45 senza toccare corpo ne' carattere. */
+  padding-block: 13px;
   font-family: Didot, "Bodoni MT", Georgia, serif;
   font-size: clamp(16px, 1.25vw, 20px);
   font-weight: 700;
@@ -2158,4 +2196,448 @@ html.lenis.lenis-stopped { overflow: clip; }
   .projects-archive .archive-project-card:nth-child(even) { height: auto; margin-top: 0; }
   .projects-archive .archive-project-copy { min-height: 310px; display: flex; flex-direction: column; }
   .projects-archive .archive-project-meta { margin-top: auto; }
+}
+
+/* ============================================================
+   Brief — /idea
+   Il modulo e' l'unico punto del sito in cui il visitatore lavora invece di
+   guardare. Quindi qui comanda la leggibilita': controlli grandi, etichette
+   sempre visibili, errori scritti in italiano accanto al campo che li ha
+   generati. La festa tipografica resta all'apertura e al riepilogo.
+   ============================================================ */
+.brief-pagina {
+  /* Il corallo pieno su carta da 3,07:1: sotto il minimo per un testo da
+     11px, ed e' con testi da 11px che questa pagina etichetta ogni campo.
+     Questo rosso e' lo stesso, solo abbastanza scuro da leggersi: 5,01:1. */
+  --red-testo: #c41f24;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.brief-testata {
+  position: relative;
+  z-index: 5;
+  padding: 22px 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+/* Il marchio senza targa: la pagina e' gia' chiara, un rettangolo panna sopra
+   la carta si vedrebbe solo come un rettangolo. */
+.brief-marchio { display: block; width: clamp(118px, 11vw, 158px); }
+.brief-marchio img { display: block; width: 100%; height: auto; }
+
+.brief-apertura { padding: clamp(46px, 6vw, 104px) 5vw clamp(34px, 4vw, 66px); }
+.brief-apertura .kicker { color: var(--red-testo); font-weight: 800; }
+.brief-apertura h1 {
+  margin: 0;
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(54px, 8.4vw, 138px);
+  line-height: .82;
+  letter-spacing: -.05em;
+}
+.brief-apertura h1 em { color: var(--red); }
+.brief-apertura-sotto {
+  margin-top: clamp(30px, 3.4vw, 58px);
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 6vw;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.brief-apertura-sotto p {
+  max-width: 620px;
+  margin: 0;
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(19px, 1.9vw, 30px);
+  line-height: 1.24;
+}
+.brief-apertura-sotto span {
+  color: var(--red-testo);
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-size: 11px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.brief-corpo { padding: 0 5vw clamp(56px, 6vw, 104px); }
+.brief-impianto {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(310px, .75fr);
+  gap: clamp(32px, 4vw, 76px);
+  align-items: start;
+}
+
+/* --- i passi --------------------------------------------------------- */
+.brief-passi { margin-bottom: clamp(28px, 3vw, 48px); }
+.brief-passi ol {
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+.brief-passo-tasto {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease, color .2s ease;
+}
+.brief-passo-tasto:hover { border-color: var(--ink); }
+.brief-passo-tasto[aria-current="step"] { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+.brief-passo-tasto[data-fatto] { border-color: var(--red-testo); color: var(--red-testo); }
+.brief-passo-numero { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 800; }
+.brief-passo-nome { font-size: 14px; }
+
+.brief-avanzamento { margin: 0; display: flex; align-items: center; gap: 12px; }
+.brief-avanzamento > span {
+  flex: 1;
+  height: 3px;
+  background: rgba(23,18,13,.14);
+  display: block;
+  overflow: hidden;
+}
+.brief-avanzamento i { display: block; height: 100%; background: var(--red-testo); transition: width .3s ease; }
+.brief-avanzamento b {
+  min-width: 44px;
+  text-align: right;
+  color: var(--red-testo);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.brief-bozza { margin: 12px 0 0; color: rgba(23,18,13,.66); font-size: 12px; }
+
+/* --- la scena del passo ---------------------------------------------- */
+.brief-scena-guida { margin: 0 0 8px; color: rgba(23,18,13,.66); font-size: 13px; }
+.brief-scena-titolo {
+  margin: 0 0 clamp(24px, 2.6vw, 40px);
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(32px, 3.8vw, 60px);
+  line-height: .96;
+  letter-spacing: -.03em;
+}
+.brief-scena-titolo:focus-visible { outline-offset: 6px; }
+.brief-campi { display: grid; gap: clamp(24px, 2.6vw, 38px); }
+
+.brief-campo { min-width: 0; margin: 0; padding: 0; border: 0; }
+.brief-campo > label, .brief-gruppo > legend {
+  margin-bottom: 8px;
+  padding: 0;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-size: 11px;
+  font-weight: 800;
+}
+/* Il punto rosso segna i campi senza cui il brief non parte: un asterisco
+   vuole una legenda, un colore no. */
+.brief-campo > label i, .brief-gruppo > legend i { margin-left: 6px; color: var(--red-testo); font-style: normal; }
+.brief-aiuto { margin: 0 0 12px; color: rgba(23,18,13,.66); font-size: 13px; line-height: 1.45; }
+
+.brief-campo input[type="text"],
+.brief-campo input[type="email"],
+.brief-campo input[type="tel"],
+.brief-campo textarea {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(19px, 1.7vw, 26px);
+  line-height: 1.3;
+  transition: border-color .2s ease;
+}
+.brief-campo textarea { min-height: 170px; resize: vertical; }
+.brief-campo input:focus, .brief-campo textarea:focus { border-bottom-color: var(--ink); }
+.brief-campo input::placeholder, .brief-campo textarea::placeholder { color: rgba(23,18,13,.38); }
+.brief-campo[data-rotto] input, .brief-campo[data-rotto] textarea { border-bottom-color: var(--red); }
+
+.brief-conta { margin: 8px 0 0; color: rgba(23,18,13,.66); font-size: 12px; font-variant-numeric: tabular-nums; }
+.brief-errore { margin: 10px 0 0; color: #b3161c; font-size: 13px; line-height: 1.45; }
+
+/* --- le scelte -------------------------------------------------------- */
+.brief-scelte { display: grid; gap: 10px; }
+.brief-scelte-doppie { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.brief-scelte-fitte { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.brief-scelta {
+  position: relative;
+  min-height: 62px;
+  padding: 14px 18px 14px 46px;
+  border: 1px solid var(--line);
+  /* La griglia sta sull'etichetta e non su un contenitore interno: il testo
+     deve restare figlio diretto, altrimenti l'etichetta risulta senza nome. */
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.brief-scelta-piatta { min-height: 52px; }
+.brief-scelta:hover { border-color: var(--ink); }
+/* Il controllo vero resta li', grande quanto la casella: si nasconde solo alla
+   vista, cosi' la tastiera e i lettori di schermo continuano a trovarlo. */
+.brief-scelta input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.brief-scelta > b { font-size: 15px; font-weight: 700; }
+.brief-scelta > i { color: rgba(23,18,13,.66); font-style: normal; font-size: 12px; line-height: 1.4; }
+/* Il segno di spunta e' disegnato qui, davanti al testo. */
+.brief-scelta::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  transform: translateY(-50%);
+  border: 1px solid var(--ink);
+  transition: background .15s ease, border-color .15s ease;
+}
+.brief-scelta:has(input[type="radio"])::before { border-radius: 50%; }
+.brief-scelta::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 21px;
+  width: 8px;
+  height: 8px;
+  transform: translateY(-50%);
+  background: var(--cream);
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+.brief-scelta:has(input[type="radio"])::after { border-radius: 50%; }
+.brief-scelta:has(input:checked) { border-color: var(--ink); background: rgba(23,18,13,.05); }
+.brief-scelta:has(input:checked)::before { border-color: var(--ink); background: var(--ink); }
+.brief-scelta:has(input:checked)::after { opacity: 1; }
+.brief-scelta:has(input:focus-visible) { outline: 2px solid currentColor; outline-offset: 3px; }
+
+.brief-consenso { display: flex; gap: 14px; align-items: flex-start; cursor: pointer; }
+.brief-consenso input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--ink); }
+.brief-consenso span { font-size: 14px; line-height: 1.5; }
+
+.brief-mancanze { padding: 18px 20px; border: 1px solid var(--red-testo); }
+.brief-mancanze p { margin: 0 0 10px; text-transform: uppercase; letter-spacing: .13em; font-size: 11px; font-weight: 800; color: var(--red-testo); }
+.brief-mancanze ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.brief-mancanze button {
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.45;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* --- comandi ---------------------------------------------------------- */
+.brief-comandi { margin-top: clamp(28px, 3vw, 46px); display: flex; flex-wrap: wrap; gap: 12px; }
+.brief-bottone {
+  min-height: 52px;
+  padding: 16px 26px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  text-transform: uppercase;
+  letter-spacing: .15em;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.brief-bottone:hover { background: var(--red); border-color: var(--red); color: var(--cream); transform: translateY(-2px); }
+.brief-bottone span { transition: transform .25s ease; }
+.brief-bottone:hover span { transform: rotate(45deg); }
+.brief-bottone-quieto { background: transparent; color: var(--ink); }
+.brief-bottone-quieto:hover { background: var(--ink); border-color: var(--ink); color: var(--cream); }
+
+/* --- il riepilogo ----------------------------------------------------- */
+.brief-riepilogo {
+  position: sticky;
+  top: 28px;
+  padding: clamp(22px, 2.2vw, 34px);
+  background: var(--ink);
+  color: var(--cream);
+}
+.brief-riepilogo .kicker { margin-bottom: 16px; color: var(--red); font-weight: 800; }
+.brief-riepilogo pre, .brief-esito-testo pre {
+  margin: 0;
+  max-height: 62vh;
+  overflow: auto;
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.brief-riepilogo-vuoto { margin: 0; color: rgba(255,236,197,.78); font-size: 13px; line-height: 1.55; }
+
+/* --- esito ------------------------------------------------------------ */
+.brief-esito { max-width: 760px; }
+.brief-esito .kicker { color: var(--red-testo); font-weight: 800; }
+.brief-esito h2 {
+  margin: 0 0 18px;
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(40px, 5vw, 78px);
+  line-height: .92;
+  letter-spacing: -.035em;
+}
+.brief-esito > p { margin: 0 0 26px; max-width: 60ch; font-size: 15px; line-height: 1.6; }
+.brief-esito-testo { margin-bottom: 26px; padding: clamp(20px, 2vw, 30px); background: var(--ink); color: var(--cream); }
+
+/* --- cosa succede dopo ------------------------------------------------ */
+.brief-dopo { padding: clamp(56px, 6vw, 104px) 5vw; border-top: 1px solid var(--line); }
+.brief-dopo .kicker { color: var(--red-testo); font-weight: 800; }
+.brief-dopo h2 {
+  margin: 0 0 clamp(30px, 3.4vw, 58px);
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(38px, 5vw, 82px);
+  line-height: .92;
+  letter-spacing: -.035em;
+}
+.brief-dopo ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: clamp(24px, 3vw, 52px);
+}
+.brief-dopo li { padding-top: 18px; border-top: 1px solid var(--ink); }
+.brief-dopo-numero { color: var(--red-testo); text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 800; }
+.brief-dopo-quando { display: block; margin: 14px 0 6px; text-transform: uppercase; letter-spacing: .13em; font-size: 11px; font-weight: 800; }
+.brief-dopo h3 {
+  margin: 0 0 10px;
+  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-size: clamp(23px, 2.2vw, 34px);
+  line-height: 1.06;
+  letter-spacing: -.02em;
+}
+.brief-dopo p { margin: 0; color: rgba(23,18,13,.72); font-size: 14px; line-height: 1.55; }
+
+.brief-scorciatoia {
+  padding: clamp(30px, 3.4vw, 54px) 5vw;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 40px;
+  align-items: center;
+  justify-content: space-between;
+}
+.brief-scorciatoia p { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(21px, 2.2vw, 34px); line-height: 1.1; }
+.brief-scorciatoia a { padding: 15px 0; color: var(--red-testo); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
+.brief-scorciatoia a span { margin-left: 10px; display: inline-block; transition: transform .25s ease; }
+.brief-scorciatoia a:hover span { transform: rotate(45deg); }
+
+@media (max-width: 1000px) {
+  /* Il riepilogo smette di essere una colonna e diventa l'ultima cosa che
+     leggi prima di mandare: e' il momento in cui serve davvero. */
+  .brief-impianto { grid-template-columns: 1fr; }
+  .brief-riepilogo { position: static; }
+}
+@media (max-width: 600px) {
+  .brief-apertura-sotto { flex-direction: column; align-items: flex-start; }
+  .brief-comandi .brief-bottone { flex: 1; justify-content: space-between; }
+  .brief-scelte-doppie, .brief-scelte-fitte { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brief-bottone, .brief-bottone span, .brief-avanzamento i,
+  .brief-scorciatoia a span { transition: none; }
+  .brief-bottone:hover { transform: none; }
+}
+
+/* Il tasto menu sta su ogni pagina, accanto al link contestuale della pagina
+   stessa: da /progetti si torna alla home, da un progetto all'archivio, e da
+   ovunque si apre il menu. */
+.testata-comandi { display: flex; align-items: center; gap: clamp(10px, 1.4vw, 20px); }
+
+/* ============================================================
+   Il passaggio dalla prima alla seconda sezione.
+   L'hero resta incollato e il resto della pagina gli sale sopra: il salto
+   fra le due sezioni diventa un movimento invece di un taglio netto.
+
+   La linea temporale sta sulla barra dei servizi e non sull'hero: l'hero e'
+   sticky, quindi non esce mai davvero dalla vista e una view() ancorata a lui
+   non avanzerebbe. timeline-scope la rende visibile ai fratelli.
+
+   Tutto dentro a @supports: senza, `animation ... both` con una linea
+   temporale che il browser ignora parte come animazione a tempo di durata
+   zero e l'hero nascerebbe gia' rimpicciolito e sbiadito.
+   ============================================================ */
+@supports (animation-timeline: view()) and (timeline-scope: --x) {
+  @media (prefers-reduced-motion: no-preference) {
+    main { timeline-scope: --seconda-sezione; }
+    .hero { position: sticky; top: 0; z-index: 0; }
+    .service-index-bar {
+      position: relative;
+      z-index: 1;
+      view-timeline-name: --seconda-sezione;
+      view-timeline-axis: block;
+    }
+    .clients { position: relative; z-index: 1; }
+
+    /* L'hero indietreggia mentre l'altro sale. Scala e opacita' insieme:
+       solo l'opacita' sembrerebbe un guasto, solo la scala un rimbalzo. */
+    /* Le fasce sono su `cover` e non su `entry`: la barra e' alta una
+       quarantina di pixel, e `entry` su un elemento cosi' basso dura quaranta
+       pixel di scorrimento — l'effetto scattava invece di svolgersi. `cover`
+       misura tutto il transito, schermo piu' elemento, e da' la corsa vera. */
+    .hero-copy, .hero-art {
+      animation: hero-indietreggia linear both;
+      animation-timeline: --seconda-sezione;
+      animation-range: cover 4% cover 62%;
+    }
+    /* Lo sfondo dell'hero resta pieno: se sbiadisse anche lui si vedrebbe il
+       bianco della pagina attraverso, e il movimento diventerebbe un buco. */
+
+    /* Le sei celle non arrivano insieme: entrano da sinistra a destra, come
+       si leggono. Le fasce si sovrappongono, altrimenti sarebbe un elenco che
+       si compila e non un blocco che arriva. */
+    .service-index-bar a {
+      animation: cella-arriva linear both;
+      animation-timeline: --seconda-sezione;
+    }
+    .service-index-bar a:nth-child(1) { animation-range: cover 14% cover 44%; }
+    .service-index-bar a:nth-child(2) { animation-range: cover 19% cover 49%; }
+    .service-index-bar a:nth-child(3) { animation-range: cover 24% cover 54%; }
+    .service-index-bar a:nth-child(4) { animation-range: cover 29% cover 59%; }
+    .service-index-bar a:nth-child(5) { animation-range: cover 34% cover 64%; }
+    .service-index-bar a:nth-child(6) { animation-range: cover 39% cover 69%; }
+  }
+}
+@keyframes hero-indietreggia {
+  to { transform: scale(.88) translateY(-3vh); opacity: .28; }
+}
+@keyframes cella-arriva {
+  from { opacity: 0; transform: translateY(15px); }
 }
