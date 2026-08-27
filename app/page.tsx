@@ -2,21 +2,27 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { AnimatedCounter } from "./animated-counter";
 import { VesuvioMare } from "./ornaments";
 import { projects } from "./project-data";
 import { ScrollEffects } from "./scroll-effects";
+import { ServiceShowcase, type Service } from "./service-showcase";
 import { SiteFooter } from "./site-footer";
 import { VideoShowcase } from "./video-showcase";
 
-const services = [
-  { name: "Branding", note: "Diamo un’identità alle idee.", image: "/images/designer.jpg" },
-  { name: "Social", note: "Trasformiamo attenzione in relazione.", image: "/images/event.jpg" },
-  { name: "Video", note: "Mettiamo il racconto in movimento.", image: "/images/camera.jpg" },
-  { name: "Photo", note: "Troviamo l’inquadratura giusta.", image: "/images/designer.jpg" },
-  { name: "Web", note: "Costruiamo esperienze che funzionano.", image: "/kore-brand.png" },
-  { name: "Advertising", note: "Portiamo le idee dove devono arrivare.", image: "/images/stage.jpg" },
-  { name: "Eventi", note: "Creiamo momenti che restano.", image: "/images/event.jpg" },
-  { name: "Content", note: "Diamo ritmo, voce e consistenza.", image: "/images/camera.jpg" },
+const services: Service[] = [
+  { id: "branding", name: "Branding", note: "Diamo un’identità alle idee.", image: "/images/designer.jpg" },
+  { id: "social", name: "Social", note: "Trasformiamo attenzione in relazione.", image: "/images/event.jpg" },
+  { id: "video", name: "Video", note: "Mettiamo il racconto in movimento.", image: "/images/camera.jpg" },
+  { id: "web", name: "Web", note: "Costruiamo esperienze che funzionano.", image: "/kore-brand.png" },
+  { id: "advertising", name: "Advertising", note: "Portiamo le idee dove devono arrivare.", image: "/images/stage.jpg" },
+  { id: "eventi", name: "Eventi", note: "Creiamo momenti che restano.", image: "/images/event.jpg" },
+];
+
+const exampleMetrics = [
+  { value: 1_000_000, suffix: "+", label: "Visualizzazioni potenziali" },
+  { value: 250_000, suffix: "+", label: "Interazioni generate" },
+  { value: 40, suffix: "+", label: "Progetti attivati" },
 ];
 
 const clientSlots = [
@@ -35,17 +41,10 @@ const process = [
   ["04", "Facciamo crescere", "Misuriamo, miglioriamo, sviluppiamo."],
 ];
 
-const heroServices = [
-  { label: "Branding", serviceIndex: 0 },
-  { label: "Creative direction", serviceIndex: 1 },
-  { label: "Content", serviceIndex: 7 },
-];
-
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeService, setActiveService] = useState(0);
   const [activeClient, setActiveClient] = useState(0);
-  const [activeHeroService, setActiveHeroService] = useState(1);
 
   useEffect(() => {
     const close = (event: KeyboardEvent) => event.key === "Escape" && setMenuOpen(false);
@@ -99,34 +98,13 @@ export default function Home() {
             <a className="hero-cta" href="#contatti">Raccontaci la tua idea <span aria-hidden="true">↗</span></a>
           </div>
         </div>
-        <div className="hero-service-wheel" aria-label="Seleziona un’area creativa">
-          {heroServices.map((item, index) => {
-            const offset = (index - activeHeroService + heroServices.length) % heroServices.length;
-            const slot = offset === 0 ? "current" : offset === 1 ? "right" : "left";
-            return (
-              <button
-                type="button"
-                className={slot === "current" ? "is-current" : ""}
-                data-slot={slot}
-                key={item.label}
-                aria-pressed={index === activeHeroService}
-                onClick={() => {
-                  setActiveHeroService(index);
-                  setActiveService(item.serviceIndex);
-                }}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-        </div>
         <div className="scroll-cue" aria-hidden="true">Scorri ↓</div>
       </section>
 
       <nav className={`menu-panel ${menuOpen ? "is-open" : ""}`} id="site-menu" aria-hidden={!menuOpen}>
         <div className="menu-column">
           <p>Cosa facciamo</p>
-          {services.filter((_, index) => ![2, 3].includes(index)).map((item) => (
+          {services.map((item) => (
             <a key={item.name} href="#servizi" onClick={() => setMenuOpen(false)}>{item.name}</a>
           ))}
         </div>
@@ -155,14 +133,28 @@ export default function Home() {
           <p className="content-note">Brand e realtà del territorio che hanno scelto la regia creativa di Kore.</p>
         </div>
         <div className="client-stage">
-          <div className={`client-preview ${clientSlots[activeClient].tone}`}>
+          <div className={`client-preview ${clientSlots[activeClient].tone}`} aria-live="polite">
+            <span className="client-preview-status">
+              <span aria-hidden="true" /> In evidenza · 0{activeClient + 1}
+            </span>
             <img src={clientSlots[activeClient].image} alt={clientSlots[activeClient].name} />
             <p>{clientSlots[activeClient].project}</p>
           </div>
           <div className="logo-wall">
             {clientSlots.map((client, index) => (
-              <button key={client.name} onMouseEnter={() => setActiveClient(index)} onFocus={() => setActiveClient(index)} onClick={() => setActiveClient(index)}>
-                <img src={client.image} alt="" /><small>{client.name}</small>
+              <button
+                type="button"
+                className={index === activeClient ? "is-active" : ""}
+                aria-label={`Mostra ${client.name}`}
+                aria-pressed={index === activeClient}
+                key={client.name}
+                onMouseEnter={() => setActiveClient(index)}
+                onFocus={() => setActiveClient(index)}
+                onClick={() => setActiveClient(index)}
+              >
+                <span className="client-choice-index" aria-hidden="true">0{index + 1}</span>
+                <img src={client.image} alt="" />
+                <small>{client.name}</small>
               </button>
             ))}
           </div>
@@ -180,21 +172,23 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <div className="service-visual">
-            <img src={services[activeService].image} alt="" />
-            <div><p>{services[activeService].name}</p><h3>{services[activeService].note}</h3></div>
-          </div>
+          <ServiceShowcase service={services[activeService]} key={services[activeService].id} />
         </div>
       </section>
 
       <section className="numbers section-pad" id="numeri">
         <p className="kicker">Risultati, non decorazioni</p>
         <h2>Non ci piace parlare di numeri.<br /><em>Ma questi dicono qualcosa.</em></h2>
-        <div className="numbers-grid">
-          {["Interazioni", "Reach", "Contatti"].map((item, index) => (
-            <div className="metric" key={item}><span>0{index + 1}</span><strong>Dato<br />verificato</strong><p>{item} · In attesa dei numeri documentabili</p></div>
+        <div className="numbers-grid" aria-label="Metriche dimostrative animate">
+          {exampleMetrics.map((metric, index) => (
+            <div className="metric" key={metric.label}>
+              <span>0{index + 1}</span>
+              <strong><AnimatedCounter value={metric.value} suffix={metric.suffix} /></strong>
+              <p>{metric.label}</p>
+            </div>
           ))}
         </div>
+        <p className="numbers-disclaimer">Valori dimostrativi · da sostituire con dati verificati.</p>
       </section>
 
       <section className="selected-projects section-pad" id="progetti">
@@ -216,6 +210,7 @@ export default function Home() {
               <div className="project-teaser-copy">
                 <p>{project.category} · {project.year}</p>
                 <h3>{project.client}</h3>
+                <p className="project-teaser-summary">{project.summary}</p>
                 <span>{project.title} ↗</span>
               </div>
             </Link>
