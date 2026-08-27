@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "../project-data";
 import { SiteFooter } from "../site-footer";
+import { SiteMenu } from "../site-menu";
 
 export const metadata: Metadata = {
   title: "Progetti — Kore Studio",
@@ -15,7 +16,10 @@ export default function ProjectsPage() {
         <Link className="archive-brand" href="/" aria-label="Kore Studio, torna alla home">
           <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
         </Link>
-        <Link className="archive-home-link" href="/">Home <span aria-hidden="true">↖</span></Link>
+        <div className="testata-comandi">
+          <Link className="archive-home-link" href="/">Home <span aria-hidden="true">↖</span></Link>
+          <SiteMenu />
+        </div>
       </header>
 
       <section className="archive-hero">
@@ -53,7 +57,7 @@ export default function ProjectsPage() {
 
       <section className="archive-cta">
         <p>Il prossimo progetto potrebbe essere il tuo.</p>
-        <Link href="/#contatti">Parliamone <span aria-hidden="true">↗</span></Link>
+        <Link href="/idea">Parliamone <span aria-hidden="true">↗</span></Link>
       </section>
 
       <SiteFooter />
