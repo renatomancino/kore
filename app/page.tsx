@@ -1,23 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { AnimatedCounter } from "./animated-counter";
 import { VesuvioMare } from "./ornaments";
 import { projects } from "./project-data";
+import { AdaptiveBrand } from "./adaptive-brand";
 import { ScrollEffects } from "./scroll-effects";
-import { ServiceShowcase, type Service } from "./service-showcase";
+import { ServiceShowcase } from "./service-showcase";
+import { services } from "./services-data";
 import { SiteFooter } from "./site-footer";
+import { SiteMenu } from "./site-menu";
 import { VideoShowcase } from "./video-showcase";
 
-const services: Service[] = [
-  { id: "branding", name: "Branding", note: "Diamo un’identità alle idee.", image: "/images/designer.jpg" },
-  { id: "social", name: "Social", note: "Trasformiamo attenzione in relazione.", image: "/images/event.jpg" },
-  { id: "video", name: "Video", note: "Mettiamo il racconto in movimento.", image: "/images/camera.jpg" },
-  { id: "web", name: "Web", note: "Costruiamo esperienze che funzionano.", image: "/kore-brand.png" },
-  { id: "advertising", name: "Advertising", note: "Portiamo le idee dove devono arrivare.", image: "/images/stage.jpg" },
-  { id: "eventi", name: "Eventi", note: "Creiamo momenti che restano.", image: "/images/event.jpg" },
-];
 
 const exampleMetrics = [
   { value: 1_000_000, suffix: "+", label: "Visualizzazioni potenziali" },
@@ -42,49 +37,43 @@ const process = [
 ];
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [activeService, setActiveService] = useState(0);
   const [activeClient, setActiveClient] = useState(0);
-
-  useEffect(() => {
-    const close = (event: KeyboardEvent) => event.key === "Escape" && setMenuOpen(false);
-    window.addEventListener("keydown", close);
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      window.removeEventListener("keydown", close);
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
 
   return (
     <main>
       <ScrollEffects />
+      <AdaptiveBrand />
       <a className="salta-al-contenuto" href="#top">Salta al contenuto</a>
       <header className="site-header">
         <a className="header-brand" href="#top" aria-label="Kore Studio, home">
-          <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
+          {/* Due tinte sovrapposte, non due sorgenti scambiate a runtime: cosi'
+              il passaggio e' una dissolvenza e non un lampo di immagine assente.
+              Il testo alternativo sta gia' sul link, quindi qui non serve. */}
+          <img className="brand-panna" src="/brand/kore-logo-cream.png" alt="" />
+          <img className="brand-corallo" src="/brand/kore-logo-coral.png" alt="" />
         </a>
-        <button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="site-menu" onClick={() => setMenuOpen((open) => !open)}>
-          <span>{menuOpen ? "Chiudi" : "Menu"}</span><span className="menu-dot" aria-hidden="true" />
-        </button>
+        <SiteMenu />
       </header>
 
-      <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="hero-art" aria-hidden="true">
-          <div className="hero-halo hero-halo-one" />
-          <div className="hero-halo hero-halo-two" />
-          <figure className="hero-object hero-object-coral">
-            <img src="/images/corallo.webp" alt="" />
-          </figure>
-          <figure className="hero-object hero-object-cameo">
-            <img src="/images/cammeo.webp" alt="" />
-          </figure>
-          <figure className="hero-object hero-object-production">
-            <img src="/images/camera.jpg" alt="" />
-          </figure>
-          <span className="hero-pearl hero-pearl-one" />
-          <span className="hero-pearl hero-pearl-two" />
-          <span className="hero-pearl hero-pearl-three" />
+      {/* Il contenitore serve a far scollare l'hero: `position: sticky` senza
+          un blocco che lo chiuda resterebbe incollato per tutta la pagina, e
+          sei sezioni piu' sotto sono `static`, quindi finirebbero coperte.
+          Qui il vincolo finisce dove finisce il momento. */}
+      <div className="apertura">
+        <section className="hero" id="top" aria-labelledby="hero-title">
+          <div className="hero-art" aria-hidden="true">
+            <div className="hero-halo hero-halo-one" />
+            <div className="hero-halo hero-halo-two" />
+            <span className="hero-pearl hero-pearl-one" />
+            <span className="hero-pearl hero-pearl-two" />
+            <span className="hero-pearl hero-pearl-three" />
+            <img className="hero-cameo hero-cameo-one" src="/images/cammeo-kore.webp" alt="" />
+            <img className="hero-cameo hero-cameo-two" src="/images/cammeo-kore.webp" alt="" />
+            <img className="hero-cameo hero-cameo-three" src="/images/cammeo-kore.webp" alt="" />
+            {/* Il quarto sta dove prima c'era il medaglione: piu' grande degli
+                altri tre, cosi' regge il lato destro da solo. */}
+            <img className="hero-cameo hero-cameo-quattro" src="/images/cammeo-kore.webp" alt="" />
         </div>
         <div className="hero-copy">
           <p className="eyebrow">Creative agency · Torre del Greco / Ovunque</p>
@@ -95,28 +84,12 @@ export default function Home() {
           </h1>
           <div className="hero-actions">
             <p>Una regia creativa per brand, contenuti, esperienze e progetti digitali che lasciano il segno.</p>
-            <a className="hero-cta" href="#contatti">Raccontaci la tua idea <span aria-hidden="true">↗</span></a>
+            <Link className="hero-cta" href="/idea">Raccontaci la tua idea <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
         <div className="scroll-cue" aria-hidden="true">Scorri ↓</div>
       </section>
 
-      <nav className={`menu-panel ${menuOpen ? "is-open" : ""}`} id="site-menu" aria-hidden={!menuOpen}>
-        <div className="menu-column">
-          <p>Cosa facciamo</p>
-          {services.map((item) => (
-            <a key={item.name} href="#servizi" onClick={() => setMenuOpen(false)}>{item.name}</a>
-          ))}
-        </div>
-        <div className="menu-column">
-          <p>Kore</p>
-          <Link href="/progetti" onClick={() => setMenuOpen(false)}>Progetti</Link>
-          <a href="#mondo" onClick={() => setMenuOpen(false)}>Il nostro mondo</a>
-          <a href="#numeri" onClick={() => setMenuOpen(false)}>Numeri</a>
-          <a href="#partner" onClick={() => setMenuOpen(false)}>Partner</a>
-          <a className="menu-contact" href="#contatti" onClick={() => setMenuOpen(false)}>Contatti ↗</a>
-        </div>
-      </nav>
 
       <nav className="service-index-bar" aria-label="Indice dei servizi Kore">
         {services.map((service, index) => (
@@ -160,6 +133,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </div>
 
       <section className="many-things section-pad" id="servizi">
         <p className="kicker">Competenze, non compartimenti</p>
@@ -239,7 +213,6 @@ export default function Home() {
         <div className="story-title">
           <p className="kicker">Kore / La storia</p>
           <h2>Le persone giuste.<br />Per il progetto giusto.</h2>
-          <img className="story-portrait" src="/images/cammeo.webp" alt="" width={620} height={807} />
         </div>
         <div className="story-copy">
           <p>Kore non è un ufficio pieno di persone che fingono di essere un’agenzia.</p>
@@ -276,7 +249,7 @@ export default function Home() {
           <span className="riga">Hai un’idea?</span>
           <span className="riga"><em>Parliamone.</em></span>
         </h2>
-        <a className="giant-link" href="mailto:">Iniziamo <span>↗</span></a>
+        <Link className="giant-link" href="/idea">Iniziamo <span>↗</span></Link>
         <div className="contact-strip">
           <span>Email · da inserire</span><span>Telefono · da inserire</span><span>Instagram · da collegare</span><span>LinkedIn · da collegare</span>
         </div>
