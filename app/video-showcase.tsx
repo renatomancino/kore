@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 type Reel = { client: string; title: string; category: string; poster: string; src: string | null };
 
 const reels: Reel[] = [
-  { client: "Kore Production", title: "Dietro le quinte", category: "Backstage", poster: "/images/camera.jpg", src: null },
+  { client: "Kore Production", title: "Dietro le quinte", category: "Backstage / Demo", poster: "/images/camera.jpg", src: "/videos/showreel-demo.mp4" },
   { client: "Eventi", title: "Quando lo spazio prende vita", category: "Live experience", poster: "/images/event.jpg", src: null },
   { client: "Creative direction", title: "Dal concept alla scena", category: "Campaign", poster: "/images/stage.jpg", src: null },
   { client: "Brand stories", title: "Le persone dentro il progetto", category: "Content", poster: "/images/designer.jpg", src: null },
@@ -56,7 +56,7 @@ export function VideoShowcase() {
       <div className="video-showcase-intro">
         <p className="kicker">Video / Showreel</p>
         <h2>Il lavoro,<br /><em>in movimento.</em></h2>
-        <p>Scorri nel telefono: ogni progetto occupa la scena, uno alla volta.</p>
+        <p>Ogni progetto occupa la scena, uno alla volta.</p>
       </div>
 
       <div className="reel-phone" aria-label="Showreel verticale Kore">

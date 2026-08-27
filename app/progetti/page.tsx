@@ -41,7 +41,11 @@ export default function ProjectsPage() {
             <div className="archive-project-copy">
               <p>{project.category} · {project.year}</p>
               <h2>{project.client}</h2>
-              <span>{project.title}</span>
+              <p className="archive-project-summary">{project.summary}</p>
+              <div className="archive-project-meta">
+                <span>{project.title}</span>
+                <i aria-hidden="true">↗</i>
+              </div>
             </div>
           </Link>
         ))}
