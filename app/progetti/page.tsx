@@ -1,26 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "../project-data";
+import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
-import { SiteMenu } from "../site-menu";
+import { SiteHeader } from "../site-header";
+
+const TITOLO = "Progetti — Kore Studio";
+const DESCRIZIONE =
+  "Una selezione di progetti Kore tra branding, contenuti, fotografia, social e presenza digitale.";
 
 export const metadata: Metadata = {
-  title: "Progetti — Kore Studio",
-  description: "Una selezione di progetti Kore tra branding, contenuti, fotografia, social e presenza digitale.",
+  title: TITOLO,
+  description: DESCRIZIONE,
+  /* Come su /idea: `openGraph` non si fonde con quello del layout, quindi
+     senza queste righe l'archivio si presentava col titolo della home. */
+  openGraph: { title: TITOLO, description: DESCRIZIONE, url: "/progetti" },
+  twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE },
 };
 
 export default function ProjectsPage() {
   return (
     <main className="projects-archive">
-      <header className="archive-header">
-        <Link className="archive-brand" href="/" aria-label="Kore Studio, torna alla home">
-          <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
-        </Link>
-        <div className="testata-comandi">
-          <Link className="archive-home-link" href="/">Home <span aria-hidden="true">↖</span></Link>
-          <SiteMenu />
-        </div>
-      </header>
+      <AdaptiveBrand />
+      <SiteHeader />
 
       <section className="archive-hero">
         <p className="kicker">Archivio / lavori selezionati</p>
@@ -37,9 +39,16 @@ export default function ProjectsPage() {
 
       <section className="project-archive-grid" aria-label="Tutti i progetti Kore">
         {projects.map((project, index) => (
-          <Link className={`archive-project-card archive-project-card-${project.tone}`} href={`/progetti/${project.slug}`} key={project.slug}>
+          <Link className={`archive-project-card archive-project-card-${project.tone}`} href={`/progetti/${project.slug}`} key={project.slug} data-transizione>
             <div className="archive-project-visual">
-              <img src={project.cover} alt={`Identità di ${project.client}`} />
+              {/* Il nome e' per progetto, non per pagina: nell'archivio ce ne
+                  sono sei contemporaneamente, e due elementi con lo stesso
+                  nome nella stessa pagina annullano la transizione. */}
+              <img
+                src={project.cover}
+                alt={`Identità di ${project.client}`}
+                style={{ viewTransitionName: `copertina-${project.slug}` }}
+              />
               <span>0{index + 1}</span>
             </div>
             <div className="archive-project-copy">
