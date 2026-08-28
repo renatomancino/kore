@@ -1,6 +1,20 @@
 @import "tailwindcss";
 
-:root { --red: #fe4042; --corallo: #fe4042; --cream: #ffecc5; --ink: #17120d; --paper: #f6f0e5; --line: rgba(23,18,13,.24); }
+:root {
+  --red: #fe4042; --corallo: #fe4042; --cream: #ffecc5; --ink: #17120d;
+  --paper: #f6f0e5; --line: rgba(23,18,13,.24);
+  /* Il serif del sito, in un posto solo. I font di sistema restano in coda
+     come rete: se il caricamento fallisce si torna a quello che c'era. */
+  --serif: var(--font-display), Didot, "Bodoni MT", Georgia, serif;
+  /* L'ombra dura dei controlli del brief: nessuna sfocatura, uno spostamento
+     secco. Il secondo valore e' la stessa ombra "premuta". */
+  --ombra-dura: 3px 4px 0 1px var(--red);
+  --ombra-dura-premuta: 1px 2px 0 0 var(--red);
+  /* Il corallo pieno su fondo chiaro da' 3,07:1 — sotto il minimo per un
+     testo piccolo. Questo e' lo stesso rosso, abbastanza scuro da leggersi:
+     5,01:1. Serve ovunque ci sia testo rosso su carta o panna. */
+  --red-testo: #c41f24;
+}
 /* --corallo e --red sono lo stesso valore: il rosso del sito e' il corallo di Torre del Greco. */
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -22,7 +36,7 @@ a { color: inherit; text-decoration: none; }
 /* Salta al contenuto: invisibile finche' non ci arrivi col Tab. */
 .salta-al-contenuto {
   position: fixed; z-index: 100; top: 8px; left: 8px;
-  padding: 12px 18px; background: var(--ink); color: var(--cream);
+  padding: 14px 18px; background: var(--ink); color: var(--cream);
   text-transform: uppercase; letter-spacing: .14em; font-size: 12px;
   transform: translateY(-160%); transition: transform .2s ease;
 }
@@ -31,8 +45,46 @@ button { font: inherit; }
 img { display: block; width: 100%; }
 ::selection { background: var(--ink); color: var(--cream); }
 
-.site-header { position: fixed; z-index: 50; inset: 0 0 auto; height: 76px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; color: white; mix-blend-mode: difference; }
-.wordmark { font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; letter-spacing: -.12em; transform: scaleX(1.08); transform-origin: left; }
+/* Fissa su ogni pagina, e l'imbottitura e' 5vw come tutte le sezioni: cosi'
+   il marchio si allinea al margine del testo che ha sotto invece di stare a
+   24px per conto suo. */
+.site-header {
+  position: fixed;
+  z-index: 50;
+  inset: 0 0 auto;
+  height: 76px;
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+/* La testata e' fissa e trasparente: scorrendo, titoli e barre di
+   avanzamento le passavano sotto e si leggevano attraverso il marchio.
+   Sfoca cio' che passa invece di coprirlo con un colore, e la differenza
+   conta: il marchio prende la sua tinta misurando quello che ha sotto, e una
+   fascia opaca gli avrebbe fatto misurare sempre se stessa. Sfocato, il
+   colore medio resta quello della sezione e la misura regge.
+   Il filtro sta sulla testata e non su uno pseudo-elemento dentro di lei:
+   `backdrop-filter` sfoca cio' che e' dipinto sotto al proprio contesto di
+   impilamento, e la testata ne apre uno suo — un figlio, li' dentro, non ha
+   piu' niente da sfocare.
+   Nessun bordo: su un fondo piatto la sfocatura non si vede, ed e' giusto
+   cosi'. Una riga invece si vedrebbe anche dove non serve nulla. */
+/* La testata prende il colore pieno della sezione che ha sotto, e lo cambia
+   scorrendo. Non e' un vetro: e' lo stesso colore, quindi la testata smette
+   di essere una fascia sopra la pagina e diventa il bordo alto della sezione
+   in cui ci si trova.
+   Il colore lo scrive AdaptiveBrand, che gia' misura cos'ha sotto il marchio
+   per decidere la tinta: e' la stessa misura, usata due volte. */
+.site-header {
+  background: var(--fondo-testata, transparent);
+  transition: background-color .35s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-header { transition: none; }
+}
+.wordmark { font-family: var(--serif); font-weight: 900; letter-spacing: -.12em; transform: scaleX(1.08); transform-origin: left; }
 .wordmark-small { font-size: 26px; line-height: 1; }
 .menu-toggle { border: 0; padding: 10px 0; color: inherit; background: transparent; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .menu-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
@@ -45,7 +97,7 @@ img { display: block; width: 100%; }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(40,10,5,.48) 0%, rgba(40,10,5,.07) 49%, transparent 72%); }
 .hero-copy { position: relative; z-index: 2; min-height: 100svh; padding: 14vh 5vw 9vh; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; }
 .eyebrow, .kicker { margin: 0 0 20px; text-transform: uppercase; letter-spacing: .14em; font-size: clamp(11px, .75vw, 13px); }
-.hero h1, .section-heading h2, .many-things > h2, .numbers > h2, .case-copy h2, .process > h2, .story h2, .partners h2, .location h2, .final-cta h2 { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; letter-spacing: -.035em; }
+.hero h1, .section-heading h2, .many-things > h2, .numbers > h2, .case-copy h2, .process > h2, .story h2, .partners h2, .location h2, .final-cta h2 { margin: 0; font-family: var(--serif); font-weight: 900; letter-spacing: -.035em; }
 .hero h1 { max-width: 680px; font-size: clamp(44px, 5.4vw, 96px); line-height: .92; }
 .hero-cta { margin-top: 44px; display: inline-flex; gap: 34px; align-items: center; padding: 15px 22px; background: var(--cream); color: var(--red); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; transition: transform .2s ease, background .2s ease; }
 .hero-cta:hover { transform: translateY(-3px); background: white; }
@@ -55,12 +107,14 @@ img { display: block; width: 100%; }
 .menu-panel.is-open { transform: translateY(0); visibility: visible; transition-delay: 0s; }
 .menu-column { display: flex; flex-direction: column; align-items: flex-start; }
 .menu-column p { margin: 0 0 22px; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
-.menu-column a { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(26px, 3.2vw, 50px); line-height: 1.12; letter-spacing: -.02em; transition: color .2s ease, transform .2s ease; }
+/* `padding-block` e non un'altezza: il bersaglio arriva a 44 senza toccare
+   il corpo, che qui e' la voce del menu. */
+.menu-column a { padding-block: 6px; font-family: var(--serif); font-size: clamp(26px, 3.2vw, 50px); line-height: 1.12; letter-spacing: -.02em; transition: color .2s ease, transform .2s ease; }
 .menu-column a:hover, .menu-column a:focus { color: var(--red); transform: translateX(8px); }
 .menu-column .menu-contact { margin-top: auto; color: var(--red); }
 
 .marquee { overflow: hidden; padding: 17px 0 13px; border-block: 1px solid var(--ink); background: var(--cream); color: var(--ink); }
-.marquee-track { display: flex; width: max-content; white-space: nowrap; font-family: Didot, "Bodoni MT", Georgia, serif; font-weight: 900; font-size: clamp(20px, 2.6vw, 40px); letter-spacing: -.015em; text-transform: uppercase; animation: marquee 22s linear infinite; }
+.marquee-track { display: flex; width: max-content; white-space: nowrap; font-family: var(--serif); font-weight: 900; font-size: clamp(20px, 2.6vw, 40px); letter-spacing: -.015em; text-transform: uppercase; animation: marquee 22s linear infinite; }
 .marquee-track span { padding-right: .25em; }
 
 .section-pad { padding: clamp(62px, 5.6vw, 104px) 5vw; }
@@ -83,7 +137,7 @@ img { display: block; width: 100%; }
 .logo-wall { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--ink); }
 .logo-wall button { min-height: 128px; border: 0; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); background: transparent; color: var(--ink); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: background .2s ease, color .2s ease; }
 .logo-wall button:hover, .logo-wall button:focus { background: var(--ink); color: var(--cream); }
-.logo-wall span { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.8vw, 42px); font-weight: 900; letter-spacing: -.02em; }
+.logo-wall span { font-family: var(--serif); font-size: clamp(24px, 2.8vw, 42px); font-weight: 900; letter-spacing: -.02em; }
 .logo-wall small { margin-top: 10px; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; opacity: .55; }
 
 .many-things { background: var(--cream); color: var(--ink); }
@@ -91,7 +145,7 @@ img { display: block; width: 100%; }
 .service-explorer { display: grid; grid-template-columns: .8fr 1.2fr; gap: 5vw; margin-top: clamp(38px, 3.8vw, 68px); align-items: start; }
 .service-list { border-top: 1px solid var(--line); }
 .service-list button { width: 100%; padding: 13px 0 10px; border: 0; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; justify-content: space-between; background: transparent; color: inherit; cursor: pointer; text-align: left; }
-.service-list button span:first-child { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.9vw, 46px); line-height: 1.05; font-weight: 900; letter-spacing: -.02em; transition: transform .25s ease; }
+.service-list button span:first-child { font-family: var(--serif); font-size: clamp(24px, 2.9vw, 46px); line-height: 1.05; font-weight: 900; letter-spacing: -.02em; transition: transform .25s ease; }
 .service-list button span:last-child { font-size: 11px; letter-spacing: .12em; opacity: .55; }
 .service-list button:hover span:first-child, .service-list button.active span:first-child { transform: translateX(16px); color: var(--red); }
 .service-visual { position: sticky; top: 88px; min-height: 440px; overflow: hidden; background: var(--ink); color: var(--cream); }
@@ -99,16 +153,18 @@ img { display: block; width: 100%; }
 .service-visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(23,18,13,.86), transparent 60%); }
 .service-visual > div { position: absolute; z-index: 2; inset: auto 30px 28px; }
 .service-visual p { margin: 0 0 10px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
-.service-visual h3 { max-width: 500px; margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.8vw, 42px); line-height: 1.04; letter-spacing: -.025em; }
+.service-visual h3 { max-width: 500px; margin: 0; font-family: var(--serif); font-size: clamp(24px, 2.8vw, 42px); line-height: 1.04; letter-spacing: -.025em; }
 
 .service-editorial { background: var(--paper); color: var(--ink); }
 .editorial-card { min-height: 58svh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
 .editorial-card > img { height: 100%; min-height: 58svh; object-fit: cover; filter: saturate(.7) contrast(1.08); }
 .card-copy { padding: clamp(48px, 4.4vw, 82px) 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; }
 .card-copy span { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
-.card-copy h2 { margin: auto 0 28px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(38px, 4.8vw, 84px); line-height: .92; letter-spacing: -.035em; }
+.card-copy h2 { margin: auto 0 28px; font-family: var(--serif); font-size: clamp(38px, 4.8vw, 84px); line-height: .92; letter-spacing: -.035em; }
 .card-copy p { max-width: 480px; margin: 0 0 44px; font-size: clamp(17px, 1.5vw, 24px); line-height: 1.35; }
-.card-copy a, .text-link { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; border-bottom: 1px solid currentColor; padding-bottom: 7px; }
+/* `inline-block` con imbottitura sopra: da sole 25px di altezza questi link
+   erano meta' di un bersaglio da dito. La riga sotto resta attaccata al testo. */
+.card-copy a, .text-link { display: inline-block; text-transform: uppercase; letter-spacing: .12em; font-size: 11px; border-bottom: 1px solid currentColor; padding-top: 20px; padding-bottom: 7px; }
 .cream-card { background: var(--cream); }
 .dark-card { background: var(--ink); color: var(--cream); }
 .red-card { background: var(--red); color: var(--cream); }
@@ -119,7 +175,7 @@ img { display: block; width: 100%; }
 .numbers-grid { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: clamp(38px, 3.8vw, 68px); border-top: 1px solid rgba(255,235,197,.4); border-left: 1px solid rgba(255,235,197,.4); }
 .metric { min-height: 264px; padding: 24px; display: flex; flex-direction: column; border-right: 1px solid rgba(255,235,197,.4); border-bottom: 1px solid rgba(255,235,197,.4); }
 .metric > span { font-size: 11px; letter-spacing: .14em; opacity: .55; }
-.metric strong { margin: auto 0; color: var(--red); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(32px, 3.6vw, 58px); line-height: .9; letter-spacing: -.02em; }
+.metric strong { margin: auto 0; color: var(--red); font-family: var(--serif); font-size: clamp(32px, 3.6vw, 58px); line-height: .9; letter-spacing: -.02em; }
 .metric p { max-width: 240px; margin: 0; font-size: 11px; line-height: 1.7; text-transform: uppercase; letter-spacing: .16em; }
 
 .process { background: var(--red); color: var(--ink); }
@@ -129,14 +185,15 @@ img { display: block; width: 100%; }
 .timeline article { position: relative; min-height: 200px; padding: 0 2vw 0 0; }
 .timeline article > span { font-size: 11px; letter-spacing: .14em; }
 .timeline-dot { position: relative; z-index: 2; width: 13px; height: 13px; margin: 32px 0 48px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 8px var(--red); }
-.timeline h3 { margin: 0 0 14px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(22px, 2.3vw, 38px); line-height: 1; letter-spacing: -.02em; }
+.timeline h3 { margin: 0 0 14px; font-family: var(--serif); font-size: clamp(22px, 2.3vw, 38px); line-height: 1; letter-spacing: -.02em; }
 .timeline p { max-width: 230px; margin: 0; font-size: 14px; line-height: 1.6; }
 
 .story { min-height: 0; padding: clamp(62px, 5.6vw, 104px) 5vw; display: grid; grid-template-columns: 1.15fr .85fr; gap: 6vw; background: var(--paper); color: var(--ink); }
 .story h2 { font-size: clamp(36px, 4.4vw, 74px); line-height: .95; }
 .story-copy { padding-top: clamp(20px, 2.4vw, 44px); }
-.story-copy p { margin: 0 0 34px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(19px, 2vw, 32px); line-height: 1.3; letter-spacing: -.01em; }
-.story-copy .name-origin { padding-top: 30px; border-top: 1px solid var(--line); color: var(--red); }
+.story-copy p { margin: 0 0 34px; font-family: var(--serif); font-size: clamp(19px, 2vw, 32px); line-height: 1.3; letter-spacing: -.01em; }
+/* Rosso leggibile: su carta il corallo pieno faceva 3,07:1. */
+.story-copy .name-origin { padding-top: 30px; border-top: 1px solid var(--line); color: var(--red-testo); }
 
 .partners { background: var(--cream); color: var(--ink); border-top: 1px solid var(--line); }
 .partners h2 { max-width: 880px; font-size: clamp(30px, 3.8vw, 62px); line-height: 1; }
@@ -146,27 +203,46 @@ img { display: block; width: 100%; }
 .location { min-height: 68svh; display: grid; grid-template-columns: 1.2fr .8fr; background: var(--ink); color: var(--cream); }
 .map-art { position: relative; min-height: 68svh; overflow: hidden; background-color: #241d17; background-image: linear-gradient(rgba(255,235,197,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255,235,197,.14) 1px, transparent 1px); background-size: 56px 56px; }
 .map-art::after { content: ""; position: absolute; width: 70%; aspect-ratio: 1; border: 1px solid var(--red); border-radius: 50%; top: 15%; left: 14%; box-shadow: 0 0 0 15vw rgba(253,64,66,.04), 0 0 0 30vw rgba(253,64,66,.03); }
-.map-art > span { position: absolute; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(40px, 5.4vw, 92px); color: rgba(255,235,197,.09); font-weight: 900; }
-.map-art > span:first-child { top: 4%; left: -2%; }
-.map-art > span:nth-child(2) { right: -2%; bottom: 2%; }
+/* Le coordinate sono una filigrana: a opacita' .09 su fondo scuro i tratti
+   sottili di un didone spariscono, e "40.786" si leggeva "10.786" perche' del
+   4 restava solo l'asta. Non e' una questione di ritaglio — i numeri stanno
+   dentro al riquadro, misurato.
+   `opsz` a 8 e' l'asse ottico del font: dice di disegnare le lettere come se
+   fossero piccole, cioe' con i sottili molto piu' spessi. Il corpo resta 92px,
+   cambia il disegno. Con un filo di opacita' in piu' le cifre si leggono tutte
+   senza smettere di essere uno sfondo. */
+.map-art > span {
+  position: absolute;
+  font-family: var(--serif);
+  font-size: clamp(40px, 5.4vw, 92px);
+  font-variation-settings: "opsz" 8;
+  color: rgba(255,235,197,.14);
+  font-weight: 700;
+}
+/* Le coordinate stanno dentro al riquadro. A -2% uscivano, e siccome il
+   riquadro ritaglia venivano tranciate a meta' cifra: un'uscita al vivo si
+   legge come intenzione solo se resta leggibile, mezzo numero mozzato da un
+   bordo netto si legge come un errore di impaginazione. */
+.map-art > span:first-child { top: 4%; left: 3%; }
+.map-art > span:nth-child(2) { right: 3%; bottom: 3%; }
 .map-art p { position: absolute; left: 30px; bottom: 24px; margin: 0; text-transform: uppercase; letter-spacing: .13em; font-size: 11px; }
-.map-pin { position: absolute; z-index: 2; top: 63%; left: 33%; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--red); color: var(--cream); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: 26px; font-weight: 900; }
+.map-pin { position: absolute; z-index: 2; top: 63%; left: 33%; width: 58px; height: 58px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--red); color: var(--cream); font-family: var(--serif); font-size: 26px; font-weight: 900; }
 .map-pin::first-letter { transform: rotate(45deg); }
 .location-copy { padding: clamp(52px, 4.8vw, 88px) 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
 .location h2 { font-size: clamp(34px, 4vw, 66px); line-height: .96; }
-.location-copy > p:not(.kicker) { margin: 46px 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(18px, 1.8vw, 28px); line-height: 1.35; }
+.location-copy > p:not(.kicker) { margin: 46px 0; font-family: var(--serif); font-size: clamp(18px, 1.8vw, 28px); line-height: 1.35; }
 
 .final-cta { padding: clamp(58px, 5.2vw, 96px) 5vw clamp(28px, 2.6vw, 46px); background: var(--red); color: var(--ink); }
 .final-cta h2 { font-size: clamp(42px, 6vw, 104px); line-height: .92; }
 .final-cta h2 em { color: var(--cream); }
-.giant-link { margin-top: clamp(34px, 3.4vw, 60px); padding: 24px 0 16px; border-block: 1px solid var(--ink); display: flex; align-items: center; justify-content: space-between; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(30px, 4vw, 68px); line-height: .96; font-weight: 900; letter-spacing: -.02em; }
+.giant-link { margin-top: clamp(34px, 3.4vw, 60px); padding: 24px 0 16px; border-block: 1px solid var(--ink); display: flex; align-items: center; justify-content: space-between; font-family: var(--serif); font-size: clamp(30px, 4vw, 68px); line-height: .96; font-weight: 900; letter-spacing: -.02em; }
 .giant-link span { transition: transform .25s ease; }
 .giant-link:hover span { transform: rotate(45deg); }
 .contact-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 26px 0; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; }
 
 footer { padding: clamp(44px, 4vw, 74px) 5vw 28px; background: var(--cream); color: var(--ink); }
 .footer-mark { display: inline-block; font-size: clamp(60px, 11vw, 168px); line-height: .82; }
-.footer-links { margin: clamp(34px, 3.4vw, 60px) 0; display: flex; flex-wrap: wrap; gap: 12px 40px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(19px, 2vw, 32px); }
+.footer-links { margin: clamp(34px, 3.4vw, 60px) 0; display: flex; flex-wrap: wrap; gap: 12px 40px; font-family: var(--serif); font-size: clamp(19px, 2vw, 32px); }
 .footer-meta { padding-top: 22px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; }
 
 /* ============================================================
@@ -327,7 +403,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .cta-alzati .riga:nth-child(2) { transition-delay: .13s; }
 .cta-alzati[data-scopri="fatto"] .riga { transform: none; opacity: 1; }
 
-@keyframes marquee { to { transform: translateX(-50%); } }
+/* La corsa del nastro: quanta della propria larghezza percorre lungo tutto
+   il transito della fascia. Meno percorre, piu' sembra lento. */
+@keyframes marquee { to { transform: translateX(var(--corsa-nastro, -14%)); } }
 
 @media (max-width: 900px) {
   .section-heading, .client-stage, .service-explorer, .story, .location, .case-study { grid-template-columns: 1fr; }
@@ -350,7 +428,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 
 @media (max-width: 600px) {
-  .site-header { height: 64px; padding-inline: 16px; }
+  .site-header { height: 64px; padding-inline: 18px; }
   .hero-copy { padding: 18vh 18px 11vh; }
   .hero h1 { font-size: clamp(46px, 15vw, 82px); }
   .hero::after { background: linear-gradient(0deg, rgba(40,10,5,.65), transparent 75%); }
@@ -491,7 +569,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   align-items: center;
   font-size: clamp(66px, 10.6vw, 178px);
   line-height: .72;
-  letter-spacing: -.065em;
+  letter-spacing: -.032em;
   text-wrap: balance;
 }
 .hero h1 > span { display: block; }
@@ -556,6 +634,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .service-index-bar a {
   flex: 1 0 auto;
   min-width: 138px;
+  min-height: 44px;
   padding: 17px 20px 15px;
   display: flex;
   align-items: baseline;
@@ -576,7 +655,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .content-note,
 .card-copy p,
 .timeline p {
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   letter-spacing: -.012em;
 }
 .hero-actions p { max-width: 430px; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.3; }
@@ -629,15 +708,15 @@ html.lenis.lenis-stopped { overflow: clip; }
   border-radius: 11px 15px 10px 16px;
   background: rgba(255,236,197,.1);
   backdrop-filter: blur(10px);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-weight: 900;
 }
 .footer-brand-copy { margin-top: auto; padding-top: 80px; }
 .footer-brand-copy > p { margin: 0 0 12px; text-transform: uppercase; letter-spacing: .15em; font-size: 11px; }
-.footer-brand-copy h2 { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(27px, 2.5vw, 42px); line-height: 1; letter-spacing: -.025em; }
+.footer-brand-copy h2 { margin: 0; font-family: var(--serif); font-size: clamp(27px, 2.5vw, 42px); line-height: 1; letter-spacing: -.025em; }
 .footer-brand-copy h2 span { color: rgba(255,236,197,.62); font-style: italic; }
 .footer-social-row { margin-top: 38px; padding-top: 22px; border-top: 1px solid rgba(255,236,197,.34); display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.footer-social-row > span { font-family: Didot, "Bodoni MT", Georgia, serif; font-style: italic; font-size: 17px; }
+.footer-social-row > span { font-family: var(--serif); font-style: italic; font-size: 17px; }
 .footer-social-row nav { display: flex; gap: 8px; }
 .footer-social-row a { width: 38px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 11px; background: var(--ink); color: var(--cream); font-size: 11px; font-weight: 700; transition: transform .2s ease, background .2s ease; }
 .footer-social-row a:hover { transform: translateY(-3px); background: var(--red); }
@@ -664,12 +743,12 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-info-top > .kicker { margin-bottom: 54px; color: var(--red); font-weight: 700; }
 .footer-nav-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 50px; }
 .footer-nav-grid > div { display: flex; flex-direction: column; align-items: flex-start; }
-.footer-nav-grid h3 { margin: 0 0 18px; color: var(--red); font-family: Didot, "Bodoni MT", Georgia, serif; font-style: italic; font-size: 24px; }
+.footer-nav-grid h3 { margin: 0 0 18px; color: var(--red); font-family: var(--serif); font-style: italic; font-size: 24px; }
 .footer-nav-grid a { margin-bottom: 11px; font-size: 14px; font-weight: 700; transition: color .2s ease, transform .2s ease; }
 .footer-nav-grid a:hover { color: var(--red); transform: translateX(4px); }
 .footer-conversation { margin-top: auto; padding-top: 52px; }
 .footer-conversation p { margin: 0 0 8px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
-.footer-conversation a { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 15px; border-bottom: 1px solid var(--ink); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(32px, 4vw, 62px); font-weight: 900; line-height: 1; }
+.footer-conversation a { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 15px; border-bottom: 1px solid var(--ink); font-family: var(--serif); font-size: clamp(32px, 4vw, 62px); font-weight: 900; line-height: 1; }
 .footer-conversation a span { color: var(--red); transition: transform .2s ease; }
 .footer-conversation a:hover span { transform: rotate(45deg); }
 .footer-card-meta { margin-top: 26px; display: flex; justify-content: space-between; gap: 20px; color: rgba(23,18,13,.55); text-transform: uppercase; letter-spacing: .13em; font-size: 11px; }
@@ -677,7 +756,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   width: min(1280px, 100%);
   margin: clamp(-22px, -1.8vw, -10px) auto -1.7vw;
   color: rgba(254,64,66,.09);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(110px, 23vw, 340px);
   font-weight: 900;
   line-height: .72;
@@ -740,11 +819,10 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 
 /* Asset ufficiali: logo Kore, clienti e partner. */
-.site-header { mix-blend-mode: normal; }
 /* Niente targa sotto al marchio: era un rettangolo panna con ombra, cioe' uno
    sfondo fisso — e uno sfondo fisso e' esattamente cio' che impedisce al logo
    di prendere il colore di quello che ha sotto. */
-.header-brand { position: relative; display: block; width: clamp(112px, 10vw, 150px); line-height: 0; }
+.header-brand { position: relative; display: block; width: clamp(118px, 10.5vw, 152px); line-height: 0; }
 .header-brand img { width: 100%; height: auto; }
 /* Il corallo sta sopra alla panna e viene scoperto da una maschera a fasce
    calcolata sullo sfondo: se il logo sta a cavallo di due sezioni, il taglio
@@ -752,7 +830,7 @@ html.lenis.lenis-stopped { overflow: clip; }
    Finche' la misura non parte resta la panna, tinta giusta sull'hero rosso
    da cui la pagina apre. */
 .header-brand .brand-corallo { position: absolute; inset: 0; opacity: 0; }
-.site-header[data-logo] .brand-corallo { opacity: 1; }
+.header-brand[data-logo] .brand-corallo { opacity: 1; }
 /* 11px davano un tasto alto 40: sotto i 44 minimi per un bersaglio da dito.
    E z-index 41 perche' ora il tasto e il pannello sono fratelli: senza, il
    pannello (40) copre il «Chiudi» e si esce solo con Esc o con un link. */
@@ -856,7 +934,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-positioning p {
   margin: 0 0 28px;
   max-width: 480px;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(31px, 3vw, 52px);
   line-height: .94;
   letter-spacing: -.035em;
@@ -1026,7 +1104,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .selected-projects-heading h2 em { color: var(--red); }
 .selected-projects-heading > p {
   margin: 0 0 5px;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(20px, 1.8vw, 29px);
   line-height: 1.15;
 }
@@ -1073,7 +1151,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 .project-teaser-copy { padding-top: 20px; }
 .project-teaser-copy p { margin: 0 0 10px; color: var(--red); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
-.project-teaser-copy h3 { margin: 0 0 5px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(31px, 3vw, 52px); line-height: 1; }
+.project-teaser-copy h3 { margin: 0 0 5px; font-family: var(--serif); font-size: clamp(31px, 3vw, 52px); line-height: 1; }
 .project-teaser-copy > span { color: rgba(255,236,197,.62); font-size: 13px; }
 .all-projects-link {
   margin-top: clamp(72px, 9vw, 150px);
@@ -1085,7 +1163,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   align-items: center;
 }
 .all-projects-link > span { color: var(--red); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 800; }
-.all-projects-link strong { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(34px, 4.5vw, 72px); line-height: .95; }
+.all-projects-link strong { font-family: var(--serif); font-size: clamp(34px, 4.5vw, 72px); line-height: .95; }
 .all-projects-link i { width: 66px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; background: var(--red); color: var(--ink); font-size: 25px; font-style: normal; transition: transform .25s ease; }
 .all-projects-link:hover i { transform: rotate(45deg); }
 
@@ -1102,7 +1180,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .video-showcase-intro .kicker { color: var(--ink); }
 .video-showcase-intro h2 { margin: 0; font-size: clamp(52px, 6vw, 98px); line-height: .86; }
 .video-showcase-intro h2 em { color: var(--cream); }
-.video-showcase-intro > p:last-child { max-width: 430px; margin: 30px 0 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(20px, 1.7vw, 28px); line-height: 1.1; }
+.video-showcase-intro > p:last-child { max-width: 430px; margin: 30px 0 0; font-family: var(--serif); font-size: clamp(20px, 1.7vw, 28px); line-height: 1.1; }
 .reel-phone {
   position: relative;
   width: min(100%, 430px);
@@ -1124,15 +1202,15 @@ html.lenis.lenis-stopped { overflow: clip; }
 .reel-shade { z-index: 1; background: linear-gradient(180deg, rgba(0,0,0,.06) 34%, rgba(0,0,0,.84) 100%); }
 .reel-card-copy { position: absolute; z-index: 2; left: 24px; right: 50px; bottom: 27px; }
 .reel-card-copy p { margin: 0 0 7px; color: var(--red); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; font-weight: 800; }
-.reel-card-copy h3 { margin: 0 0 7px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(28px, 2.5vw, 41px); line-height: .92; }
+.reel-card-copy h3 { margin: 0 0 7px; font-family: var(--serif); font-size: clamp(28px, 2.5vw, 41px); line-height: .92; }
 .reel-card-copy span { color: rgba(255,236,197,.7); font-size: 11px; }
 .reel-media-status { position: absolute; z-index: 3; top: 28px; right: 20px; padding: 8px 10px; border: 1px solid rgba(255,236,197,.35); border-radius: 999px; background: rgba(14,14,13,.45); color: var(--cream); text-transform: uppercase; letter-spacing: .13em; font-size: 11px; font-weight: 800; backdrop-filter: blur(7px); }
 .reel-progress { position: absolute; z-index: 5; right: 17px; top: 50%; width: 2px; height: 90px; overflow: hidden; background: rgba(255,236,197,.28); transform: translateY(-50%); }
 .reel-progress span { display: block; width: 100%; height: 100%; background: var(--red); transform-origin: top; transition: transform .35s ease; }
 .reel-navigation > p { margin: 0 0 38px; color: rgba(23,18,13,.52); font-size: 11px; }
-.reel-navigation > p strong { color: var(--ink); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(54px, 5vw, 82px); line-height: 1; }
+.reel-navigation > p strong { color: var(--ink); font-family: var(--serif); font-size: clamp(54px, 5vw, 82px); line-height: 1; }
 .reel-navigation > div { display: flex; flex-direction: column; }
-.reel-navigation button { padding: 16px 0; border: 0; border-bottom: 1px solid rgba(23,18,13,.24); background: transparent; color: rgba(23,18,13,.52); display: flex; gap: 15px; align-items: center; text-align: left; cursor: pointer; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(17px, 1.5vw, 23px); transition: color .2s ease, padding .2s ease; }
+.reel-navigation button { padding: 16px 0; border: 0; border-bottom: 1px solid rgba(23,18,13,.24); background: transparent; color: rgba(23,18,13,.52); display: flex; gap: 15px; align-items: center; text-align: left; cursor: pointer; font-family: var(--serif); font-size: clamp(17px, 1.5vw, 23px); transition: color .2s ease, padding .2s ease; }
 .reel-navigation button span { color: inherit; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: .14em; }
 .reel-navigation button[aria-pressed="true"] { padding-left: 10px; color: var(--cream); }
 .reel-navigation small { display: block; margin-top: 30px; text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
@@ -1140,29 +1218,12 @@ html.lenis.lenis-stopped { overflow: clip; }
 
 /* Archivio progetti. */
 .projects-archive, .project-detail { min-height: 100vh; background: var(--cream); color: var(--ink); }
-.archive-header {
-  position: relative;
-  z-index: 5;
-  padding: 18px 5vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.archive-brand { width: 150px; padding: 10px 13px; border-radius: 14px; background: rgba(255,236,197,.92); box-shadow: 0 8px 24px rgba(23,18,13,.08); }
-.archive-brand img { display: block; width: 100%; height: auto; }
-.archive-home-link {
-  padding: 13px 18px;
-  border: 1px solid var(--ink);
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: .15em;
-  font-size: 11px;
-  font-weight: 800;
-}
-.archive-home-link span { margin-left: 10px; }
 .archive-hero { padding: clamp(80px, 9vw, 150px) 5vw clamp(54px, 7vw, 110px); }
 .archive-hero .kicker { color: var(--red); }
-.archive-hero h1 { margin: 0; font-size: clamp(72px, 11vw, 178px); line-height: .78; letter-spacing: -.055em; }
+/* La crenatura era tarata su Didot. Bodoni Moda ha lo stesso ingombro
+   verticale ma e' il 14% piu' largo: con la stessa stretta le lettere si
+   toccavano. Allentata di circa la meta', il blocco resta compatto. */
+.archive-hero h1 { margin: 0; font-size: clamp(72px, 11vw, 178px); line-height: .78; letter-spacing: -.028em; }
 .archive-hero h1 em { color: var(--red); }
 .archive-hero-bottom {
   margin-top: clamp(56px, 7vw, 110px);
@@ -1171,7 +1232,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   gap: 30px;
   align-items: end;
 }
-.archive-hero-bottom p { max-width: 610px; margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(21px, 2vw, 32px); line-height: 1.12; }
+.archive-hero-bottom p { max-width: 610px; margin: 0; font-family: var(--serif); font-size: clamp(21px, 2vw, 32px); line-height: 1.12; }
 .archive-hero-bottom span { color: var(--red); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
 .archive-index {
   padding: 18px 5vw;
@@ -1201,16 +1262,18 @@ html.lenis.lenis-stopped { overflow: clip; }
 .archive-project-copy > span { font-size: 14px; }
 .archive-cta { padding: clamp(90px, 10vw, 170px) 5vw; background: var(--red); }
 .archive-cta p { margin: 0 0 22px; text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
-.archive-cta a { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--ink); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(64px, 10vw, 160px); line-height: .9; }
+.archive-cta a { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--ink); font-family: var(--serif); font-size: clamp(64px, 10vw, 160px); line-height: .9; }
 .archive-footer { padding: clamp(70px, 8vw, 130px) 5vw 28px; background: #0e0e0d; color: var(--cream); }
 .archive-footer > img { width: min(850px, 72vw); height: auto; }
 .archive-footer > div { margin-top: 48px; padding-top: 18px; border-top: 1px solid rgba(255,236,197,.25); display: flex; justify-content: space-between; color: rgba(255,236,197,.55); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; }
 
 /* Scheda del singolo progetto. */
-.project-detail-hero { min-height: 88vh; padding: 50px 5vw 5vw; display: grid; grid-template-columns: .9fr 1.1fr; gap: 5vw; align-items: center; }
+/* 76px di testata fissa piu' il respiro che c'era: prima la testata stava
+   nel flusso e lo spazio glielo dava lei. */
+.project-detail-hero { min-height: 88vh; padding: 126px 5vw 5vw; display: grid; grid-template-columns: .9fr 1.1fr; gap: 5vw; align-items: center; }
 .project-detail-heading .kicker { color: var(--red); }
-.project-detail-heading h1 { margin: 0; font-size: clamp(68px, 9vw, 145px); line-height: .8; letter-spacing: -.055em; }
-.project-detail-heading > p:last-child { margin: 35px 0 0; max-width: 460px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(24px, 2.4vw, 40px); line-height: 1; }
+.project-detail-heading h1 { margin: 0; font-size: clamp(68px, 9vw, 145px); line-height: .8; letter-spacing: -.028em; }
+.project-detail-heading > p:last-child { margin: 35px 0 0; max-width: 460px; font-family: var(--serif); font-size: clamp(24px, 2.4vw, 40px); line-height: 1; }
 .project-detail-cover { min-height: min(72vh, 780px); display: grid; place-items: center; background: #fff8ea; overflow: hidden; }
 .project-detail-cover-dark { background: #171717; }
 .project-detail-cover-photo { background: #fff; }
@@ -1221,13 +1284,13 @@ html.lenis.lenis-stopped { overflow: clip; }
 .project-detail-story dl { margin: 0; }
 .project-detail-story dl div { padding: 18px 0; border-bottom: 1px solid rgba(255,236,197,.25); }
 .project-detail-story dt { margin-bottom: 7px; color: var(--red); text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 800; }
-.project-detail-story dd { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: 19px; line-height: 1.2; }
+.project-detail-story dd { margin: 0; font-family: var(--serif); font-size: 19px; line-height: 1.2; }
 .project-detail-note { padding: clamp(80px, 9vw, 140px) 5vw; display: grid; grid-template-columns: .55fr 1fr; gap: 8vw; }
 .project-detail-note span { color: var(--red); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
-.project-detail-note p { margin: 0; max-width: 760px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(29px, 3.4vw, 54px); line-height: 1; }
+.project-detail-note p { margin: 0; max-width: 760px; font-family: var(--serif); font-size: clamp(29px, 3.4vw, 54px); line-height: 1; }
 .next-project { padding: clamp(60px, 7vw, 110px) 5vw; display: grid; grid-template-columns: .35fr 1fr auto; gap: 28px; align-items: center; background: var(--red); }
 .next-project > span { text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
-.next-project strong { font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(46px, 7vw, 112px); line-height: .9; }
+.next-project strong { font-family: var(--serif); font-size: clamp(46px, 7vw, 112px); line-height: .9; }
 .next-project i { font-size: clamp(38px, 5vw, 78px); font-style: normal; }
 
 @media (max-width: 800px) {
@@ -1251,9 +1314,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 
 @media (max-width: 520px) {
-  .archive-header { padding-inline: 18px; }
-  .archive-brand { width: 120px; }
-  .archive-home-link { padding: 11px 14px; }
   .archive-hero { padding-inline: 18px; }
   .archive-hero-bottom { grid-template-columns: 1fr; }
   .archive-index { padding-inline: 18px; }
@@ -1652,23 +1712,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 
 /* Pagina archivio: hero scura, indice sticky e griglia premium. */
 .projects-archive { background: var(--cream); }
-.projects-archive .archive-header {
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 12;
-  width: 100%;
-  padding: 24px 5vw;
-  color: var(--cream);
-}
-.projects-archive .archive-brand { box-shadow: 0 12px 34px rgba(0, 0, 0, .24); }
-.projects-archive .archive-home-link {
-  border-color: rgba(255, 236, 197, .48);
-  background: rgba(255, 236, 197, .06);
-  color: var(--cream);
-  backdrop-filter: blur(12px);
-  transition: background .25s ease, color .25s ease, transform .25s ease;
-}
-.projects-archive .archive-home-link:hover { transform: translateY(-2px); background: var(--red); color: var(--ink); }
 .projects-archive .archive-hero {
   isolation: isolate;
   position: relative;
@@ -1860,7 +1903,6 @@ html.lenis.lenis-stopped { overflow: clip; }
   .all-projects-link { padding: 22px; border-radius: 20px; }
   .all-projects-link strong { font-size: 34px; }
   .all-projects-link i { width: 52px; }
-  .projects-archive .archive-header { padding: 18px; }
   .projects-archive .archive-hero { min-height: 78svh; padding: 150px 18px 70px; }
   .projects-archive .archive-hero::after { width: 100vw; right: -60vw; top: 20%; }
   .projects-archive .archive-hero h1 { font-size: clamp(68px, 18vw, 92px); }
@@ -1971,7 +2013,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brand-sketch i {
   color: transparent;
   -webkit-text-stroke: 2px var(--red);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(150px, 22vw, 300px);
   font-style: normal;
   font-weight: 900;
@@ -1979,7 +2021,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   transform: rotate(-8deg);
 }
 .brand-sketch span { max-width: 110px; color: rgba(255, 236, 197, .56); text-transform: uppercase; letter-spacing: .13em; font-size: 9px; line-height: 1.6; }
-.brand-form { display: flex; align-items: baseline; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(92px, 15vw, 220px); font-weight: 900; line-height: .7; letter-spacing: -.1em; }
+.brand-form { display: flex; align-items: baseline; font-family: var(--serif); font-size: clamp(92px, 15vw, 220px); font-weight: 900; line-height: .7; letter-spacing: -.1em; }
 .brand-form span { color: var(--red); }
 .brand-form i { color: var(--cream); font-style: italic; }
 .brand-canvas > img { width: min(78%, 590px); height: auto; padding: 24px; border-radius: 18px; background: var(--cream); }
@@ -2029,7 +2071,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .social-scene-label strong,
 .service-video-caption strong,
 .advertising-copy strong,
-.events-overlay strong { display: block; margin-top: 10px; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(44px, 6vw, 84px); line-height: .82; }
+.events-overlay strong { display: block; margin-top: 10px; font-family: var(--serif); font-size: clamp(44px, 6vw, 84px); line-height: .82; }
 .service-video-scene { background: #0e0e0d; }
 .service-video-scene video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .service-video-scene::after,
@@ -2043,9 +2085,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .advertising-scene dl { position: absolute; z-index: 3; top: 22px; right: 22px; margin: 0; display: flex; gap: 8px; }
 .advertising-scene dl div { min-width: 90px; padding: 13px; border: 1px solid rgba(255,236,197,.35); border-radius: 16px; background: rgba(14,14,13,.5); color: var(--cream); backdrop-filter: blur(10px); }
 .advertising-scene dt { text-transform: uppercase; letter-spacing: .12em; font-size: 8px; }
-.advertising-scene dd { margin: 8px 0 0; color: var(--red); font-family: Didot, "Bodoni MT", Georgia, serif; font-size: 28px; font-weight: 900; }
+.advertising-scene dd { margin: 8px 0 0; color: var(--red); font-family: var(--serif); font-size: 28px; font-weight: 900; }
 .events-overlay p { max-width: 390px; margin: 20px 0 0; color: rgba(255,236,197,.72); line-height: 1.5; }
-.events-stamp { position: absolute; z-index: 3; top: 25px; right: 25px; width: 94px; aspect-ratio: 1; display: grid; place-content: center; border: 1px solid var(--red); border-radius: 50%; background: rgba(14,14,13,.5); color: var(--cream); text-align: center; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: 31px; font-weight: 900; line-height: .65; backdrop-filter: blur(10px); }
+.events-stamp { position: absolute; z-index: 3; top: 25px; right: 25px; width: 94px; aspect-ratio: 1; display: grid; place-content: center; border: 1px solid var(--red); border-radius: 50%; background: rgba(14,14,13,.5); color: var(--cream); text-align: center; font-family: var(--serif); font-size: 31px; font-weight: 900; line-height: .65; backdrop-filter: blur(10px); }
 .events-stamp small { color: var(--red); text-transform: uppercase; letter-spacing: .1em; font-family: Arial, sans-serif; font-size: 7px; }
 
 /* Metriche dimostrative con conteggio attivato allo scroll. */
@@ -2071,7 +2113,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   /* 9px davano link alti 39: sotto i 44 minimi per un bersaglio da dito.
      13px li portano a 45 senza toccare corpo ne' carattere. */
   padding-block: 13px;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(16px, 1.25vw, 20px);
   font-weight: 700;
   line-height: 1.15;
@@ -2206,37 +2248,22 @@ html.lenis.lenis-stopped { overflow: clip; }
    generati. La festa tipografica resta all'apertura e al riepilogo.
    ============================================================ */
 .brief-pagina {
-  /* Il corallo pieno su carta da 3,07:1: sotto il minimo per un testo da
-     11px, ed e' con testi da 11px che questa pagina etichetta ogni campo.
-     Questo rosso e' lo stesso, solo abbastanza scuro da leggersi: 5,01:1. */
-  --red-testo: #c41f24;
   min-height: 100vh;
   background: var(--paper);
   color: var(--ink);
 }
 
-.brief-testata {
-  position: relative;
-  z-index: 5;
-  padding: 22px 5vw;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
 /* Il marchio senza targa: la pagina e' gia' chiara, un rettangolo panna sopra
    la carta si vedrebbe solo come un rettangolo. */
-.brief-marchio { display: block; width: clamp(118px, 11vw, 158px); }
-.brief-marchio img { display: block; width: 100%; height: auto; }
 
-.brief-apertura { padding: clamp(46px, 6vw, 104px) 5vw clamp(34px, 4vw, 66px); }
+.brief-apertura { padding: clamp(112px, 9vw, 150px) 5vw clamp(34px, 4vw, 66px); }
 .brief-apertura .kicker { color: var(--red-testo); font-weight: 800; }
 .brief-apertura h1 {
   margin: 0;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(54px, 8.4vw, 138px);
   line-height: .82;
-  letter-spacing: -.05em;
+  letter-spacing: -.026em;
 }
 .brief-apertura h1 em { color: var(--red); }
 .brief-apertura-sotto {
@@ -2252,7 +2279,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-apertura-sotto p {
   max-width: 620px;
   margin: 0;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(19px, 1.9vw, 30px);
   line-height: 1.24;
 }
@@ -2326,7 +2353,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-scena-guida { margin: 0 0 8px; color: rgba(23,18,13,.66); font-size: 13px; }
 .brief-scena-titolo {
   margin: 0 0 clamp(24px, 2.6vw, 40px);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(32px, 3.8vw, 60px);
   line-height: .96;
   letter-spacing: -.03em;
@@ -2335,7 +2362,11 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-campi { display: grid; gap: clamp(24px, 2.6vw, 38px); }
 
 .brief-campo { min-width: 0; margin: 0; padding: 0; border: 0; }
-.brief-campo > label, .brief-gruppo > legend {
+/* `:not(.brief-consenso)` perche' anche il consenso e' un <label> figlio
+   diretto: senza, prendeva questo stile — maiuscolo, 11px, e soprattutto
+   `display: block`, che schiacciava la casella sopra al testo invece di
+   affiancarla. */
+.brief-campo > label:not(.brief-consenso), .brief-gruppo > legend {
   margin-bottom: 8px;
   padding: 0;
   display: block;
@@ -2349,29 +2380,40 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-campo > label i, .brief-gruppo > legend i { margin-left: 6px; color: var(--red-testo); font-style: normal; }
 .brief-aiuto { margin: 0 0 12px; color: rgba(23,18,13,.66); font-size: 13px; line-height: 1.45; }
 
+/* I campi hanno bordo pieno e un'ombra netta, non sfocata, spostata in
+   basso a destra: il campo sembra un pezzo appoggiato sulla carta, e
+   toccandolo scende come se lo si premesse.
+   L'ombra e' rossa perche' e' il colore del sito: e' l'unico punto del brief
+   in cui il rosso compare per intero, e serve a dire dove si scrive. */
 .brief-campo input[type="text"],
 .brief-campo input[type="email"],
 .brief-campo input[type="tel"],
 .brief-campo textarea {
   width: 100%;
-  min-height: 52px;
-  padding: 14px 0;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  border-radius: 0;
-  background: transparent;
+  min-height: 58px;
+  padding: 14px 16px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: #fffdf8;
+  box-shadow: var(--ombra-dura);
   color: var(--ink);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
-  font-size: clamp(19px, 1.7vw, 26px);
-  line-height: 1.3;
-  transition: border-color .2s ease;
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.5vw, 23px);
+  line-height: 1.35;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease;
 }
-.brief-campo textarea { min-height: 170px; resize: vertical; }
-.brief-campo input:focus, .brief-campo textarea:focus { border-bottom-color: var(--ink); }
+.brief-campo textarea { min-height: 190px; padding-top: 14px; resize: vertical; }
+.brief-campo input::placeholder, .brief-campo textarea::placeholder { color: rgba(23,18,13,.34); }
+/* Scende di 4px e l'ombra si accorcia: e' lo stesso spostamento, quindi il
+   campo sembra premuto e non spostato. */
+.brief-campo input:focus, .brief-campo textarea:focus {
+  transform: translateY(4px);
+  box-shadow: var(--ombra-dura-premuta);
+}
 .brief-campo input::placeholder, .brief-campo textarea::placeholder { color: rgba(23,18,13,.38); }
-.brief-campo[data-rotto] input, .brief-campo[data-rotto] textarea { border-bottom-color: var(--red); }
+.brief-campo[data-rotto] input, .brief-campo[data-rotto] textarea { border-color: #b3161c; box-shadow: 3px 4px 0 1px #b3161c; }
 
-.brief-conta { margin: 8px 0 0; color: rgba(23,18,13,.66); font-size: 12px; font-variant-numeric: tabular-nums; }
+.brief-conta { margin: 10px 0 0; color: rgba(23,18,13,.66); font-size: 12px; font-variant-numeric: tabular-nums; }
 .brief-errore { margin: 10px 0 0; color: #b3161c; font-size: 13px; line-height: 1.45; }
 
 /* --- le scelte -------------------------------------------------------- */
@@ -2437,7 +2479,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-scelta:has(input:checked)::after { opacity: 1; }
 .brief-scelta:has(input:focus-visible) { outline: 2px solid currentColor; outline-offset: 3px; }
 
-.brief-consenso { display: flex; gap: 14px; align-items: flex-start; cursor: pointer; }
+.brief-consenso { display: flex; gap: 14px; align-items: flex-start; margin: 0; cursor: pointer; }
 .brief-consenso input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--ink); }
 .brief-consenso span { font-size: 14px; line-height: 1.5; }
 
@@ -2462,9 +2504,11 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-bottone {
   min-height: 52px;
   padding: 16px 26px;
-  border: 1px solid var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 4px;
   background: var(--ink);
   color: var(--cream);
+  box-shadow: var(--ombra-dura);
   display: inline-flex;
   align-items: center;
   gap: 18px;
@@ -2475,7 +2519,10 @@ html.lenis.lenis-stopped { overflow: clip; }
   cursor: pointer;
   transition: background .2s ease, color .2s ease, transform .2s ease;
 }
-.brief-bottone:hover { background: var(--red); border-color: var(--red); color: var(--cream); transform: translateY(-2px); }
+.brief-bottone:hover { background: var(--red); border-color: var(--ink); color: var(--cream); }
+/* Premendo scende davvero, invece di sollevarsi: e' il gesto che il dito si
+   aspetta da un tasto. */
+.brief-bottone:active, .brief-bottone:focus-visible { transform: translateY(4px); box-shadow: var(--ombra-dura-premuta); }
 .brief-bottone span { transition: transform .25s ease; }
 .brief-bottone:hover span { transform: rotate(45deg); }
 .brief-bottone-quieto { background: transparent; color: var(--ink); }
@@ -2494,7 +2541,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   margin: 0;
   max-height: 62vh;
   overflow: auto;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(15px, 1.15vw, 18px);
   line-height: 1.5;
   white-space: pre-wrap;
@@ -2507,7 +2554,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-esito .kicker { color: var(--red-testo); font-weight: 800; }
 .brief-esito h2 {
   margin: 0 0 18px;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(40px, 5vw, 78px);
   line-height: .92;
   letter-spacing: -.035em;
@@ -2520,7 +2567,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-dopo .kicker { color: var(--red-testo); font-weight: 800; }
 .brief-dopo h2 {
   margin: 0 0 clamp(30px, 3.4vw, 58px);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(38px, 5vw, 82px);
   line-height: .92;
   letter-spacing: -.035em;
@@ -2538,7 +2585,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .brief-dopo-quando { display: block; margin: 14px 0 6px; text-transform: uppercase; letter-spacing: .13em; font-size: 11px; font-weight: 800; }
 .brief-dopo h3 {
   margin: 0 0 10px;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(23px, 2.2vw, 34px);
   line-height: 1.06;
   letter-spacing: -.02em;
@@ -2554,7 +2601,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   align-items: center;
   justify-content: space-between;
 }
-.brief-scorciatoia p { margin: 0; font-family: Didot, "Bodoni MT", Georgia, serif; font-size: clamp(21px, 2.2vw, 34px); line-height: 1.1; }
+.brief-scorciatoia p { margin: 0; font-family: var(--serif); font-size: clamp(21px, 2.2vw, 34px); line-height: 1.1; }
 .brief-scorciatoia a { padding: 15px 0; color: var(--red-testo); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
 .brief-scorciatoia a span { margin-left: 10px; display: inline-block; transition: transform .25s ease; }
 .brief-scorciatoia a:hover span { transform: rotate(45deg); }
@@ -2571,15 +2618,12 @@ html.lenis.lenis-stopped { overflow: clip; }
   .brief-scelte-doppie, .brief-scelte-fitte { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .brief-campo input, .brief-campo textarea,
   .brief-bottone, .brief-bottone span, .brief-avanzamento i,
   .brief-scorciatoia a span { transition: none; }
-  .brief-bottone:hover { transform: none; }
+  .brief-bottone:hover, .brief-bottone:active, .brief-bottone:focus-visible,
+  .brief-campo input:focus, .brief-campo textarea:focus { transform: none; }
 }
-
-/* Il tasto menu sta su ogni pagina, accanto al link contestuale della pagina
-   stessa: da /progetti si torna alla home, da un progetto all'archivio, e da
-   ovunque si apre il menu. */
-.testata-comandi { display: flex; align-items: center; gap: clamp(10px, 1.4vw, 20px); }
 
 /* ============================================================
    Il passaggio dalla prima alla seconda sezione.
@@ -2685,11 +2729,11 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   bottom: -0.08em;
   z-index: -1;
   color: rgba(255,236,197,.035);
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(70px, 12vw, 190px);
   font-weight: 900;
   line-height: .75;
-  letter-spacing: -.06em;
+  letter-spacing: -.03em;
   white-space: nowrap;
 }
 .video-showcase .video-showcase-intro {
@@ -2711,11 +2755,11 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 }
 .video-showcase .video-showcase-intro h2 {
   margin: 0;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(52px, 6vw, 98px);
   font-weight: 900;
   line-height: .84;
-  letter-spacing: -.045em;
+  letter-spacing: -.024em;
 }
 .video-showcase .video-showcase-intro h2 em { color: var(--red); }
 .video-showcase .video-showcase-intro > p:last-child {
@@ -2826,7 +2870,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .orbit-card-copy p span { color: var(--red); }
 .orbit-card-copy h3 {
   margin: 0 0 8px;
-  font-family: Didot, "Bodoni MT", Georgia, serif;
+  font-family: var(--serif);
   font-size: clamp(23px, 2.1vw, 35px);
   line-height: .92;
   letter-spacing: -.025em;
@@ -2968,4 +3012,149 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
     opacity: 1 !important;
   }
   .video-showcase .reel-navigation > p { margin-top: 24px; }
+}
+
+/* ============================================================
+   Transizioni fra le pagine.
+   Il salto dall'archivio a un progetto era un taglio: la pagina spariva e
+   ne ricompariva un'altra. Adesso la copertina del cliente e' lo stesso
+   elemento nelle due pagine — porta lo stesso `view-transition-name` — e il
+   browser la sposta invece di rifarla.
+   ============================================================ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  /* Il resto della pagina si limita a incrociarsi, senza scorrimenti: il
+     movimento e' la copertina, e due movimenti insieme si disturbano. */
+  animation-duration: .42s;
+  animation-timing-function: cubic-bezier(.2, .7, .2, 1);
+}
+::view-transition-group(*) {
+  animation-duration: .52s;
+  animation-timing-function: cubic-bezier(.2, .7, .2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Chi chiede meno movimento riceve il taglio netto di prima, che qui e'
+     esattamente cio' che serve: nessuna interpolazione, nessun tragitto. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ============================================================
+   Indice dei progetti.
+   Al posto di tre riquadri alti 2026px in tutto. Righe di schedario: numero,
+   nome, categoria, marchio. Il marchio sta nella riga — si vede tutto
+   insieme, e si vede anche da telefono dove un puntatore non c'e'.
+   ============================================================ */
+.indice { margin: 0; padding: 0; list-style: none; }
+.indice a {
+  position: relative;
+  padding: clamp(16px, 1.8vw, 26px) 0;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1.4fr) minmax(0, 1fr) 88px 2rem;
+  gap: clamp(16px, 2vw, 40px);
+  align-items: center;
+  transition: color .25s ease;
+}
+.indice a:hover, .indice a:focus-visible { color: var(--red); }
+
+/* La riga e' un pseudo-elemento e non un border: un bordo non si puo'
+   disegnare da sinistra a destra, una scala si'. */
+.indice a::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: rgba(255,236,197,.2);
+  transform-origin: left;
+}
+.indice li:last-child a::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: rgba(255,236,197,.2);
+}
+
+.indice-numero, .indice-categoria {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 11px;
+  font-weight: 800;
+}
+.indice-numero { color: var(--red); font-variant-numeric: tabular-nums; }
+.indice-categoria { color: rgba(255,236,197,.6); transition: color .25s ease; }
+.indice a:hover .indice-categoria { color: rgba(255,236,197,.85); }
+.indice-cliente {
+  font-family: var(--serif);
+  font-size: clamp(26px, 3.2vw, 50px);
+  line-height: 1.05;
+  letter-spacing: -.022em;
+}
+
+/* La targhetta segue il tono del marchio: quattro di questi loghi sono a
+   inchiostro scuro, due sono testo bianco. Su un fondo solo, meta'
+   sparirebbero — ed e' la stessa svista che era gia' costata la leggibilita'
+   a Osteria Annunziata. */
+.indice-marchio {
+  height: 46px;
+  display: grid;
+  place-items: center;
+  padding: 6px 10px;
+  border: 1px solid rgba(255,236,197,.16);
+  background: #fff8ea;
+  transition: transform .25s ease;
+}
+.indice-marchio-dark { background: #181818; }
+.indice-marchio-photo { background: #fff; }
+.indice-marchio img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.indice a:hover .indice-marchio { transform: translateY(-3px); }
+
+.indice-freccia { justify-self: end; font-size: 18px; transition: transform .25s ease; }
+.indice a:hover .indice-freccia { transform: translate(4px, -4px); }
+
+/* Le righe si scrivono da sinistra a destra man mano che la sezione sale, una
+   dopo l'altra: un registro che viene compilato. Il marchio arriva subito
+   dietro la sua riga, cosi' l'ordine di lettura e' riga-poi-contenuto e non
+   sei cose insieme.
+   Dentro a @supports come le altre: senza linee temporali, `animation ...
+   both` partirebbe come animazione istantanea e le righe nascerebbero gia'
+   scritte a meta'. Senza supporto restano righe intere e loghi visibili. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .indice { view-timeline-name: --indice; view-timeline-axis: block; }
+    .indice a::before { transform: scaleX(0); animation: riga-si-scrive linear both; animation-timeline: --indice; }
+    .indice-marchio { opacity: 0; animation: marchio-arriva linear both; animation-timeline: --indice; }
+    .indice li:nth-child(1) a::before { animation-range: cover 10% cover 30%; }
+    .indice li:nth-child(2) a::before { animation-range: cover 14% cover 34%; }
+    .indice li:nth-child(3) a::before { animation-range: cover 18% cover 38%; }
+    .indice li:nth-child(4) a::before { animation-range: cover 22% cover 42%; }
+    .indice li:nth-child(5) a::before { animation-range: cover 26% cover 46%; }
+    .indice li:nth-child(6) a::before { animation-range: cover 30% cover 50%; }
+    .indice li:nth-child(1) .indice-marchio { animation-range: cover 22% cover 34%; }
+    .indice li:nth-child(2) .indice-marchio { animation-range: cover 26% cover 38%; }
+    .indice li:nth-child(3) .indice-marchio { animation-range: cover 30% cover 42%; }
+    .indice li:nth-child(4) .indice-marchio { animation-range: cover 34% cover 46%; }
+    .indice li:nth-child(5) .indice-marchio { animation-range: cover 38% cover 50%; }
+    .indice li:nth-child(6) .indice-marchio { animation-range: cover 42% cover 54%; }
+  }
+}
+@keyframes riga-si-scrive { to { transform: scaleX(1); } }
+@keyframes marchio-arriva { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 700px) {
+  .indice a {
+    grid-template-columns: 2.5rem minmax(0, 1fr) 74px;
+    grid-template-areas: "numero cliente marchio" ". categoria marchio";
+    row-gap: 4px;
+    gap: 14px;
+  }
+  .indice-numero { grid-area: numero; }
+  .indice-cliente { grid-area: cliente; font-size: clamp(21px, 6vw, 30px); }
+  .indice-categoria { grid-area: categoria; }
+  .indice-marchio { grid-area: marchio; height: 40px; }
+  .indice-freccia { display: none; }
 }

@@ -50,8 +50,31 @@ const orbitItems = [...reels, ...reels];
 
 export function VideoShowcase() {
   const [activeReel, setActiveReel] = useState(0);
+  /* I quattro video pesano 3,5 MB — il 98% di tutta la pagina — e con
+     `autoplay` il browser li scarica subito, `preload="metadata"` o no: erano
+     gia' bufferizzati mentre la sezione era quattro schermate piu' in basso.
+     Finche' non ci si avvicina il `src` non c'e', e si vede il poster. */
+  const [vicini, setVicini] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const activeRef = useRef(0);
+
+  useEffect(() => {
+    const sezione = sectionRef.current;
+    if (!sezione) return;
+    /* Un margine generoso: si attacca il `src` quando la sezione e' ancora a
+       una schermata e mezza di distanza, cosi' arrivandoci il video e' gia'
+       pronto e non si vede il poster fare da tappo. */
+    const osservatore = new IntersectionObserver(
+      ([voce]) => {
+        if (!voce.isIntersecting) return;
+        setVicini(true);
+        osservatore.disconnect();
+      },
+      { rootMargin: "150% 0px" },
+    );
+    osservatore.observe(sezione);
+    return () => osservatore.disconnect();
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -156,7 +179,7 @@ export function VideoShowcase() {
                     <Image src={reel.poster} alt="" fill sizes="(max-width: 600px) 45vw, 18vw" />
                   ) : (
                     <video
-                      src={reel.src}
+                      src={vicini ? reel.src : undefined}
                       poster={reel.poster}
                       muted
                       loop

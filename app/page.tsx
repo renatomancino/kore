@@ -3,14 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatedCounter } from "./animated-counter";
+import { IndiceProgetti } from "./indice-progetti";
 import { VesuvioMare } from "./ornaments";
-import { projects } from "./project-data";
 import { AdaptiveBrand } from "./adaptive-brand";
 import { ScrollEffects } from "./scroll-effects";
 import { ServiceShowcase } from "./service-showcase";
 import { services } from "./services-data";
 import { SiteFooter } from "./site-footer";
-import { SiteMenu } from "./site-menu";
+import { SiteHeader } from "./site-header";
 import { VideoShowcase } from "./video-showcase";
 
 
@@ -45,16 +45,7 @@ export default function Home() {
       <ScrollEffects />
       <AdaptiveBrand />
       <a className="salta-al-contenuto" href="#top">Salta al contenuto</a>
-      <header className="site-header">
-        <a className="header-brand" href="#top" aria-label="Kore Studio, home">
-          {/* Due tinte sovrapposte, non due sorgenti scambiate a runtime: cosi'
-              il passaggio e' una dissolvenza e non un lampo di immagine assente.
-              Il testo alternativo sta gia' sul link, quindi qui non serve. */}
-          <img className="brand-panna" src="/brand/kore-logo-cream.png" alt="" />
-          <img className="brand-corallo" src="/brand/kore-logo-coral.png" alt="" />
-        </a>
-        <SiteMenu />
-      </header>
+      <SiteHeader />
 
       {/* Il contenitore serve a far scollare l'hero: `position: sticky` senza
           un blocco che lo chiuda resterebbe incollato per tutta la pagina, e
@@ -135,6 +126,19 @@ export default function Home() {
       </section>
       </div>
 
+      {/* La fascia dice cosa fa Kore, non con chi l'ha fatto: i clienti hanno
+          gia' la parete di loghi sopra e l'indice piu' sotto.
+          Quattro copie e non due: il nastro percorre una frazione piccola
+          della propria larghezza — e' cosi' che si regola la lentezza — e
+          senza abbastanza copie si vedrebbe arrivare il vuoto da destra. */}
+      <div className="marquee" aria-hidden="true">
+        <div className="marquee-track">
+          {[0, 1, 2, 3].map((giro) => (
+            <span key={giro}>{services.map((s) => `${s.name} · `).join("")}</span>
+          ))}
+        </div>
+      </div>
+
       <section className="many-things section-pad" id="servizi">
         <p className="kicker">Competenze, non compartimenti</p>
         <h2>Non facciamo<br />solo una cosa.</h2>
@@ -174,22 +178,8 @@ export default function Home() {
           <p>Una selezione di identità, contenuti e progetti costruiti insieme ai nostri clienti.</p>
         </div>
 
-        <div className="selected-projects-grid">
-          {projects.slice(0, 3).map((project, index) => (
-            <Link className={`project-teaser project-teaser-${project.tone}`} href={`/progetti/${project.slug}`} key={project.slug}>
-              <div className="project-teaser-image">
-                <img src={project.cover} alt={`Progetto ${project.client}`} />
-                <span>0{index + 1}</span>
-              </div>
-              <div className="project-teaser-copy">
-                <p>{project.category} · {project.year}</p>
-                <h3>{project.client}</h3>
-                <p className="project-teaser-summary">{project.summary}</p>
-                <span>{project.title} ↗</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <IndiceProgetti />
+
 
         <Link className="all-projects-link" href="/progetti">
           <span>Archivio completo</span>
