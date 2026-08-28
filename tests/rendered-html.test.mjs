@@ -62,7 +62,7 @@ test("provides a projects archive and individual case-study routes", async () =>
   assert.match(data, /osteria-annunziata-territorio/);
 });
 
-test("includes a vertical, video-ready showreel in the home page", async () => {
+test("includes a scroll-driven spiral video showreel in the home page", async () => {
   const [home, showreel, css] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/video-showcase.tsx", import.meta.url), "utf8"),
@@ -70,9 +70,11 @@ test("includes a vertical, video-ready showreel in the home page", async () => {
   ]);
 
   assert.match(home, /<VideoShowcase \/>/);
-  assert.match(showreel, /IntersectionObserver/);
+  assert.match(showreel, /ScrollTrigger\.create/);
+  assert.match(showreel, /orbitItems/);
   assert.match(showreel, /playsInline/);
-  assert.match(showreel, /Slot video pronto/);
-  assert.match(css, /scroll-snap-type:\s*y mandatory/);
+  assert.match(showreel, /videos\/social\/photo-session\.mp4/);
+  assert.match(css, /\.reel-orbit/);
   assert.match(css, /aspect-ratio:\s*9 \/ 16/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });

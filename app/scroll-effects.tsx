@@ -1,83 +1,128 @@
 "use client";
 
 import { useEffect } from "react";
+import Lenis from "lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-/** Titoli che si scoprono entrando in vista. Le immagini NO: erano 15
- * elementi su 19 e ogni foto del sito si assestava entrando — ripetizione,
- * non significato. */
-const DA_SCOPRIRE = [
-  ".section-heading h2", ".many-things > h2", ".numbers > h2",
-  ".process > h2", ".story h2", ".partners h2", ".location h2",
-  ".card-copy h2", ".service-visual h3", ".cta-alzati",
+gsap.registerPlugin(ScrollTrigger);
+
+const REVEAL_GROUPS = [
+  ".section-heading",
+  ".many-things > .kicker, .many-things > h2",
+  ".service-explorer",
+  ".numbers > .kicker, .numbers > h2",
+  ".numbers-grid",
+  ".selected-projects-heading",
+  ".video-showcase-intro",
+  ".reel-phone",
+  ".process > .kicker, .process > h2",
+  ".story-title",
+  ".story-copy",
+  ".partner-intro",
+  ".partner-rail",
+  ".location-copy",
+  ".final-cta > .kicker, .final-cta > h2, .final-cta > .giant-link",
 ].join(",");
 
 /**
- * Due cose che i siti di riferimento fanno con GSAP.
- *
- * Lo scorrimento inerziale: loro usano ScrollSmoother, che e' un plugin a
- * pagamento; Lenis e' l'equivalente MIT. Muove la posizione di scroll reale
- * del documento invece di trasformare un contenitore, quindi le animazioni
- * CSS pilotate dallo scroll altrove continuano a funzionare.
- *
- * Le comparse: si attivano UNA VOLTA quando l'elemento entra e poi si svolgono
- * a tempo. Legarle allo scroll sembrava piu' furbo ma e' peggio — il testo si
- * ri-nasconderebbe risalendo, e su un titolo alto 130px l'intera comparsa si
- * consuma in un centinaio di pixel.
- *
- * Chi ha chiesto meno movimento non riceve ne' l'uno ne' le altre: gli elementi
- * partono gia' al loro posto.
+ * Motion layer only. Layout, palette and content remain owned by the existing
+ * Kore design. GSAP is used where timing communicates hierarchy: the hero
+ * enters as one composition and each section reveals once when it becomes
+ * relevant. Lenis only smooths the native document scroll.
  */
 export function ScrollEffects() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const elementi = [...document.querySelectorAll<HTMLElement>(DA_SCOPRIRE)];
-    elementi.forEach((e) => e.setAttribute("data-scopri", ""));
+    const context = gsap.context(() => {
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
+        .from(".hero .eyebrow", { y: 18, opacity: 0, duration: 0.55 })
+        .from(
+          ".hero h1 > span",
+          { yPercent: 110, opacity: 0, duration: 0.85, stagger: 0.09 },
+          "-=0.24",
+        )
+        .from(".hero-actions", { y: 24, opacity: 0, duration: 0.65 }, "-=0.38")
+        .from(
+          ".hero-cameo",
+          {
+            y: 42,
+            scale: 0.9,
+            opacity: 0,
+            rotate: -3,
+            duration: 0.8,
+            stagger: 0.07,
+            clearProps: "transform",
+          },
+          "-=0.72",
+        );
 
-    /* Si osserva il CONTENITORE, non l'elemento nascosto. Lo stato iniziale e'
-       un clip-path che azzera l'area visibile, e l'IntersectionObserver tiene
-       conto di quel ritaglio: riporta isIntersecting false anche per un titolo
-       in piena vista. Osservando se stesso non scatterebbe mai — si mangia la
-       coda. Il contenitore non e' ritagliato, quindi risponde. */
-    const guardato = new Map<Element, HTMLElement[]>();
-    elementi.forEach((e) => {
-      const g = e.parentElement ?? e;
-      const lista = guardato.get(g);
-      if (lista) lista.push(e);
-      else guardato.set(g, [e]);
-    });
-
-    const osservatore = new IntersectionObserver(
-      (voci) => {
-        voci.forEach((v) => {
-          if (!v.isIntersecting) return;
-          guardato.get(v.target)?.forEach((e) => e.setAttribute("data-scopri", "fatto"));
-          osservatore.unobserve(v.target);
+      gsap.utils.toArray<HTMLElement>(REVEAL_GROUPS).forEach((element) => {
+        gsap.from(element, {
+          y: 44,
+          opacity: 0,
+          duration: 0.82,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 86%",
+            once: true,
+          },
         });
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
-    );
-    guardato.forEach((_, g) => osservatore.observe(g));
+      });
 
-    let lenis: { raf: (t: number) => void; destroy: () => void } | null = null;
-    let frame = 0;
-    let annullato = false;
+      ScrollTrigger.batch(".project-teaser", {
+        start: "top 88%",
+        once: true,
+        onEnter: (items) => {
+          gsap.from(items, {
+            y: 58,
+            opacity: 0,
+            duration: 0.9,
+            stagger: 0.1,
+            ease: "power3.out",
+          });
+        },
+      });
 
-    import("lenis").then(({ default: Lenis }) => {
-      if (annullato) return;
-      lenis = new Lenis({ duration: 1.05, smoothWheel: true });
-      const tick = (t: number) => {
-        lenis?.raf(t);
-        frame = requestAnimationFrame(tick);
-      };
-      frame = requestAnimationFrame(tick);
+      ScrollTrigger.batch(".timeline article", {
+        start: "top 90%",
+        once: true,
+        onEnter: (items) => {
+          gsap.from(items, {
+            x: -24,
+            opacity: 0,
+            duration: 0.65,
+            stagger: 0.08,
+            ease: "power2.out",
+          });
+        },
+      });
+
+      gsap.to(".map-art", {
+        yPercent: 5,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".location",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.8,
+        },
+      });
     });
+
+    const lenis = new Lenis({ duration: 1.05, smoothWheel: true });
+    lenis.on("scroll", ScrollTrigger.update);
+    const tick = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      annullato = true;
-      osservatore.disconnect();
-      cancelAnimationFrame(frame);
-      lenis?.destroy();
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+      context.revert();
     };
   }, []);
 
