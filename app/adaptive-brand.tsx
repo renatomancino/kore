@@ -42,8 +42,10 @@ function contrasto(a: number[], b: number[]) {
  */
 export function AdaptiveBrand() {
   useEffect(() => {
-    const testata = document.querySelector<HTMLElement>(".site-header");
-    const marchio = testata?.querySelector<HTMLElement>(".header-brand");
+    /* Si parte dal marchio e si risale alla testata che lo contiene: la
+       stessa logica serve su quattro pagine con tre testate diverse. */
+    const marchio = document.querySelector<HTMLElement>(".header-brand");
+    const testata = marchio?.closest<HTMLElement>("header");
     const corallo = marchio?.querySelector<HTMLElement>(".brand-corallo");
     if (!testata || !marchio || !corallo) return;
 
@@ -63,18 +65,25 @@ export function AdaptiveBrand() {
       return [0, 1, 2].map((i) => Math.round(fermate.reduce((t, c) => t + c[i], 0) / fermate.length));
     };
 
-    /* Vero se a quell'altezza il corallo si legge meglio della panna.
-       elementsFromPoint da' tutto cio' che sta nel punto dal davanti
-       all'indietro: si salta la testata, altrimenti misura se stessa. */
-    const vinceCorallo = (x: number, y: number) => {
+    /* Il colore dipinto a una certa altezza. elementsFromPoint da' tutto cio'
+       che sta nel punto dal davanti all'indietro: si salta la testata,
+       altrimenti misura se stessa — e ora che ha un fondo pieno, misurarsi
+       vorrebbe dire restare per sempre del colore in cui e' partita. */
+    const sfondoIn = (x: number, y: number) => {
       for (const trovato of document.elementsFromPoint(x, y)) {
         if (testata.contains(trovato)) continue;
         for (let n: Element | null = trovato; n; n = n.parentElement) {
           const c = coloreDi(n);
-          if (c) return contrasto(CORALLO, c) > contrasto(PANNA, c);
+          if (c) return c;
         }
       }
-      return false;
+      return null;
+    };
+
+    /* Vero se a quell'altezza il corallo si legge meglio della panna. */
+    const vinceCorallo = (x: number, y: number) => {
+      const c = sfondoIn(x, y);
+      return c ? contrasto(CORALLO, c) > contrasto(PANNA, c) : false;
     };
 
     let ultima = "";
@@ -117,6 +126,14 @@ export function AdaptiveBrand() {
       fasce.push(`${tinta ? "#000" : "transparent"} ${(da * 100).toFixed(2)}% 100%`);
       const maschera = `linear-gradient(to bottom, ${fasce.join(",")})`;
 
+      /* Lo stesso colore misurato tinge la testata: cosi' non e' una fascia
+         sopra la pagina ma il bordo alto della sezione in cui ci si trova.
+         Si campiona al centro del marchio, cioe' dove il marchio deve
+         leggersi — se due sezioni si incontrano a meta' testata vince quella
+         sotto al marchio, che e' l'unica che conta per la leggibilita'. */
+      const fondo = sfondoIn(x, r.top + r.height / 2);
+      if (fondo) testata.style.setProperty("--fondo-testata", `rgb(${fondo.join(",")})`);
+
       if (maschera === ultima) return;
       corallo.style.maskImage = maschera;
       corallo.style.webkitMaskImage = maschera;
@@ -126,7 +143,7 @@ export function AdaptiveBrand() {
     /* Da qui in poi comanda la misura: il corallo e' sempre acceso e a
        scoprirlo e' la maschera. Senza JS resta la panna, che e' la tinta
        giusta sull'hero rosso da cui la pagina parte. */
-    testata.dataset.logo = "misurato";
+    marchio.dataset.logo = "misurato";
 
     let inCoda = 0;
     const suEvento = () => {

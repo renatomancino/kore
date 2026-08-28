@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "../../project-data";
+import { AdaptiveBrand } from "../../adaptive-brand";
 import { SiteFooter } from "../../site-footer";
-import { SiteMenu } from "../../site-menu";
+import { SiteHeader } from "../../site-header";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
@@ -19,8 +20,11 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   return {
     title: `${project.client} — Progetti Kore`,
     description: project.summary,
-    openGraph: { title: `${project.client} — Progetti Kore`, description: project.summary, images: [] },
-    twitter: { card: "summary", title: `${project.client} — Progetti Kore`, description: project.summary, images: [] },
+    /* NIENTE `images: []` qui: azzerava l'elenco e l'immagine generata da
+       opengraph-image.tsx non si agganciava piu'. Lasciandolo fuori, Next ci
+       mette da sola quella del progetto. */
+    openGraph: { title: `${project.client} — Progetti Kore`, description: project.summary, url: `/progetti/${slug}` },
+    twitter: { card: "summary_large_image", title: `${project.client} — Progetti Kore`, description: project.summary },
   };
 }
 
@@ -34,15 +38,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="project-detail">
-      <header className="archive-header project-detail-header">
-        <Link className="archive-brand" href="/" aria-label="Kore Studio, torna alla home">
-          <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
-        </Link>
-        <div className="testata-comandi">
-          <Link className="archive-home-link" href="/progetti">Tutti i progetti <span aria-hidden="true">↖</span></Link>
-          <SiteMenu />
-        </div>
-      </header>
+      <AdaptiveBrand />
+      <SiteHeader />
 
       <article>
         <section className="project-detail-hero">
@@ -52,7 +49,14 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <p>{project.title}</p>
           </div>
           <div className={`project-detail-cover project-detail-cover-${project.tone}`}>
-            <img src={project.cover} alt={`Identità di ${project.client}`} />
+            {/* Lo stesso nome della scheda da cui si e' arrivati: e' cio' che
+                dice al browser "questo e' quell'elemento, spostatelo" invece
+                di dissolvere una pagina nell'altra. */}
+            <img
+              src={project.cover}
+              alt={`Identità di ${project.client}`}
+              style={{ viewTransitionName: `copertina-${project.slug}` }}
+            />
           </div>
         </section>
 

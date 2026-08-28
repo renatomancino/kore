@@ -1,13 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
-import { SiteMenu } from "../site-menu";
+import { SiteHeader } from "../site-header";
 import { BriefForm } from "./brief-form";
 
+const TITOLO = "Hai un’idea? — Kore Studio";
+const DESCRIZIONE =
+  "Raccontaci il progetto: un brief guidato in quattro passi, con budget e tempi, per arrivare alla prima chiamata già sapendo di cosa parlare.";
+
 export const metadata: Metadata = {
-  title: "Hai un’idea? — Kore Studio",
-  description:
-    "Raccontaci il progetto: un brief guidato in quattro passi, con budget e tempi, per arrivare alla prima chiamata già sapendo di cosa parlare.",
+  title: TITOLO,
+  description: DESCRIZIONE,
+  /* Ripetuti anche qui: `openGraph` non si fonde con quello del layout, o lo
+     si dichiara o si eredita il suo per intero — e l'anteprima del brief
+     diceva "Kore — Diamo forma alle idee". */
+  openGraph: { title: TITOLO, description: DESCRIZIONE, url: "/idea" },
+  twitter: { card: "summary_large_image", title: TITOLO, description: DESCRIZIONE },
 };
 
 /* Cosa succede dopo: sta scritto sulla pagina perche' la domanda vera di chi
@@ -21,12 +30,8 @@ const DOPO = [
 export default function IdeaPage() {
   return (
     <main className="brief-pagina">
-      <header className="brief-testata">
-        <Link className="brief-marchio" href="/" aria-label="Kore Studio, torna alla home">
-          <img src="/brand/kore-logo-coral.png" alt="Kore Studio" />
-        </Link>
-        <SiteMenu />
-      </header>
+      <AdaptiveBrand />
+      <SiteHeader />
 
       <section className="brief-apertura">
         <p className="kicker">Il prossimo progetto</p>
