@@ -103,8 +103,46 @@ img { display: block; width: 100%; }
 .hero-cta:hover { transform: translateY(-3px); background: white; }
 .scroll-cue { position: absolute; z-index: 3; right: 24px; bottom: 28px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; writing-mode: vertical-rl; }
 
-.menu-panel { position: fixed; z-index: 40; inset: 0; padding: 120px 6vw 7vh; background: var(--ink); color: var(--cream); display: grid; grid-template-columns: 1.4fr 1fr; gap: 8vw; transform: translateY(-102%); visibility: hidden; transition: transform .55s cubic-bezier(.77,0,.18,1), visibility 0s .55s; }
-.menu-panel.is-open { transform: translateY(0); visibility: visible; transition-delay: 0s; }
+/* Il pannello e' un popover: sta nel top layer, quindi niente z-index. Le
+   proprieta' di reset servono perche' un popover nasce come una scatoletta
+   centrata con bordo e imbottitura propri. */
+.menu-panel {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 120px 6vw 7vh;
+  border: 0;
+  overflow: visible;
+  background: var(--ink);
+  color: var(--cream);
+  transform: translateY(-102%);
+  /* `display` e `overlay` con `allow-discrete`: sono proprieta' che saltano da
+     un valore all'altro, e senza questo il pannello sparirebbe di colpo a
+     inizio chiusura invece di risalire. */
+  transition:
+    transform .55s cubic-bezier(.77,0,.18,1),
+    display .55s allow-discrete,
+    overlay .55s allow-discrete;
+}
+.menu-panel:popover-open {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 8vw;
+  transform: translateY(0);
+}
+/* Da dove parte l'animazione all'apertura: senza, il pannello nasce gia' a
+   posto e scende solo in chiusura. */
+@starting-style {
+  .menu-panel:popover-open { transform: translateY(-102%); }
+}
+.menu-panel::backdrop { background: rgba(14, 14, 13, .4); }
+/* Il tasto di chiusura sta dove sta quello di apertura: nel top layer il
+   pannello copre la testata, e "Chiudi" deve restare sotto il dito. */
+.menu-chiudi { position: absolute; top: 16px; right: 5vw; }
 .menu-column { display: flex; flex-direction: column; align-items: flex-start; }
 .menu-column p { margin: 0 0 22px; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
 /* `padding-block` e non un'altezza: il bersaglio arriva a 44 senza toccare
@@ -149,7 +187,17 @@ img { display: block; width: 100%; }
 .service-list button span:last-child { font-size: 11px; letter-spacing: .12em; opacity: .55; }
 .service-list button:hover span:first-child, .service-list button.active span:first-child { transform: translateX(16px); color: var(--red); }
 .service-visual { position: sticky; top: 88px; min-height: 440px; overflow: hidden; background: var(--ink); color: var(--cream); }
-.service-visual img { position: absolute; inset: 0; height: 100%; object-fit: cover; filter: saturate(.55) contrast(1.12); }
+/* Solo le foto che riempiono il riquadro, non ogni immagine della vetrina:
+   la regola larga rendeva assoluto anche il logo del branding, che e' un
+   oggetto in mezzo alla tela e finiva incollato in alto a sinistra. */
+.fase-fatto-social img, .fase-fatto-adv img, .fase-fatto-eventi img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.55) contrast(1.12);
+}
 .service-visual::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(23,18,13,.86), transparent 60%); }
 .service-visual > div { position: absolute; z-index: 2; inset: auto 30px 28px; }
 .service-visual p { margin: 0 0 10px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; }
@@ -201,7 +249,9 @@ img { display: block; width: 100%; }
 .partner-line span { padding: 12px 20px 10px; border: 1px solid var(--ink); border-radius: 100px; text-transform: uppercase; letter-spacing: .18em; font-size: 11px; }
 
 .location { min-height: 68svh; display: grid; grid-template-columns: 1.2fr .8fr; background: var(--ink); color: var(--cream); }
-.map-art { position: relative; min-height: 68svh; overflow: hidden; background-color: #241d17; background-image: linear-gradient(rgba(255,235,197,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255,235,197,.14) 1px, transparent 1px); background-size: 56px 56px; }
+/* `isolation` perche' il contenuto ora si muove: senza, un figlio traslato
+   puo' uscire dal ritaglio in alcuni motori. */
+.map-art { position: relative; isolation: isolate; min-height: 68svh; overflow: hidden; background-color: #241d17; background-image: linear-gradient(rgba(255,235,197,.14) 1px, transparent 1px), linear-gradient(90deg, rgba(255,235,197,.14) 1px, transparent 1px); background-size: 56px 56px; }
 .map-art::after { content: ""; position: absolute; width: 70%; aspect-ratio: 1; border: 1px solid var(--red); border-radius: 50%; top: 15%; left: 14%; box-shadow: 0 0 0 15vw rgba(253,64,66,.04), 0 0 0 30vw rgba(253,64,66,.03); }
 /* Le coordinate sono una filigrana: a opacita' .09 su fondo scuro i tratti
    sottili di un didone spariscono, e "40.786" si leggeva "10.786" perche' del
@@ -832,11 +882,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .header-brand .brand-corallo { position: absolute; inset: 0; opacity: 0; }
 .header-brand[data-logo] .brand-corallo { opacity: 1; }
 /* 11px davano un tasto alto 40: sotto i 44 minimi per un bersaglio da dito.
-   E z-index 41 perche' ora il tasto e il pannello sono fratelli: senza, il
-   pannello (40) copre il «Chiudi» e si esce solo con Esc o con un link. */
+   Niente piu' z-index: il pannello e' nel top layer e non c'e' piu' niente da
+   scavalcare. */
 .menu-toggle {
-  position: relative;
-  z-index: 41;
   padding: 13px 16px;
   border-radius: 100px;
   background: var(--ink);
@@ -1969,7 +2017,11 @@ html.lenis.lenis-stopped { overflow: clip; }
 .service-visual {
   position: sticky;
   top: 88px;
-  min-height: clamp(540px, 55vw, 720px);
+  /* `height` e non `min-height`: dentro ci sono oggetti dimensionati in
+     percentuale, e una percentuale contro un'altezza che arriva dal flex non
+     risolve — diventa `auto`, cioe' zero per un contenuto assoluto. Con
+     un'altezza vera la catena si chiude. */
+  height: clamp(540px, 55vw, 720px);
   overflow: hidden;
   border: 1px solid rgba(23, 18, 13, .34);
   border-radius: 30px;
@@ -1982,7 +2034,15 @@ html.lenis.lenis-stopped { overflow: clip; }
   inset: auto;
   width: 100%;
   height: 100%;
-  min-height: inherit;
+}
+/* Una scena sola per tutti e sei: barra in alto, tela, tre pastiglie. Prima
+   c'erano sei impaginazioni diverse e quattro servizi senza sequenza. */
+.service-scene {
+  padding: clamp(22px, 3vw, 38px);
+  display: flex;
+  flex-direction: column;
+  background: #0e0e0d;
+  color: var(--cream);
 }
 .service-scene-top {
   display: flex;
@@ -1993,13 +2053,20 @@ html.lenis.lenis-stopped { overflow: clip; }
   font-size: 10px;
   font-weight: 800;
 }
-.branding-scene { padding: clamp(22px, 3vw, 38px); display: flex; flex-direction: column; background: #0e0e0d; color: var(--cream); }
-.brand-canvas {
+.service-canvas {
+  /* Le tre battute si posizionano in percentuale su questa tela: senza
+     `relative` si ancorano al riquadro esterno, che e' piu' grande, e i
+     riquadri finiscono fuori misura e ritagliati. */
+  position: relative;
   flex: 1;
   min-height: 360px;
   margin: 24px 0;
-  display: grid;
-  place-items: center;
+  /* Flex e non grid: gli oggetti finali hanno larghezze in percentuale, e in
+     una griglia a colonna automatica la colonna si dimensiona su di loro —
+     la percentuale gira a vuoto e il centraggio non avviene. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   border: 1px solid rgba(255, 236, 197, .22);
   border-radius: 22px;
@@ -2009,22 +2076,7 @@ html.lenis.lenis-stopped { overflow: clip; }
     #17120d;
   background-size: 42px 42px;
 }
-.brand-sketch { width: 72%; display: flex; align-items: flex-end; justify-content: space-between; }
-.brand-sketch i {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--red);
-  font-family: var(--serif);
-  font-size: clamp(150px, 22vw, 300px);
-  font-style: normal;
-  font-weight: 900;
-  line-height: .65;
-  transform: rotate(-8deg);
-}
-.brand-sketch span { max-width: 110px; color: rgba(255, 236, 197, .56); text-transform: uppercase; letter-spacing: .13em; font-size: 9px; line-height: 1.6; }
-.brand-form { display: flex; align-items: baseline; font-family: var(--serif); font-size: clamp(92px, 15vw, 220px); font-weight: 900; line-height: .7; letter-spacing: -.1em; }
-.brand-form span { color: var(--red); }
-.brand-form i { color: var(--cream); font-style: italic; }
-.brand-canvas > img { width: min(78%, 590px); height: auto; padding: 24px; border-radius: 18px; background: var(--cream); }
+.service-canvas > img { width: min(78%, 590px); height: auto; padding: 24px; border-radius: 18px; background: var(--cream); }
 .service-control-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
 .service-control-row button {
   min-height: 50px;
@@ -2126,7 +2178,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   .service-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .service-list button { border: 1px solid rgba(23, 18, 13, .22); }
   .service-list button span:first-child { font-size: clamp(22px, 4vw, 34px); }
-  .service-visual { position: relative; top: auto; min-height: 650px; order: 0; }
+  .service-visual { position: relative; top: auto; height: 650px; order: 0; }
   .numbers-grid { grid-template-columns: 1fr; }
   .metric { min-height: 250px; }
 }
@@ -2140,11 +2192,8 @@ html.lenis.lenis-stopped { overflow: clip; }
   .service-list button { flex: 0 0 auto; width: auto; min-width: 142px; scroll-snap-align: start; }
   .service-list button span:first-child { font-size: 24px; }
   .service-list button span:last-child { margin-left: 18px; }
-  .service-visual { min-height: 560px; border-radius: 24px; }
-  .brand-canvas { min-height: 350px; }
-  .brand-sketch { width: 82%; }
-  .brand-sketch i { font-size: 170px; }
-  .brand-form { font-size: 88px; }
+  .service-visual { height: 560px; border-radius: 24px; }
+  .service-canvas { min-height: 350px; }
   .service-control-row { gap: 6px; }
   .service-control-row button { min-height: 46px; padding-inline: 10px; }
   .web-browser { min-height: 395px; }
@@ -2402,7 +2451,20 @@ html.lenis.lenis-stopped { overflow: clip; }
   line-height: 1.35;
   transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease;
 }
-.brief-campo textarea { min-height: 190px; padding-top: 14px; resize: vertical; }
+/* Il riquadro cresce mentre scrivi, invece di restare alto 190px con una
+   barra di scorrimento dentro. E' `field-sizing: content`, una riga di CSS al
+   posto del solito ascolto di `input` che ricalcola l'altezza.
+   Qui non e' un vezzo: la pagina chiede di raccontare un progetto, e un
+   riquadro che si allarga mentre racconti e' l'interfaccia che da' ragione a
+   cio' che c'e' scritto sopra. Il minimo resta, cosi' non parte striminzito;
+   il massimo evita che una persona prolissa spinga il tasto fuori schermo. */
+.brief-campo textarea {
+  field-sizing: content;
+  min-height: 190px;
+  max-height: 60vh;
+  padding-top: 14px;
+  resize: vertical;
+}
 .brief-campo input::placeholder, .brief-campo textarea::placeholder { color: rgba(23,18,13,.34); }
 /* Scende di 4px e l'ombra si accorcia: e' lo stesso spostamento, quindi il
    campo sembra premuto e non spostato. */
@@ -3044,117 +3106,489 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 }
 
 /* ============================================================
-   Indice dei progetti.
-   Al posto di tre riquadri alti 2026px in tutto. Righe di schedario: numero,
-   nome, categoria, marchio. Il marchio sta nella riga — si vede tutto
-   insieme, e si vede anche da telefono dove un puntatore non c'e'.
+   Carosello progetti — nessuna riga di JavaScript.
+   Le frecce sono `::scroll-button()`, l'indice numerato sotto sono
+   `::scroll-marker`: primitive del browser, quindi arrivano gia' con
+   tastiera, fuoco, ruolo di gruppo e tasto disattivato a fondo corsa.
+   Dove non esistono ancora resta una pista che si trascina e si aggancia.
    ============================================================ */
-.indice { margin: 0; padding: 0; list-style: none; }
-.indice a {
+.pista { position: relative; max-width: 1320px; margin: clamp(38px, 4vw, 70px) auto 0; }
+
+.carosello {
+  counter-reset: progetto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: clamp(16px, 1.8vw, 30px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  scroll-marker-group: after;
+}
+.carosello::-webkit-scrollbar { display: none; }
+
+.carta {
+  flex: 0 0 clamp(250px, 27vw, 366px);
+  scroll-snap-align: start;
+  counter-increment: progetto;
+}
+.carta > a {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+}
+
+/* La lastra segue il `tone` gia' dichiarato nei dati: quattro di questi
+   marchi sono a inchiostro scuro, due sono testo bianco. Su un fondo solo,
+   meta' sparirebbero. */
+.carta-lastra {
   position: relative;
-  padding: clamp(16px, 1.8vw, 26px) 0;
-  display: grid;
-  grid-template-columns: 3.5rem minmax(0, 1.4fr) minmax(0, 1fr) 88px 2rem;
-  gap: clamp(16px, 2vw, 40px);
-  align-items: center;
-  transition: color .25s ease;
-}
-.indice a:hover, .indice a:focus-visible { color: var(--red); }
-
-/* La riga e' un pseudo-elemento e non un border: un bordo non si puo'
-   disegnare da sinistra a destra, una scala si'. */
-.indice a::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: rgba(255,236,197,.2);
-  transform-origin: left;
-}
-.indice li:last-child a::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 1px;
-  background: rgba(255,236,197,.2);
-}
-
-.indice-numero, .indice-categoria {
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  font-size: 11px;
-  font-weight: 800;
-}
-.indice-numero { color: var(--red); font-variant-numeric: tabular-nums; }
-.indice-categoria { color: rgba(255,236,197,.6); transition: color .25s ease; }
-.indice a:hover .indice-categoria { color: rgba(255,236,197,.85); }
-.indice-cliente {
-  font-family: var(--serif);
-  font-size: clamp(26px, 3.2vw, 50px);
-  line-height: 1.05;
-  letter-spacing: -.022em;
-}
-
-/* La targhetta segue il tono del marchio: quattro di questi loghi sono a
-   inchiostro scuro, due sono testo bianco. Su un fondo solo, meta'
-   sparirebbero — ed e' la stessa svista che era gia' costata la leggibilita'
-   a Osteria Annunziata. */
-.indice-marchio {
-  height: 46px;
+  aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
-  padding: 6px 10px;
-  border: 1px solid rgba(255,236,197,.16);
+  padding: clamp(20px, 2.4vw, 40px);
   background: #fff8ea;
-  transition: transform .25s ease;
+  border: 1px solid rgba(255, 236, 197, .14);
+  overflow: hidden;
 }
-.indice-marchio-dark { background: #181818; }
-.indice-marchio-photo { background: #fff; }
-.indice-marchio img { max-width: 100%; max-height: 100%; object-fit: contain; }
-.indice a:hover .indice-marchio { transform: translateY(-3px); }
+.carta-lastra-dark { background: #181818; }
+.carta-lastra-photo { background: #fff; }
+.carta-lastra img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform .55s cubic-bezier(.2, .8, .2, 1);
+}
+.carta > a:hover .carta-lastra img,
+.carta > a:focus-visible .carta-lastra img { transform: scale(1.07); }
 
-.indice-freccia { justify-self: end; font-size: 18px; transition: transform .25s ease; }
-.indice a:hover .indice-freccia { transform: translate(4px, -4px); }
+/* L'anno in pastiglia corallo e non in sovrimpressione: sopra sei lastre di
+   tre fondi diversi, un colore solo non sarebbe leggibile su tutte. */
+.carta-anno {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 6px 10px;
+  background: var(--red);
+  color: var(--cream);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  font-variant-numeric: tabular-nums;
+}
 
-/* Le righe si scrivono da sinistra a destra man mano che la sezione sale, una
-   dopo l'altra: un registro che viene compilato. Il marchio arriva subito
-   dietro la sua riga, cosi' l'ordine di lettura e' riga-poi-contenuto e non
-   sei cose insieme.
-   Dentro a @supports come le altre: senza linee temporali, `animation ...
-   both` partirebbe come animazione istantanea e le righe nascerebbero gia'
-   scritte a meta'. Senza supporto restano righe intere e loghi visibili. */
+.carta-categoria {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: clamp(14px, 1.4vw, 22px) 0 8px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 236, 197, .55);
+}
+.carta-categoria b { color: var(--red); font-variant-numeric: tabular-nums; }
+
+.carta h3 {
+  margin: 0 0 10px;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(23px, 2.2vw, 34px);
+  line-height: 1.02;
+  letter-spacing: -.022em;
+  text-wrap: balance;
+  transition: color .25s ease;
+}
+.carta > a:hover h3 { color: var(--red); }
+.carta-sintesi {
+  margin: 0 0 clamp(16px, 1.6vw, 24px);
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255, 236, 197, .7);
+}
+
+.carta-vai {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 236, 197, .16);
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: border-color .25s ease, color .25s ease;
+}
+.carta-vai i { font-style: normal; transition: transform .25s ease; }
+.carta > a:hover .carta-vai { border-color: var(--red); color: var(--red); }
+.carta > a:hover .carta-vai i { transform: translate(4px, -4px); }
+
+/* Le frecce. `content` non e' decorazione: senza, il tasto non viene
+   nemmeno generato. Si disattivano da sole a fondo corsa. */
+.carosello::scroll-button(*) {
+  position: absolute;
+  top: calc(-1 * clamp(38px, 4vw, 70px) - 52px);
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 236, 197, .28);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cream);
+  font-size: 17px;
+  cursor: pointer;
+  transition: background .25s ease, border-color .25s ease, opacity .25s ease;
+}
+.carosello::scroll-button(*):hover:not(:disabled) { background: var(--red); border-color: var(--red); }
+.carosello::scroll-button(*):disabled { opacity: .22; cursor: default; }
+.carosello::scroll-button(left) { content: "\2190"; right: 58px; }
+.carosello::scroll-button(right) { content: "\2192"; right: 0; }
+
+/* L'indice sotto la pista: numeri, come ovunque nel sito. */
+.carosello::scroll-marker-group {
+  display: flex;
+  gap: 6px;
+  padding-top: clamp(20px, 2.2vw, 34px);
+}
+.carta::scroll-marker {
+  content: counter(progetto, decimal-leading-zero);
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 236, 197, .16);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 236, 197, .45);
+  cursor: pointer;
+  transition: color .25s ease, background .25s ease, border-color .25s ease;
+}
+.carta::scroll-marker:hover { color: var(--cream); border-color: rgba(255, 236, 197, .4); }
+.carta::scroll-marker:target-current {
+  color: var(--cream);
+  background: var(--red);
+  border-color: var(--red);
+}
+
+/* Le carte entrano da destra man mano che la pista scorre: la linea
+   temporale e' quella della pista stessa, asse in linea. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .indice { view-timeline-name: --indice; view-timeline-axis: block; }
-    .indice a::before { transform: scaleX(0); animation: riga-si-scrive linear both; animation-timeline: --indice; }
-    .indice-marchio { opacity: 0; animation: marchio-arriva linear both; animation-timeline: --indice; }
-    .indice li:nth-child(1) a::before { animation-range: cover 10% cover 30%; }
-    .indice li:nth-child(2) a::before { animation-range: cover 14% cover 34%; }
-    .indice li:nth-child(3) a::before { animation-range: cover 18% cover 38%; }
-    .indice li:nth-child(4) a::before { animation-range: cover 22% cover 42%; }
-    .indice li:nth-child(5) a::before { animation-range: cover 26% cover 46%; }
-    .indice li:nth-child(6) a::before { animation-range: cover 30% cover 50%; }
-    .indice li:nth-child(1) .indice-marchio { animation-range: cover 22% cover 34%; }
-    .indice li:nth-child(2) .indice-marchio { animation-range: cover 26% cover 38%; }
-    .indice li:nth-child(3) .indice-marchio { animation-range: cover 30% cover 42%; }
-    .indice li:nth-child(4) .indice-marchio { animation-range: cover 34% cover 46%; }
-    .indice li:nth-child(5) .indice-marchio { animation-range: cover 38% cover 50%; }
-    .indice li:nth-child(6) .indice-marchio { animation-range: cover 42% cover 54%; }
+    .carta > a {
+      animation: carta-entra linear both;
+      animation-timeline: view(inline);
+      animation-range: entry 0% entry 86%;
+    }
+    @keyframes carta-entra {
+      from { opacity: 0; transform: translateY(22px) scale(.94); }
+      to { opacity: 1; transform: none; }
+    }
   }
 }
-@keyframes riga-si-scrive { to { transform: scaleX(1); } }
-@keyframes marchio-arriva { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 900px) {
+  .carta { flex-basis: 74vw; }
+  .carosello::scroll-button(*) { display: none; }
+}
+
+/* ============================================================
+   404. La pagina che dice che una pagina non c'e'.
+   Chi ci arriva ha gia' sbagliato qualcosa: qui trova delle destinazioni
+   vere, non un "torna alla home" che e' il vicolo cieco travestito da uscita.
+   ============================================================ */
+.assente { min-height: 100vh; background: var(--red); color: var(--ink); }
+.assente-corpo {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(120px, 14vh, 200px) 5vw clamp(60px, 7vw, 110px);
+}
+/* Come le coordinate nel riquadro "dove": grande, ma dietro. E come quelle,
+   con l'asse ottico basso — un didone a bassa opacita' perde i tratti
+   sottili, e "404" diventerebbe "4o4". */
+.assente-numero {
+  position: absolute;
+  z-index: 0;
+  top: 4%;
+  right: 3%;
+  font-family: var(--serif);
+  font-size: clamp(160px, 26vw, 420px);
+  font-variation-settings: "opsz" 8;
+  font-weight: 700;
+  line-height: .8;
+  color: rgba(23,18,13,.09);
+  user-select: none;
+}
+.assente-corpo > *:not(.assente-numero) { position: relative; z-index: 1; }
+.assente .kicker { color: var(--ink); font-weight: 800; }
+.assente h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(52px, 8vw, 132px);
+  line-height: .84;
+  letter-spacing: -.028em;
+}
+.assente h1 em { color: var(--cream); font-style: italic; }
+.assente-nota {
+  margin: clamp(26px, 3vw, 44px) 0 0;
+  max-width: 46ch;
+  font-family: var(--serif);
+  font-size: clamp(18px, 1.7vw, 26px);
+  line-height: 1.3;
+}
+
+.assente-uscite {
+  margin-top: clamp(40px, 5vw, 78px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  background: rgba(23,18,13,.24);
+  border: 1px solid rgba(23,18,13,.24);
+}
+/* Le uscite sono riquadri affiancati da un filo solo: la griglia fa da bordo,
+   cosi' non ci sono doppie linee dove due riquadri si toccano. */
+.assente-uscite a {
+  min-height: 132px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--red);
+  transition: background .2s ease, color .2s ease;
+}
+.assente-uscite a:hover, .assente-uscite a:focus-visible { background: var(--ink); color: var(--cream); }
+.assente-uscite span { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 800; }
+.assente-uscite b { margin-top: auto; font-family: var(--serif); font-size: clamp(21px, 2vw, 30px); font-weight: 700; line-height: 1.05; letter-spacing: -.02em; }
+.assente-uscite i { font-style: normal; font-size: 13px; line-height: 1.4; opacity: .78; }
+
+@media (prefers-reduced-motion: reduce) {
+  .assente-uscite a { transition: none; }
+}
+
+/* ============================================================
+   Le tre battute dei servizi: traccia, forma, fatto.
+   Le prime due si disegnano dallo stesso elenco di riquadri, quindi cambiando
+   servizio cambia l'impaginazione e non il linguaggio — ed e' proprio quello
+   il punto: sei mestieri diversi, un modo solo di lavorare.
+   ============================================================ */
+.fase-traccia, .fase-forma { position: absolute; inset: 0; }
+.fase-traccia > span, .fase-forma > span { position: absolute; }
+
+/* 01 — il segno prima che sia niente: solo contorno rosso. */
+.fase-traccia > span {
+  border: 1.5px solid var(--red);
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-end;
+  padding: 8px;
+}
+.fase-traccia i {
+  color: rgba(254, 64, 66, .82);
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+/* 02 — gli stessi riquadri pieni. Il primo in rosso: senza una gerarchia
+   sarebbero rettangoli uguali, cioe' niente. */
+.fase-forma > span {
+  border-radius: 4px;
+  background: rgba(255, 236, 197, .82);
+}
+.fase-forma > span[data-primo] { background: var(--red); }
+
+/* 03 — l'oggetto vero. */
+.service-canvas > img { width: min(78%, 590px); height: auto; padding: 24px; border-radius: 18px; background: var(--cream); }
+.fase-fatto-social, .fase-fatto-adv, .fase-fatto-eventi {
+  position: relative;
+  width: min(84%, 620px);
+  height: 78%;
+  overflow: hidden;
+  border-radius: 14px;
+}
+.fase-fatto-social { width: min(46%, 320px); }
+.fase-fatto-video { width: min(84%, 620px); max-height: 82%; border-radius: 14px; }
+
+.fase-fatto-adv dl {
+  position: absolute;
+  inset: auto 0 0;
+  margin: 0;
+  padding: 16px 18px;
+  display: flex;
+  gap: 26px;
+  background: rgba(14, 14, 13, .82);
+  backdrop-filter: blur(6px);
+}
+.fase-fatto-adv dt { color: rgba(255,236,197,.7); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 800; }
+.fase-fatto-adv dd { margin: 4px 0 0; font-family: var(--serif); font-size: clamp(20px, 2vw, 30px); font-weight: 700; }
+
+.fase-fatto-eventi > span {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--red);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1;
+}
+.fase-fatto-eventi small { text-transform: uppercase; letter-spacing: .12em; font-size: 11px; font-weight: 800; }
+
+.fase-fatto-web {
+  width: min(88%, 660px);
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 16px;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* ============================================================
+   Il metodo come pila di carte.
+   Le quattro tappe erano una riga orizzontale con un pallino su un filo:
+   si leggevano tutte insieme, quindi non si leggeva niente. Ora ognuna si
+   incolla in alto e la successiva le sale sopra — restano visibili i bordi
+   di quelle gia' viste, cosi' la pila dice a che punto sei senza scriverlo.
+   Lo scarto di 24px per tappa e' quello che rende visibile il bordo.
+   ============================================================ */
+.timeline { display: block; margin-top: clamp(30px, 3.2vw, 56px); }
+.timeline::before { display: none; }
+
+.timeline article {
+  position: sticky;
+  min-height: min(34vh, 300px);
+  margin: 0 0 clamp(14px, 1.6vw, 26px);
+  padding: clamp(26px, 3vw, 52px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(20px, 3vw, 60px);
+  align-items: center;
+  background: var(--cream);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  /* Ombra piena e non sfumata: e' lo stesso segno delle schede del brief.
+     Sul corallo la vuole d'inchiostro — un'ombra rossa su fondo rosso non
+     e' un'ombra, e' niente. */
+  box-shadow: 7px 8px 0 0 var(--ink);
+}
+/* Lo scarto non e' decorativo: deve bastare a far spuntare la riga
+   "Passo 0N" della carta gia' vista. Con 24px si vedeva un filo color panna
+   e la pila non diceva piu' a che punto sei. */
+.timeline article:nth-child(1) { top: 104px; }
+.timeline article:nth-child(2) { top: 168px; }
+.timeline article:nth-child(3) { top: 232px; }
+.timeline article:nth-child(4) { top: 296px; }
+/* L'ultima non ha nessuno che le salga sopra: senza questo respiro la
+   sezione finirebbe nell'istante in cui si e' appena fermata. */
+.timeline article:last-child { margin-bottom: clamp(40px, 6vh, 90px); }
+
+.timeline .tappa-passo {
+  margin: 0 0 clamp(10px, 1.2vw, 18px);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--red-testo);
+}
+.timeline h3 {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(30px, 4.6vw, 66px);
+  line-height: .95;
+  letter-spacing: -.03em;
+}
+.timeline p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(15px, 1.4vw, 21px);
+  line-height: 1.5;
+}
+
+/* Il numero e' la marca della carta: grande, ma svuotato, cosi' non compete
+   col titolo che sta accanto. */
+.timeline .tappa-numero {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(70px, 12vw, 190px);
+  line-height: .78;
+  letter-spacing: -.05em;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--ink);
+}
 
 @media (max-width: 700px) {
-  .indice a {
-    grid-template-columns: 2.5rem minmax(0, 1fr) 74px;
-    grid-template-areas: "numero cliente marchio" ". categoria marchio";
-    row-gap: 4px;
+  .timeline article {
+    grid-template-columns: 1fr;
     gap: 14px;
+    min-height: 0;
+    box-shadow: 5px 6px 0 0 var(--ink);
   }
-  .indice-numero { grid-area: numero; }
-  .indice-cliente { grid-area: cliente; font-size: clamp(21px, 6vw, 30px); }
-  .indice-categoria { grid-area: categoria; }
-  .indice-marchio { grid-area: marchio; height: 40px; }
-  .indice-freccia { display: none; }
+  /* Da telefono il numero grande sparisce: la riga "Passo 0N" lo dice gia',
+     e su 360px di larghezza due volte lo stesso numero e' solo ingombro. */
+  .timeline .tappa-numero { display: none; }
+  .timeline article:nth-child(1) { top: 88px; }
+  .timeline article:nth-child(2) { top: 140px; }
+  .timeline article:nth-child(3) { top: 192px; }
+  .timeline article:nth-child(4) { top: 244px; }
+}
+
+/* ============================================================
+   Il racconto che si accende parola per parola.
+
+   La linea temporale sta sulla sezione, non sul singolo paragrafo: una
+   frase alta 75px offre 75px di scorrimento, cioe' mezzo giro di rotella
+   per accendere ventidue parole — un lampo, non una lettura. La sezione ne
+   offre cinquecento, e la stessa animazione diventa leggibile.
+
+   Ogni paragrafo prende il proprio tratto (primo, secondo, terzo), e
+   dentro al tratto l'indice della parola sposta l'accensione in avanti.
+   Tutti i valori restano sotto il 100%: oltre, il browser li aggancia al
+   fondo della fase e le ultime parole si accenderebbero insieme.
+   ============================================================ */
+.parola { display: inline-block; }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .story { view-timeline-name: --racconto; view-timeline-axis: block; }
+    /* Lo stato spento vive nei fotogrammi, non nella regola: cosi' il colore
+       di base resta quello pieno. Se la linea temporale non si attacca —
+       niente contenitore di scorrimento, un `overflow` cambiato sotto —
+       l'animazione semplicemente non si applica e il testo resta leggibile,
+       invece di restare inchiodato al 20% di opacita' per sempre. */
+    .story-copy .parola {
+      --spento: rgba(23, 18, 13, .2);
+      animation: parola-si-accende linear both;
+      animation-timeline: --racconto;
+    }
+    .story-copy p:nth-child(1) .parola {
+      animation-range: entry calc(20% + var(--parola) * 1.2%) entry calc(40% + var(--parola) * 1.2%);
+    }
+    .story-copy p:nth-child(2) .parola {
+      animation-range: entry calc(40% + var(--parola) * .9%) entry calc(58% + var(--parola) * .9%);
+    }
+    .story-copy p:nth-child(3) .parola {
+      animation-range: entry calc(66% + var(--parola) * 1.1%) entry calc(82% + var(--parola) * 1.1%);
+    }
+    /* L'ultimo paragrafo e' gia' corallo: spegnerlo verso il grigio
+       dell'inchiostro lo farebbe cambiare tinta, non intensita'. */
+    .story-copy .name-origin .parola { --spento: rgba(196, 31, 36, .22); }
+    @keyframes parola-si-accende {
+      from { color: var(--spento); }
+      to { color: inherit; }
+    }
+  }
 }

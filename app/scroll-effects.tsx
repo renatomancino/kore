@@ -87,21 +87,17 @@ export function ScrollEffects() {
         },
       });
 
-      ScrollTrigger.batch(".timeline article", {
-        start: "top 90%",
-        once: true,
-        onEnter: (items) => {
-          gsap.from(items, {
-            x: -24,
-            opacity: 0,
-            duration: 0.65,
-            stagger: 0.08,
-            ease: "power2.out",
-          });
-        },
-      });
+      /* Le tappe del metodo non entrano piu' in dissolvenza: adesso si
+         impilano una sull'altra restando incollate in alto, e una carta che
+         parte da `opacity: 0` mentre quella sotto e' gia' ferma lascia
+         vedere attraverso la pila. La coreografia ce l'hanno gia' loro. */
 
-      gsap.to(".map-art", {
+      /* La parallasse va su cio' che sta DENTRO al riquadro, non sul riquadro.
+         Spostando `.map-art` si spostava il pannello intero: il suo bordo
+         inferiore finiva 15px piu' in basso di quello della colonna di testo
+         accanto, e nell'angolo si vedeva il rosso della sezione dopo. Muovendo
+         il contenuto il movimento resta e i due bordi restano allineati. */
+      gsap.to(".map-art > *", {
         yPercent: 5,
         ease: "none",
         scrollTrigger: {
