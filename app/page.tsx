@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatedCounter } from "./animated-counter";
-import { IndiceProgetti } from "./indice-progetti";
+import { CaroselloProgetti } from "./carosello-progetti";
+import { TestoRivelato } from "./testo-rivelato";
 import { VesuvioMare } from "./ornaments";
 import { AdaptiveBrand } from "./adaptive-brand";
 import { ScrollEffects } from "./scroll-effects";
@@ -178,7 +179,7 @@ export default function Home() {
           <p>Una selezione di identità, contenuti e progetti costruiti insieme ai nostri clienti.</p>
         </div>
 
-        <IndiceProgetti />
+        <CaroselloProgetti />
 
 
         <Link className="all-projects-link" href="/progetti">
@@ -194,7 +195,14 @@ export default function Home() {
         <p className="kicker">Come lavoriamo</p><h2>Un processo chiaro.<br />Ogni volta diverso.</h2>
         <div className="timeline">
           {process.map(([number, title, text]) => (
-            <article key={number}><span>{number}</span><div className="timeline-dot" /><h3>{title}</h3><p>{text}</p></article>
+            <article key={number}>
+              <span className="tappa-numero" aria-hidden="true">{number}</span>
+              <div className="tappa-testo">
+                <p className="tappa-passo">Passo {number}</p>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </div>
+            </article>
           ))}
         </div>
       </section>
@@ -205,9 +213,9 @@ export default function Home() {
           <h2>Le persone giuste.<br />Per il progetto giusto.</h2>
         </div>
         <div className="story-copy">
-          <p>Kore non è un ufficio pieno di persone che fingono di essere un’agenzia.</p>
-          <p>È una struttura agile che mette insieme le competenze giuste per ogni progetto. Una regia unica, un network vivo, nessuna formula prefabbricata.</p>
-          <p className="name-origin">Kore significa “fanciulla”: energia che nasce, cambia forma e diventa possibilità.</p>
+          <p><TestoRivelato>Kore non è un ufficio pieno di persone che fingono di essere un’agenzia.</TestoRivelato></p>
+          <p><TestoRivelato>È una struttura agile che mette insieme le competenze giuste per ogni progetto. Una regia unica, un network vivo, nessuna formula prefabbricata.</TestoRivelato></p>
+          <p className="name-origin"><TestoRivelato>Kore significa “fanciulla”: energia che nasce, cambia forma e diventa possibilità.</TestoRivelato></p>
         </div>
       </section>
 
