@@ -9,8 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const REVEAL_GROUPS = [
   ".section-heading",
-  ".many-things > .kicker, .many-things > h2",
-  ".service-explorer",
   ".numbers > .kicker, .numbers > h2",
   ".numbers-grid",
   ".selected-projects-heading",
@@ -21,8 +19,6 @@ const REVEAL_GROUPS = [
   ".story-copy",
   ".partner-intro",
   ".partner-rail",
-  ".location-copy",
-  ".final-cta > .kicker, .final-cta > h2, .final-cta > .giant-link",
 ].join(",");
 
 /**
@@ -92,22 +88,15 @@ export function ScrollEffects() {
          parte da `opacity: 0` mentre quella sotto e' gia' ferma lascia
          vedere attraverso la pila. La coreografia ce l'hanno gia' loro. */
 
-      /* La parallasse va su cio' che sta DENTRO al riquadro, non sul riquadro.
-         Spostando `.map-art` si spostava il pannello intero: il suo bordo
-         inferiore finiva 15px piu' in basso di quello della colonna di testo
-         accanto, e nell'angolo si vedeva il rosso della sezione dopo. Muovendo
-         il contenuto il movimento resta e i due bordi restano allineati. */
-      gsap.to(".map-art > *", {
-        yPercent: 5,
-        ease: "none",
-        scrollTrigger: {
-          trigger: ".location",
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.8,
-        },
-      });
     });
+
+    /* Su telefono lo scroll nativo e' piu' preciso, soprattutto con ancore e
+       gesture brevi. L'inerzia personalizzata resta solo sui dispositivi con
+       puntatore fine, dove accompagna le sezioni orizzontali senza amplificare
+       lo spostamento di un dito. */
+    if (!window.matchMedia("(min-width: 901px) and (pointer: fine)").matches) {
+      return () => context.revert();
+    }
 
     const lenis = new Lenis({ duration: 1.05, smoothWheel: true });
     lenis.on("scroll", ScrollTrigger.update);

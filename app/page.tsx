@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { CaroselloProgetti } from "./carosello-progetti";
 import { TestoRivelato } from "./testo-rivelato";
-import { VesuvioMare } from "./ornaments";
 import { AdaptiveBrand } from "./adaptive-brand";
+import { ClosingCta } from "./closing-cta";
 import { ScrollEffects } from "./scroll-effects";
-import { ServiceShowcase } from "./service-showcase";
+import { ServiceScrollShowcase } from "./service-scroll-showcase";
 import { services } from "./services-data";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
+import { ProjectStream } from "./project-stream";
 import { VideoShowcase } from "./video-showcase";
 
 
@@ -31,7 +31,6 @@ const process = [
 ];
 
 export default function Home() {
-  const [activeService, setActiveService] = useState(0);
   const [activeClient, setActiveClient] = useState(0);
 
   return (
@@ -78,7 +77,7 @@ export default function Home() {
 
       <nav className="service-index-bar" aria-label="Indice dei servizi Kore">
         {services.map((service, index) => (
-          <a href="#servizi" key={service.name} onClick={() => setActiveService(index)}>
+          <a href="#servizi" key={service.name}>
             <span>0{index + 1}</span>{service.name}
           </a>
         ))}
@@ -133,39 +132,15 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="many-things section-pad" id="servizi">
-        <p className="kicker">Competenze, non compartimenti</p>
-        <h2>Non facciamo<br />solo una cosa.</h2>
-        <div className="service-explorer">
-          <div className="service-list" role="list" aria-label="Servizi Kore">
-            {services.map((service, index) => (
-              <button key={service.name} className={index === activeService ? "active" : ""} onMouseEnter={() => setActiveService(index)} onFocus={() => setActiveService(index)} onClick={() => setActiveService(index)}>
-                <span>{service.name}</span><span aria-hidden="true">0{index + 1}</span>
-              </button>
-            ))}
-          </div>
-          <ServiceShowcase service={services[activeService]} key={services[activeService].id} />
-        </div>
-      </section>
+      <ServiceScrollShowcase title="Non facciamo solo una cosa." />
 
-      <section className="selected-projects section-pad" id="progetti">
-        <div className="selected-projects-heading">
-          <div>
-            <p className="kicker">Progetti selezionati</p>
-            <h2>Il lavoro parla.<br /><em>Noi gli diamo voce.</em></h2>
-          </div>
-          <p>Una selezione di identità, contenuti e progetti costruiti insieme ai nostri clienti.</p>
-        </div>
-
-        <CaroselloProgetti />
-
-
-        <Link className="all-projects-link" href="/progetti">
+      <ProjectStream>
+        <Link className="project-stream-link" href="/progetti">
           <span>Archivio completo</span>
           <strong>Vedi tutti i progetti</strong>
           <i aria-hidden="true">↗</i>
         </Link>
-      </section>
+      </ProjectStream>
 
       <VideoShowcase />
 
@@ -214,22 +189,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="location" id="dove">
-        <div className="map-art" aria-hidden="true"><span>40.786</span><span>14.369</span><VesuvioMare /><div className="map-pin">K</div><p>Vesuvio<br />Mediterraneo</p></div>
-        <div className="location-copy"><p className="kicker">Siamo qui</p><h2>Ma lavoriamo<br />ovunque.</h2><p>Torre del Greco — Napoli<br />Campania — Italia</p><a className="text-link" href="https://www.google.com/maps/search/?api=1&query=Torre+del+Greco" target="_blank" rel="noreferrer">Apri la mappa ↗</a></div>
-      </section>
-
-      <section className="final-cta" id="contatti">
-        <p className="kicker">Il prossimo progetto</p>
-        <h2 className="cta-alzati">
-          <span className="riga">Hai un’idea?</span>
-          <span className="riga"><em>Parliamone.</em></span>
-        </h2>
-        <Link className="giant-link" href="/idea">Iniziamo <span>↗</span></Link>
-        <div className="contact-strip">
-          <span>Email · da inserire</span><span>Telefono · da inserire</span><span>Instagram · da collegare</span><span>LinkedIn · da collegare</span>
-        </div>
-      </section>
+      <ClosingCta id="contatti" />
 
       <SiteFooter />
     </main>
