@@ -70,7 +70,6 @@ export function SiteMenu() {
           <Link href="/" onClick={chiudi}>Home</Link>
           <Link href="/progetti" onClick={chiudi}>Progetti</Link>
           <Link href="/#mondo" onClick={chiudi}>Il nostro mondo</Link>
-          <Link href="/#numeri" onClick={chiudi}>Numeri</Link>
           <Link href="/#partner" onClick={chiudi}>Partner</Link>
           <Link className="menu-contact" href="/idea" onClick={chiudi}>Raccontaci la tua idea ↗</Link>
         </div>

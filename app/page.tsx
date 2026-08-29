@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AnimatedCounter } from "./animated-counter";
 import { CaroselloProgetti } from "./carosello-progetti";
 import { TestoRivelato } from "./testo-rivelato";
 import { VesuvioMare } from "./ornaments";
@@ -14,12 +13,6 @@ import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { VideoShowcase } from "./video-showcase";
 
-
-const exampleMetrics = [
-  { value: 1_000_000, suffix: "+", label: "Visualizzazioni potenziali" },
-  { value: 250_000, suffix: "+", label: "Interazioni generate" },
-  { value: 40, suffix: "+", label: "Progetti attivati" },
-];
 
 const clientSlots = [
   { name: "Centro Revisioni TRIM", project: "Centro Revisioni TRIM", image: "/clients/trim.png", tone: "light" },
@@ -153,21 +146,6 @@ export default function Home() {
           </div>
           <ServiceShowcase service={services[activeService]} key={services[activeService].id} />
         </div>
-      </section>
-
-      <section className="numbers section-pad" id="numeri">
-        <p className="kicker">Risultati, non decorazioni</p>
-        <h2>Non ci piace parlare di numeri.<br /><em>Ma questi dicono qualcosa.</em></h2>
-        <div className="numbers-grid" aria-label="Metriche dimostrative animate">
-          {exampleMetrics.map((metric, index) => (
-            <div className="metric" key={metric.label}>
-              <span>0{index + 1}</span>
-              <strong><AnimatedCounter value={metric.value} suffix={metric.suffix} /></strong>
-              <p>{metric.label}</p>
-            </div>
-          ))}
-        </div>
-        <p className="numbers-disclaimer">Valori dimostrativi · da sostituire con dati verificati.</p>
       </section>
 
       <section className="selected-projects section-pad" id="progetti">
