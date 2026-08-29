@@ -16,45 +16,49 @@ import { services } from "./services-data";
  */
 export function SiteMenu() {
   const [aperto, setAperto] = useState(false);
-  const tasto = useRef<HTMLButtonElement>(null);
+  const pannello = useRef<HTMLElement>(null);
 
-  /* Un pannello che copre lo schermo si chiude con Esc: e' la scorciatoia che
-     tutti provano per prima. E il fuoco torna al tasto che l'ha aperto,
-     altrimenti resta appeso a un pannello che non c'e' piu'. */
+  /* Il pannello e' un `popover`: apertura e chiusura le governa il browser
+     tramite `popovertarget`, e con lui arrivano gratis tre cose che prima
+     erano codice mio — o non c'erano affatto.
+     · il top layer, quindi niente piu' duello di z-index fra il tasto e il
+       pannello, che avevo dovuto risolvere a mano con un 41 contro 40;
+     · Esc, nativo;
+     · il clic fuori che chiude, che semplicemente NON funzionava.
+     Resta a noi solo cio' che il popover non fa: sapere se e' aperto, per
+     scrivere "Chiudi" sul tasto, e bloccare lo scorrimento sotto. */
+  useEffect(() => {
+    const p = pannello.current;
+    if (!p) return;
+    const suCambio = (e: Event) => setAperto((e as ToggleEvent).newState === "open");
+    p.addEventListener("toggle", suCambio);
+    return () => p.removeEventListener("toggle", suCambio);
+  }, []);
+
   useEffect(() => {
     if (!aperto) return;
-    const suTasto = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") return;
-      setAperto(false);
-      tasto.current?.focus();
-    };
-    addEventListener("keydown", suTasto);
     /* Con il pannello aperto la pagina sotto non deve scorrere, altrimenti si
        torna indietro e ci si ritrova altrove senza averlo chiesto. */
     document.body.style.overflow = "hidden";
-    return () => {
-      removeEventListener("keydown", suTasto);
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [aperto]);
 
-  const chiudi = () => setAperto(false);
+  const chiudi = () => pannello.current?.hidePopover();
 
   return (
     <>
-      <button
-        ref={tasto}
-        className="menu-toggle"
-        type="button"
-        aria-expanded={aperto}
-        aria-controls="site-menu"
-        onClick={() => setAperto((v) => !v)}
-      >
+      <button className="menu-toggle" type="button" popoverTarget="site-menu">
         <span>{aperto ? "Chiudi" : "Menu"}</span>
         <span className="menu-dot" aria-hidden="true" />
       </button>
 
-      <nav className={`menu-panel ${aperto ? "is-open" : ""}`} id="site-menu" aria-hidden={!aperto}>
+      <nav className="menu-panel" id="site-menu" popover="auto" ref={pannello}>
+        {/* Il pannello sta nel top layer, quindi copre il tasto della testata:
+            la chiusura vive qui dentro, nello stesso punto dello schermo. */}
+        <button className="menu-toggle menu-chiudi" type="button" popoverTarget="site-menu">
+          <span>Chiudi</span>
+          <span className="menu-dot" aria-hidden="true" />
+        </button>
         <div className="menu-column">
           <p>Cosa facciamo</p>
           {services.map((voce) => (
