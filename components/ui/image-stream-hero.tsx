@@ -91,9 +91,12 @@ export function ImageStreamHero({
         style={{ perspective: `${geometry.perspective}cqw`, perspectiveOrigin: `50% ${axis}%` }}
       >
         <div className="image-stream-plane">
-          {[right, left].map((animationName) =>
+          {[right, left].map((animationName, directionIndex) =>
             Array.from({ length: cards }, (_, index) => {
-              const image = images.length ? images[index % images.length] : undefined;
+              /* Le due corsie pescano immagini alternate: in questo modo il
+                 corridoio può mostrare l'intero archivio senza duplicare ogni
+                 fotografia su entrambi i lati. */
+              const image = images.length ? images[(index * 2 + directionIndex) % images.length] : undefined;
               return (
                 <div
                   className={`image-stream-card ${cardClass}`}
@@ -107,7 +110,7 @@ export function ImageStreamHero({
                     marginTop: `${-geometry.cardHeight / 2}cqw`,
                     borderRadius: `${geometry.cardRadius}cqw`,
                     animation: `${animationName} ${speed}s linear infinite`,
-                    animationDelay: `${-(index * speed) / cards}s`,
+                    animationDelay: `${-((index + directionIndex * 0.5) * speed) / cards}s`,
                   }}
                 >
                   {image ? <img src={image.src} alt={image.alt ?? ""} loading="lazy" decoding="async" draggable={false} /> : null}

@@ -52,6 +52,11 @@ export const projects: Project[] = [
       { src: "/projects/panariello/logo-social.jpg", alt: "Logo Panariello nel formato social" },
       { src: "/projects/panariello/panariello-color.png", alt: "Logo Panariello a colori" },
       { src: "/projects/panariello/panariello-symbol.png", alt: "Pittogramma Panariello a colori" },
+      { src: "/projects/panariello/panariello-black.png", alt: "Logo Panariello nero" },
+      { src: "/projects/panariello/panariello-white.png", alt: "Logo Panariello bianco" },
+      { src: "/projects/panariello/panariello-symbol-black.png", alt: "Pittogramma Panariello nero" },
+      { src: "/projects/panariello/panariello-symbol-white.png", alt: "Pittogramma Panariello bianco" },
+      { src: "/projects/panariello/panariello-application.png", alt: "Applicazione del sistema visivo Panariello" },
     ],
   },
   {
@@ -107,7 +112,7 @@ export const projects: Project[] = [
     tone: "photo",
     summary: "Un racconto fotografico dal vivo che restituisce persone, atmosfera e dettagli dell’esperienza.",
     services: ["Produzione eventi", "Reportage fotografico", "Content selection"],
-    gallery: Array.from({ length: 12 }, (_, index) => ({
+    gallery: Array.from({ length: 48 }, (_, index) => ({
       src: `/projects/gender-event/gender-${String(index + 1).padStart(2, "0")}.jpg`,
       alt: `Reportage dell’evento Gender ${index + 1}`,
     })),

@@ -31,18 +31,18 @@ const reels: Reel[] = [
     src: "/videos/client-work/lancio-finestra.mp4",
   },
   {
-    client: "Creative direction",
-    title: "Dal concept alla scena",
-    category: "Campaign",
-    poster: "/images/stage.jpg",
-    src: "/videos/social/fashion-red.mp4",
+    client: "Osteria Annunziata",
+    title: "E tu lo sapevi?",
+    category: "Reel / Storytelling",
+    poster: "/projects/osteria-annunziata/osteria-1.jpg",
+    src: "/projects/osteria-annunziata/e-tu-lo-sapevi.mp4",
   },
   {
-    client: "Brand stories",
-    title: "Le persone dentro il progetto",
-    category: "Content",
-    poster: "/images/designer.jpg",
-    src: "/videos/social/abstract-ink.mp4",
+    client: "Osteria Annunziata",
+    title: "Miracolo in cucina",
+    category: "Reel / Food",
+    poster: "/projects/osteria-annunziata/osteria-2.jpg",
+    src: "/projects/osteria-annunziata/miracolo.mp4",
   },
 ];
 

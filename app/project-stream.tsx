@@ -2,10 +2,20 @@ import type { ReactNode } from "react";
 import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 
 const projectImages = [
-  { src: "/images/designer.jpg", alt: "Backstage di una produzione creativa Kore" },
-  { src: "/images/event.jpg", alt: "Reportage fotografico di un evento" },
-  { src: "/images/stage.jpg", alt: "Fotografia di palco e spettacolo" },
-  { src: "/images/camera.jpg", alt: "Regia e produzione sul campo" },
+  ...Array.from({ length: 48 }, (_, index) => ({
+    src: `/projects/gender-event/gender-${String(index + 1).padStart(2, "0")}.jpg`,
+    alt: `Reportage fotografico dell’evento Gender ${index + 1}`,
+  })),
+  ...Array.from({ length: 9 }, (_, index) => ({
+    src: `/projects/trim/trim-${String(index + 1).padStart(2, "0")}.jpg`,
+    alt: `Scatto del progetto TRIM ${index + 1}`,
+  })),
+  ...Array.from({ length: 4 }, (_, index) => ({
+    src: `/projects/osteria-annunziata/osteria-${index + 1}.jpg`,
+    alt: `Scatto per Osteria Annunziata ${index + 1}`,
+  })),
+  { src: "/projects/panariello/logo-social.jpg", alt: "Applicazione social del logo Panariello" },
+  { src: "/projects/panariello/panariello-application.png", alt: "Applicazione del sistema visivo Panariello" },
 ];
 
 export function ProjectStream({ children }: { children: ReactNode }) {
@@ -13,8 +23,8 @@ export function ProjectStream({ children }: { children: ReactNode }) {
     <section className="project-stream" id="progetti" aria-labelledby="project-stream-title">
       <ImageStreamHero
         images={projectImages}
-        cards={10}
-        speed={23}
+        cards={Math.ceil(projectImages.length / 2)}
+        speed={52}
         axis={54}
         className="project-stream-corridor"
         path={{ cardWidth: 17, cardHeight: 23, exitHeight: 43, railExit: 46 }}
