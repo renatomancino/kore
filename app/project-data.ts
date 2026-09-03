@@ -97,7 +97,6 @@ export const projects: Project[] = [
       { src: "/projects/osteria-annunziata/osteria-2.jpg", alt: "Dettaglio fotografico di Osteria Annunziata" },
       { src: "/projects/osteria-annunziata/miracolo.mp4", alt: "Reel Miracolo di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-2.jpg" },
       { src: "/projects/osteria-annunziata/osteria-3.jpg", alt: "Racconto visivo di Osteria Annunziata" },
-      { src: "/projects/osteria-annunziata/scarpariello.mp4", alt: "Reel Scarpariello di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-3.jpg" },
       { src: "/projects/osteria-annunziata/osteria-4.jpg", alt: "Una portata di Osteria Annunziata" },
       { src: "/projects/osteria-annunziata/tataki.mp4", alt: "Reel Tataki di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-4.jpg" },
     ],
