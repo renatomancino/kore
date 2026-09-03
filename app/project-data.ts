@@ -8,7 +8,7 @@ export type Project = {
   tone: "light" | "dark" | "photo";
   summary: string;
   services: string[];
-  gallery?: { src: string; alt: string; kind?: "image" | "video"; poster?: string }[];
+  gallery?: { src: string; alt: string; kind?: "image" | "video"; poster?: string; group?: string }[];
 };
 
 export const projects: Project[] = [
@@ -23,7 +23,7 @@ export const projects: Project[] = [
     summary: "Un sistema riconoscibile per rendere più chiari servizi, contatti e presenza sul territorio.",
     services: ["Direzione creativa", "Identità visiva", "Presenza digitale"],
     gallery: Array.from({ length: 9 }, (_, index) => ({
-      src: `/projects/trim/trim-${String(index + 1).padStart(2, "0")}.jpg`,
+      src: `/projects/trim/trim-${String(index + 1).padStart(2, "0")}.jpg`, group: index < 3 ? "Rebranding" : "Applicazioni",
       alt: `Applicazione del rebranding TRIM ${index + 1}`,
     })),
   },
@@ -92,8 +92,8 @@ export const projects: Project[] = [
     summary: "Un racconto visivo che mette insieme cucina, luogo e carattere senza perdere autenticità.",
     services: ["Identità", "Fotografia", "Contenuti"],
     gallery: [
-      { src: "/projects/osteria-annunziata/osteria-1.jpg", alt: "Atmosfera e piatti di Osteria Annunziata" },
-      { src: "/projects/osteria-annunziata/e-tu-lo-sapevi.mp4", alt: "Reel E tu lo sapevi di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-1.jpg" },
+      { src: "/projects/osteria-annunziata/osteria-1.jpg", alt: "Atmosfera e piatti di Osteria Annunziata", group: "Fotografie" },
+      { src: "/projects/osteria-annunziata/e-tu-lo-sapevi.mp4", alt: "Reel E tu lo sapevi di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-1.jpg", group: "Video" },
       { src: "/projects/osteria-annunziata/osteria-2.jpg", alt: "Dettaglio fotografico di Osteria Annunziata" },
       { src: "/projects/osteria-annunziata/miracolo.mp4", alt: "Reel Miracolo di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-2.jpg" },
       { src: "/projects/osteria-annunziata/osteria-3.jpg", alt: "Racconto visivo di Osteria Annunziata" },
@@ -116,5 +116,32 @@ export const projects: Project[] = [
       src: `/projects/gender-event/gender-${String(index + 1).padStart(2, "0")}.jpg`,
       alt: `Reportage dell’evento Gender ${index + 1}`,
     })),
+  },
+  {
+    slug: "copa-servizi-grafiche",
+    client: "C.O.P.A.",
+    title: "Un segno per i servizi",
+    category: "Branding · Graphic",
+    year: "2025",
+    cover: "/projects/additional/copa-servizi-grafiche.png",
+    tone: "dark",
+    summary: "Una grafica istituzionale pronta a vivere nei materiali di comunicazione del progetto.",
+    services: ["Graphic design", "Identità visiva", "Materiali di comunicazione"],
+    gallery: [{ src: "/projects/additional/copa-servizi-grafiche.png", alt: "Grafica COPA Servizi" }],
+  },
+  {
+    slug: "disconnection-2-pomigliano",
+    client: "Disconnection 2.0",
+    title: "Un’identità che accende la notte",
+    category: "Branding · Eventi",
+    year: "2025",
+    cover: "/projects/additional/disconnection-pomigliano.png",
+    tone: "dark",
+    summary: "Sistema grafico e varianti del marchio per un’esperienza live riconoscibile.",
+    services: ["Naming", "Logo design", "Visual identity"],
+    gallery: [
+      { src: "/projects/additional/disconnection-pomigliano.png", alt: "Logo Disconnection 2.0 Pomigliano" },
+      { src: "/projects/additional/disconnection-2.png", alt: "Logo Disconnection 2.0" },
+    ],
   },
 ];

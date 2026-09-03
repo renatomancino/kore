@@ -78,15 +78,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <p className="kicker">Dentro il progetto</p>
               <h2>Segni, materia<br />e applicazioni.</h2>
             </header>
-            <div>
-              {project.gallery.map((image, index) => (
-                <figure key={image.src} className={index % 5 === 0 ? "project-gallery-wide" : undefined}>
-                  {image.kind === "video" ? (
-                    <video src={image.src} poster={image.poster} controls preload="metadata" playsInline aria-label={image.alt} />
-                  ) : (
-                    <img src={image.src} alt={image.alt} loading={index > 1 ? "lazy" : "eager"} />
-                  )}
-                </figure>
+            <div className="project-detail-gallery-groups">
+              {Array.from(new Set(project.gallery.map((item) => item.group ?? "Materiali"))).map((group) => (
+                <section className="project-gallery-group" key={group}>
+                  <h3>{group}</h3>
+                  <div>
+                    {project.gallery?.filter((image) => (image.group ?? "Materiali") === group).map((image, index) => (
+                      <figure key={image.src} className={index % 5 === 0 ? "project-gallery-wide" : undefined}>
+                        {image.kind === "video" ? <video src={image.src} poster={image.poster} controls preload="metadata" playsInline aria-label={image.alt} /> : <img src={image.src} alt={image.alt} loading={index > 1 ? "lazy" : "eager"} />}
+                      </figure>
+                    ))}
+                  </div>
+                </section>
               ))}
             </div>
           </section>

@@ -88,6 +88,7 @@ const SCENE: Record<Service["id"], Scena> = {
     finale: (
       <div className="fase-fatto-social">
         <Image src="/projects/gender-event/gender-06.jpg" alt="Contenuto fotografico realizzato durante un evento" fill sizes="30vw" />
+        <Image className="fase-fatto-social-secondary" src="/projects/osteria-annunziata/osteria-1.jpg" alt="Contenuto social per Osteria Annunziata" fill sizes="18vw" />
       </div>
     ),
   },
