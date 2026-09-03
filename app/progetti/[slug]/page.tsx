@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "../../project-data";
@@ -47,22 +48,29 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           <div className="project-detail-heading">
             <p className="kicker">Progetto / {String(projectIndex + 1).padStart(3, "0")}</p>
             <h1>{project.client}</h1>
-            <p>{project.title}</p>
+            <p className="project-detail-subtitle">{project.title}</p>
+            <div className="project-detail-meta" aria-label="Informazioni principali del progetto">
+              <span>{project.category}</span>
+              <span>{project.year}</span>
+            </div>
           </div>
           <div className={`project-detail-cover project-detail-cover-${project.tone}`}>
             {/* Lo stesso nome della scheda da cui si e' arrivati: e' cio' che
                 dice al browser "questo e' quell'elemento, spostatelo" invece
                 di dissolvere una pagina nell'altra. */}
-            <img
+            <Image
               src={project.cover}
               alt={`Identità di ${project.client}`}
+              width={1200}
+              height={900}
+              priority
               style={{ viewTransitionName: `copertina-${project.slug}` }}
             />
           </div>
         </section>
 
         <section className="project-detail-story">
-          <div>
+          <div className="project-detail-story-copy">
             <p className="kicker">Il progetto</p>
             <h2>{project.summary}</h2>
           </div>
@@ -75,10 +83,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         {project.gallery?.length ? (
           <section className="project-detail-gallery" aria-label={`Galleria del progetto ${project.client}`}>
-            <header>
-              <p className="kicker">Dentro il progetto</p>
-              <h2>Segni, materia<br />e applicazioni.</h2>
-            </header>
             <ProjectGallery items={project.gallery} />
           </section>
         ) : (

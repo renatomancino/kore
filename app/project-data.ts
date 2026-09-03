@@ -37,6 +37,9 @@ export const projects: Project[] = [
     tone: "dark",
     summary: "Contenuti e linguaggio visivo costruiti per dare continuità al racconto del brand.",
     services: ["Strategia editoriale", "Content design", "Social media"],
+    gallery: [
+      { src: "/clients/isola-che-non-ce.png", alt: "Identità visiva de L’isola che non c’è", group: "Identità" },
+    ],
   },
   {
     slug: "panariello-falegnameria-sartoriale",
@@ -49,14 +52,14 @@ export const projects: Project[] = [
     summary: "Un’identità capace di comunicare precisione artigianale, materia e progetto su misura.",
     services: ["Posizionamento", "Sistema visivo", "Contenuti"],
     gallery: [
-      { src: "/projects/panariello/logo-social.jpg", alt: "Logo Panariello nel formato social" },
-      { src: "/projects/panariello/panariello-color.png", alt: "Logo Panariello a colori" },
-      { src: "/projects/panariello/panariello-symbol.png", alt: "Pittogramma Panariello a colori" },
-      { src: "/projects/panariello/panariello-black.png", alt: "Logo Panariello nero" },
-      { src: "/projects/panariello/panariello-white.png", alt: "Logo Panariello bianco" },
-      { src: "/projects/panariello/panariello-symbol-black.png", alt: "Pittogramma Panariello nero" },
-      { src: "/projects/panariello/panariello-symbol-white.png", alt: "Pittogramma Panariello bianco" },
-      { src: "/projects/panariello/panariello-application.png", alt: "Applicazione del sistema visivo Panariello" },
+      { src: "/projects/panariello/logo-social.jpg", alt: "Logo Panariello nel formato social", group: "Identità" },
+      { src: "/projects/panariello/panariello-color.png", alt: "Logo Panariello a colori", group: "Identità" },
+      { src: "/projects/panariello/panariello-symbol.png", alt: "Pittogramma Panariello a colori", group: "Identità" },
+      { src: "/projects/panariello/panariello-black.png", alt: "Logo Panariello nero", group: "Varianti" },
+      { src: "/projects/panariello/panariello-white.png", alt: "Logo Panariello bianco", group: "Varianti" },
+      { src: "/projects/panariello/panariello-symbol-black.png", alt: "Pittogramma Panariello nero", group: "Varianti" },
+      { src: "/projects/panariello/panariello-symbol-white.png", alt: "Pittogramma Panariello bianco", group: "Varianti" },
+      { src: "/projects/panariello/panariello-application.png", alt: "Applicazione del sistema visivo Panariello", group: "Applicazioni" },
     ],
   },
   {
@@ -69,6 +72,10 @@ export const projects: Project[] = [
     tone: "light",
     summary: "Immagini e contenuti pensati per trasformare prodotto, atmosfera e gesti in una storia coerente.",
     services: ["Art direction", "Produzione fotografica", "Social content"],
+    gallery: [
+      { src: "/clients/pastry-coffee.jpg", alt: "Atmosfera fotografica di Pastry & Coffee", group: "Fotografie" },
+      { src: "/clients/pastry-coffee.png", alt: "Identità visiva di Pastry & Coffee", group: "Identità" },
+    ],
   },
   {
     slug: "primobanco-comunicazione",
@@ -80,6 +87,9 @@ export const projects: Project[] = [
     tone: "light",
     summary: "Una presenza visiva più ordinata e immediata, progettata per accompagnare campagne e contenuti.",
     services: ["Creative direction", "Campagne", "Content design"],
+    gallery: [
+      { src: "/clients/primobanco.png", alt: "Sistema visivo di Primobanco", group: "Identità" },
+    ],
   },
   {
     slug: "osteria-annunziata-territorio",
@@ -94,11 +104,11 @@ export const projects: Project[] = [
     gallery: [
       { src: "/projects/osteria-annunziata/osteria-1.jpg", alt: "Atmosfera e piatti di Osteria Annunziata", group: "Fotografie" },
       { src: "/projects/osteria-annunziata/e-tu-lo-sapevi.mp4", alt: "Reel E tu lo sapevi di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-1.jpg", group: "Video" },
-      { src: "/projects/osteria-annunziata/osteria-2.jpg", alt: "Dettaglio fotografico di Osteria Annunziata" },
-      { src: "/projects/osteria-annunziata/miracolo.mp4", alt: "Reel Miracolo di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-2.jpg" },
-      { src: "/projects/osteria-annunziata/osteria-3.jpg", alt: "Racconto visivo di Osteria Annunziata" },
-      { src: "/projects/osteria-annunziata/osteria-4.jpg", alt: "Una portata di Osteria Annunziata" },
-      { src: "/projects/osteria-annunziata/tataki.mp4", alt: "Reel Tataki di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-4.jpg" },
+      { src: "/projects/osteria-annunziata/osteria-2.jpg", alt: "Dettaglio fotografico di Osteria Annunziata", group: "Fotografie" },
+      { src: "/projects/osteria-annunziata/miracolo.mp4", alt: "Reel Miracolo di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-2.jpg", group: "Video" },
+      { src: "/projects/osteria-annunziata/osteria-3.jpg", alt: "Racconto visivo di Osteria Annunziata", group: "Fotografie" },
+      { src: "/projects/osteria-annunziata/osteria-4.jpg", alt: "Una portata di Osteria Annunziata", group: "Fotografie" },
+      { src: "/projects/osteria-annunziata/tataki.mp4", alt: "Reel Tataki di Osteria Annunziata", kind: "video", poster: "/projects/osteria-annunziata/osteria-4.jpg", group: "Video" },
     ],
   },
   {
