@@ -2,17 +2,17 @@ import type { ReactNode } from "react";
 import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 
 const imageGroups = [
-  Array.from({ length: 48 }, (_, index) => ({
-    src: `/projects/gender-event/gender-${String(index + 1).padStart(2, "0")}.jpg`,
-    alt: `Reportage fotografico dell’evento Gender ${index + 1}`,
+  [1, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48].map((number) => ({
+    src: `/projects/gender-event/gender-${String(number).padStart(2, "0")}.jpg`,
+    alt: `Reportage fotografico dell’evento Gender ${number}`,
   })),
-  Array.from({ length: 9 }, (_, index) => ({
-    src: `/projects/trim/trim-${String(index + 1).padStart(2, "0")}.jpg`,
-    alt: `Scatto del progetto TRIM ${index + 1}`,
+  [1, 3, 5, 7, 9].map((number) => ({
+    src: `/projects/trim/trim-${String(number).padStart(2, "0")}.jpg`,
+    alt: `Scatto del progetto TRIM ${number}`,
   })),
-  Array.from({ length: 4 }, (_, index) => ({
-    src: `/projects/osteria-annunziata/osteria-${index + 1}.jpg`,
-    alt: `Scatto per Osteria Annunziata ${index + 1}`,
+  [1, 3].map((number) => ({
+    src: `/projects/osteria-annunziata/osteria-${number}.jpg`,
+    alt: `Scatto per Osteria Annunziata ${number}`,
   })),
   [
     { src: "/projects/panariello/logo-social.jpg", alt: "Applicazione social del logo Panariello" },
