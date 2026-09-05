@@ -3990,7 +3990,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 /* ============================================================
    L'archivio come pellicole.
    Ogni progetto e' una riga che scorre di lato per conto suo, con le frecce
-   e l'indice del browser: `::scroll-button()` e `::scroll-marker`. Prima
+   e l'indice numerato del browser, `::scroll-marker`. Prima
    ogni progetto era una scheda che portava altrove, e per vedere nove
    immagini si cambiava pagina tre volte.
    ============================================================ */
@@ -4016,10 +4016,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   display: grid;
   /* Aree esplicite: senza, il quarto figlio (i dati) andava a capo nella
      prima colonna, cioe' sotto al numero, e sbordava sotto al nome. */
-  grid-template-columns: auto minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1.05fr) minmax(0, 1fr) auto;
   grid-template-areas:
-    "numero nome sommario"
-    "numero nome dati";
+    "numero nome sommario frecce"
+    "numero nome dati     frecce";
   gap: clamp(10px, 1.4vw, 20px) clamp(18px, 2.6vw, 48px);
   align-items: end;
 }
@@ -4027,6 +4027,29 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .progetto-nome { grid-area: nome; min-width: 0; }
 .progetto-sommario { grid-area: sommario; align-self: end; }
 .progetto-dati { grid-area: dati; align-self: start; }
+
+/* Le frecce stanno in testata e non sopra le immagini: fuori dalla pista non
+   competono con le fotografie, restano allo stesso posto a ogni larghezza, e
+   si vedono prima ancora di guardare la pellicola. */
+.progetto-frecce { grid-area: frecce; align-self: center; display: flex; gap: 8px; }
+.progetto-frecce button {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 17px;
+  cursor: pointer;
+  transition: background .2s ease, opacity .2s ease;
+}
+.progetto-frecce button:hover:not(:disabled) { background: var(--red); }
+/* A fondo corsa resta visibile, spenta: sparire toglierebbe meta' dell'indizio
+   che la pellicola si scorre. */
+.progetto-frecce button:disabled { opacity: .2; cursor: default; }
 .progetto-numero {
   font-family: var(--serif);
   font-weight: 900;
@@ -4061,11 +4084,6 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .progetto-dati div { display: flex; gap: 7px; align-items: baseline; }
 .progetto-dati dt { font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--red-testo); }
 .progetto-dati dd { margin: 0; font-size: 12px; }
-
-/* I tasti di scorrimento si ancorano al primo antenato posizionato, e non
-   alla pista: metterla `position: relative` non li sposta di un pixel —
-   provato. Serve un contenitore intorno. */
-.pista { position: relative; }
 
 .pellicola {
   counter-reset: fotogramma;
@@ -4130,41 +4148,6 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 
 /* Le frecce. `content` non e' decorazione: senza, il tasto non nasce.
    Si spengono da sole a fondo corsa. */
-/* Le frecce stavano sopra la pellicola, con un `top` negativo: finivano
-   addosso al primo fotogramma e nessuno le trovava. Ora stanno a meta'
-   dell'immagine, appoggiate ai due bordi, dove un carosello le ha sempre
-   avute.
-   Non `top: 50%`: meta' del contenitore comprenderebbe anche l'indice
-   numerato sotto. Il fotogramma e' largo `clamp(...)` e alto 5/4 di quello,
-   quindi meta' della sua altezza vale .625 volte la larghezza. */
-.pellicola::scroll-button(*) {
-  position: absolute;
-  top: calc(clamp(240px, 27vw, 360px) * .625);
-  translate: 0 -50%;
-  width: 52px;
-  height: 52px;
-  display: grid;
-  place-items: center;
-  /* Inchiostro, non panna. Le frecce cadono nel margine della pista, quindi
-     sopra la carta della sezione — e panna su carta sono #ffecc5 su #f6f0e5,
-     cioe' un tondo che non si vede. Scure si staccano da tutto: dalla carta
-     qui intorno e dalle fotografie se ci finiscono sopra. */
-  border: 0;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: 18px;
-  cursor: pointer;
-  box-shadow: 0 8px 26px rgba(23, 18, 13, .3);
-  transition: background .25s ease, opacity .25s ease;
-}
-.pellicola::scroll-button(*):hover:not(:disabled) { background: var(--red); }
-/* A fondo corsa resta visibile, spenta: sparire del tutto toglie meta'
-   dell'indizio che la pista si scorre. */
-.pellicola::scroll-button(*):disabled { opacity: .22; cursor: default; }
-.pellicola::scroll-button(left) { content: "\2190"; left: 12px; }
-.pellicola::scroll-button(right) { content: "\2192"; right: 12px; }
-
 .pellicola::scroll-marker-group {
   display: flex;
   flex-wrap: wrap;
@@ -4225,6 +4208,8 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   }
   .pellicola { padding-inline: 18px; scroll-padding-inline-start: 18px; }
   .fotogramma { flex-basis: 74vw; }
-  .pellicola::scroll-button(*) { display: none; }
+  /* Da telefono si trascina col dito: due tondi in piu' sarebbero solo
+     ingombro in una testata gia' stretta. */
+  .progetto-frecce { display: none; }
   .pellicola::scroll-marker-group { padding-inline: 18px; }
 }

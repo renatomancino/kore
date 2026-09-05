@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "./project-data";
@@ -10,9 +13,13 @@ import type { Project } from "./project-data";
  * nel successivo. Qui l'archivio si guarda tutto restando dov'e' — ogni riga
  * scorre di lato per conto suo.
  *
- * Le frecce sono `::scroll-button()`, l'indice numerato `::scroll-marker`:
- * primitive del browser, quindi tastiera, fuoco, ruolo di gruppo e frecce
- * spente a fondo corsa arrivano gia' fatte, e non c'e' JavaScript da caricare.
+ * L'indice numerato sotto e' ancora `::scroll-marker`, che funziona e non
+ * costa niente. Le frecce no: erano `::scroll-button()`, e quei tasti si
+ * ancorano a un blocco contenitore che non sono riuscito a prevedere — a una
+ * larghezza cadevano al centro dell'immagine, a un'altra finivano tagliati al
+ * bordo dello schermo. Un comando che l'utente non trova non e' un comando,
+ * quindi qui sono due `<button>` veri in testata: costano poche righe di
+ * JavaScript e stanno esattamente dove li metto.
  *
  * Le immagini sono pigre di default (`next/image`), e in una pista
  * orizzontale quelle fuori schermo restano fuori: l'archivio intero conta
@@ -20,6 +27,38 @@ import type { Project } from "./project-data";
  * decine di megabyte.
  */
 export function CaroselloProgetto({ progetto, numero }: { progetto: Project; numero: number }) {
+  const pista = useRef<HTMLOListElement>(null);
+  const [aInizio, setAInizio] = useState(true);
+  const [aFine, setAFine] = useState(false);
+
+  useEffect(() => {
+    const p = pista.current;
+    if (!p) return;
+    const aggiorna = () => {
+      /* Un pixel di tolleranza: lo scorrimento con aggancio si ferma su
+         valori frazionari, e un confronto esatto lascerebbe la freccia
+         accesa a fondo corsa. */
+      setAInizio(p.scrollLeft <= 1);
+      setAFine(p.scrollLeft >= p.scrollWidth - p.clientWidth - 1);
+    };
+    aggiorna();
+    p.addEventListener("scroll", aggiorna, { passive: true });
+    const osservatore = new ResizeObserver(aggiorna);
+    osservatore.observe(p);
+    return () => {
+      p.removeEventListener("scroll", aggiorna);
+      osservatore.disconnect();
+    };
+  }, []);
+
+  const muovi = (verso: 1 | -1) => {
+    const p = pista.current;
+    if (!p) return;
+    /* Poco meno di una schermata: cosi' resta in vista un fotogramma di
+       quelli appena visti, e non si perde il filo. */
+    p.scrollBy({ left: verso * p.clientWidth * 0.82, behavior: "smooth" });
+  };
+
   /* Un progetto senza galleria mostra almeno la propria copertina: una
      pellicola vuota sarebbe una riga che non dice niente. */
   const pezzi = progetto.gallery?.length
@@ -45,17 +84,24 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
           <div><dt>Anno</dt><dd>{progetto.year}</dd></div>
           <div><dt>Competenze</dt><dd>{progetto.services.join(" · ")}</dd></div>
         </dl>
+
+        {pezzi.length > 1 && (
+          <div className="progetto-frecce">
+            <button type="button" onClick={() => muovi(-1)} disabled={aInizio} aria-label={`Materiali precedenti di ${progetto.client}`}>
+              <span aria-hidden="true">←</span>
+            </button>
+            <button type="button" onClick={() => muovi(1)} disabled={aFine} aria-label={`Altri materiali di ${progetto.client}`}>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        )}
       </header>
 
       {/* Sopra la dozzina i numerini diventano una parete: l'indice passa a
           pallini, che dicono "quanti" e "dove sei" senza pretendere di essere
           letti uno per uno. Gender ne ha quarantotto. */}
-      {/* Il contenitore serve alle frecce: i tasti di scorrimento escono dal
-          contesto di posizionamento della pista e si ancorano al primo
-          antenato posizionato, che senza questo era l'intera riga — testata
-          compresa — e le mandava sessanta pixel sopra le immagini. */}
       <div className="pista">
-        <ol className={`pellicola${pezzi.length > 12 ? " pellicola-lunga" : ""}`}>
+        <ol className={`pellicola${pezzi.length > 12 ? " pellicola-lunga" : ""}`} ref={pista}>
         {pezzi.map((pezzo, i) => (
             <li className="fotogramma" key={`${pezzo.src}-${i}`}>
             <figure data-fit={pezzo.fit ?? (pezzo.src.endsWith(".png") ? "contain" : "cover")}>
