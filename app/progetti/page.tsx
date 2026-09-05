@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "../project-data";
+import { CaroselloProgetto } from "../carosello-progetto";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
@@ -37,32 +38,15 @@ export default function ProjectsPage() {
         <span>Tutti</span><span>Branding</span><span>Content</span><span>Social</span><span>Photo</span><span>Web</span>
       </nav>
 
-      <section className="project-archive-grid" aria-label="Tutti i progetti Kore">
+      {/* Un carosello per progetto, invece di una scheda che porta altrove:
+          l'archivio si guarda tutto restando qui. Le pagine di dettaglio
+          restano al loro posto e raggiungibili — il titolo di ogni progetto
+          ci porta — ma non sono piu' l'unico modo di vedere il lavoro. */}
+      <div className="archivio-pellicole">
         {projects.map((project, index) => (
-          <Link className={`archive-project-card archive-project-card-${project.tone}`} href={`/progetti/${project.slug}`} key={project.slug} data-transizione>
-            <div className="archive-project-visual">
-              {/* Il nome e' per progetto, non per pagina: nell'archivio ce ne
-                  sono sei contemporaneamente, e due elementi con lo stesso
-                  nome nella stessa pagina annullano la transizione. */}
-              <img
-                src={project.cover}
-                alt={`Identità di ${project.client}`}
-                style={{ viewTransitionName: `copertina-${project.slug}` }}
-              />
-              <span>0{index + 1}</span>
-            </div>
-            <div className="archive-project-copy">
-              <p>{project.category} · {project.year}</p>
-              <h2>{project.client}</h2>
-              <p className="archive-project-summary">{project.summary}</p>
-              <div className="archive-project-meta">
-                <span>{project.title}</span>
-                <i aria-hidden="true">↗</i>
-              </div>
-            </div>
-          </Link>
+          <CaroselloProgetto progetto={project} numero={index + 1} key={project.slug} />
         ))}
-      </section>
+      </div>
 
       <section className="archive-cta">
         <p>Il prossimo progetto potrebbe essere il tuo.</p>
