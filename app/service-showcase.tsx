@@ -5,6 +5,10 @@ export type Service = {
   id: "branding" | "social" | "video" | "web" | "advertising" | "eventi";
   name: string;
   note: string;
+  /* Le tre voci che dicono cosa comprende il servizio. Stanno accanto al
+     servizio e non in un `Record` dentro alla sezione che le disegna: li'
+     dentro, una seconda sezione che volesse elencarle dovrebbe copiarle. */
+  dettagli: [string, string, string];
 };
 
 type ServiceVisual = {
