@@ -8,7 +8,7 @@ export type Project = {
   tone: "light" | "dark" | "photo";
   summary: string;
   services: string[];
-  gallery?: { src: string; alt: string; kind?: "image" | "video"; poster?: string; group?: string }[];
+  gallery?: { src: string; alt: string; kind?: "image" | "video"; poster?: string; group?: string; fit?: "contain" | "cover" }[];
 };
 
 export const projects: Project[] = [
@@ -22,10 +22,23 @@ export const projects: Project[] = [
     tone: "light",
     summary: "Un sistema riconoscibile per rendere più chiari servizi, contatti e presenza sul territorio.",
     services: ["Direzione creativa", "Identità visiva", "Presenza digitale"],
-    gallery: Array.from({ length: 9 }, (_, index) => ({
-      src: `/projects/trim/trim-${String(index + 1).padStart(2, "0")}.jpg`, group: index < 3 ? "Rebranding" : "Applicazioni",
-      alt: `Applicazione del rebranding TRIM ${index + 1}`,
-    })),
+    /* Erano nove immagini con la stessa didascalia — "Applicazione del
+       rebranding TRIM 1..9" — e un raggruppamento che divideva le prime tre
+       dalle altre senza che nulla, nelle immagini, lo giustificasse: sono
+       tutte e nove applicazioni del marchio. Scritte una per una perche' la
+       didascalia e' cio' che legge chi non vede la figura, e "applicazione
+       numero 4" non e' una descrizione. */
+    gallery: [
+      { src: "/projects/trim/trim-01.jpg", alt: "Biglietti da visita TRIM", group: "Stampa" },
+      { src: "/projects/trim/trim-09.jpg", alt: "Carta intestata con il timbro dell’officina", group: "Stampa" },
+      { src: "/projects/trim/trim-03.jpg", alt: "Insegna a bandiera sopra l’ingresso", group: "Insegne" },
+      { src: "/projects/trim/trim-05.jpg", alt: "Totem del marchio contro il cielo", group: "Insegne" },
+      { src: "/projects/trim/trim-02.jpg", alt: "Cartellone del marchio sulla facciata di un edificio", group: "Insegne" },
+      { src: "/projects/trim/trim-04.jpg", alt: "Il furgone dell’officina con la livrea TRIM", group: "Mezzi e divise" },
+      { src: "/projects/trim/trim-08.jpg", alt: "Polo da lavoro col marchio ricamato", group: "Mezzi e divise" },
+      { src: "/projects/trim/trim-07.jpg", alt: "Spille col pittogramma TRIM", group: "Gadget" },
+      { src: "/projects/trim/trim-06.jpg", alt: "Penna personalizzata TRIM", group: "Gadget" },
+    ],
   },
   {
     slug: "isola-che-non-ce-racconto",
@@ -88,7 +101,20 @@ export const projects: Project[] = [
     summary: "Una presenza visiva più ordinata e immediata, progettata per accompagnare campagne e contenuti.",
     services: ["Creative direction", "Campagne", "Content design"],
     gallery: [
-      { src: "/clients/primobanco.png", alt: "Sistema visivo di Primobanco", group: "Identità" },
+      { src: "/projects/primobanco/logo-esteso.webp", alt: "Il logo esteso di Primobanco", group: "Identità", fit: "contain" },
+      { src: "/projects/primobanco/marchio.webp", alt: "Il marchio: la saetta dentro al parallelogramma", group: "Identità", fit: "contain" },
+      { src: "/projects/primobanco/palette.webp", alt: "La cartella colori del marchio, con i riferimenti Pantone", group: "Identità", fit: "contain" },
+      { src: "/projects/primobanco/icona-arancio.webp", alt: "L’icona su fondo arancio", group: "Varianti" },
+      { src: "/projects/primobanco/icona-blu.webp", alt: "L’icona su fondo blu", group: "Varianti" },
+      { src: "/projects/primobanco/mockup-cartellone.webp", alt: "Il marchio su un cartellone stradale", group: "Applicazioni" },
+      { src: "/projects/primobanco/mockup-scrivania.webp", alt: "Il sistema applicato alla cancelleria: carta intestata, biglietti, cartellina", group: "Applicazioni" },
+      { src: "/projects/primobanco/mockup-tshirt.webp", alt: "Il marchio su una t-shirt", group: "Applicazioni" },
+      { src: "/projects/primobanco/mockup-penne.webp", alt: "Penne personalizzate col marchio", group: "Applicazioni" },
+      { src: "/projects/primobanco/post-selezioni.webp", alt: "Il post che annuncia le selezioni partner per Centro e Nord Italia", group: "Social", fit: "contain" },
+      { src: "/projects/primobanco/carosello-consulenza.webp", alt: "Apertura del carosello “Quanto vale la tua consulenza?”", group: "Social", fit: "contain" },
+      { src: "/projects/primobanco/carosello-rete.webp", alt: "Apertura del carosello “Come entrare nella rete Primobanco?”", group: "Social", fit: "contain" },
+      { src: "/projects/primobanco/carosello-sistema.webp", alt: "Apertura del carosello “Primobanco non è una scuola di formazione”", group: "Social", fit: "contain" },
+      { src: "/projects/primobanco/carosello-horeca.webp", alt: "Apertura del carosello sui ritardi nelle aperture HoReCa", group: "Social", fit: "contain" },
     ],
   },
   {
