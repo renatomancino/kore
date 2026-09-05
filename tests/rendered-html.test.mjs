@@ -45,9 +45,10 @@ test("is configured as a native Vercel Next.js project", async () => {
 });
 
 test("provides a projects archive and individual case-study routes", async () => {
-  const [home, archive, detail, data] = await Promise.all([
+  const [home, archive, elenco, detail, data] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/archivio-progetti.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/[slug]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/project-data.ts", import.meta.url), "utf8"),
   ]);
@@ -55,7 +56,15 @@ test("provides a projects archive and individual case-study routes", async () =>
   assert.match(home, /Vedi tutti i progetti/);
   assert.match(home, /href="\/progetti"/);
   assert.match(archive, /Progetti con/);
-  assert.match(archive, /projects\.map/);
+
+  /* Il test chiedeva la stringa `projects.map` dentro alla pagina, e si e'
+     rotto nel momento in cui l'elenco e' passato a un componente suo — senza
+     che l'archivio smettesse un istante di mostrare i progetti. Qui si
+     controlla che la pagina passi la lista intera a chi la disegna, e che
+     chi la disegna la percorra: la stessa garanzia, senza dipendere da quale
+     file contiene il ciclo. */
+  assert.match(archive, /progetti=\{projects\}/);
+  assert.match(elenco, /progetti\.map|visibili\.map/);
   assert.match(detail, /generateStaticParams/);
   assert.match(detail, /generateMetadata/);
   assert.match(data, /trim-identita-digitale/);

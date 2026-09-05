@@ -50,9 +50,14 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
       {/* Sopra la dozzina i numerini diventano una parete: l'indice passa a
           pallini, che dicono "quanti" e "dove sei" senza pretendere di essere
           letti uno per uno. Gender ne ha quarantotto. */}
-      <ol className={`pellicola${pezzi.length > 12 ? " pellicola-lunga" : ""}`}>
+      {/* Il contenitore serve alle frecce: i tasti di scorrimento escono dal
+          contesto di posizionamento della pista e si ancorano al primo
+          antenato posizionato, che senza questo era l'intera riga — testata
+          compresa — e le mandava sessanta pixel sopra le immagini. */}
+      <div className="pista">
+        <ol className={`pellicola${pezzi.length > 12 ? " pellicola-lunga" : ""}`}>
         {pezzi.map((pezzo, i) => (
-          <li className="fotogramma" key={`${pezzo.src}-${i}`}>
+            <li className="fotogramma" key={`${pezzo.src}-${i}`}>
             <figure data-fit={pezzo.fit ?? (pezzo.src.endsWith(".png") ? "contain" : "cover")}>
               {pezzo.kind === "video" ? (
                 <video
@@ -73,8 +78,9 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
               </figcaption>
             </figure>
           </li>
-        ))}
-      </ol>
+          ))}
+        </ol>
+      </div>
     </section>
   );
 }

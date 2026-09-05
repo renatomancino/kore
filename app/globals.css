@@ -1831,12 +1831,31 @@ html.lenis.lenis-stopped { overflow: clip; }
   color: rgba(23, 18, 13, .62);
   backdrop-filter: blur(16px);
 }
-.projects-archive .archive-index span {
+.projects-archive .archive-index button {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
   padding: 10px 14px 9px;
   border: 1px solid rgba(23, 18, 13, .18);
   border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
 }
-.projects-archive .archive-index span:first-child { border-color: var(--ink); background: var(--ink); color: var(--cream); }
+.projects-archive .archive-index button small { font-size: 9px; opacity: .6; font-variant-numeric: tabular-nums; }
+.projects-archive .archive-index button:hover { border-color: var(--ink); color: var(--ink); }
+/* Lo stato acceso lo dice `aria-pressed`, non la posizione nell'elenco: prima
+   era il primo figlio a essere evidenziato per sempre, qualunque cosa
+   premessi. */
+.projects-archive .archive-index button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--cream);
+}
+.projects-archive .archive-index button[aria-pressed="true"] small { opacity: .75; }
 .projects-archive .project-archive-grid {
   padding: clamp(54px, 6vw, 96px) 5vw clamp(100px, 10vw, 170px);
   gap: 22px;
@@ -3254,14 +3273,14 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
      contenitore di scorrimento anche sull'altro, e le linee temporali delle
      stanze si aggancerebbero a lui invece che alla pagina. */
   overflow-x: clip;
-  padding: clamp(72px, 8vw, 132px) 5vw clamp(64px, 7vw, 116px);
+  padding: clamp(52px, 5vw, 88px) 5vw clamp(48px, 4.5vw, 78px);
   background:
     radial-gradient(circle at 84% 10%, rgba(254, 64, 66, .1), transparent 34%),
     linear-gradient(135deg, #f8f2e7 0%, var(--cream) 100%);
   color: var(--ink);
 }
 
-.servizi-intro { max-width: 1320px; margin: 0 auto clamp(46px, 5vw, 88px); }
+.servizi-intro { max-width: 1320px; margin: 0 auto clamp(30px, 3vw, 52px); }
 .servizi-intro .kicker {
   width: fit-content;
   margin: 0 0 18px;
@@ -3276,8 +3295,8 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   max-width: 13ch;
   font-family: var(--serif);
   font-weight: 900;
-  font-size: clamp(39px, 5vw, 82px);
-  line-height: .86;
+  font-size: clamp(34px, 4vw, 64px);
+  line-height: .88;
   letter-spacing: -.04em;
 }
 
@@ -3287,14 +3306,14 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   padding: 0;
   list-style: none;
   display: grid;
-  gap: clamp(52px, 6vw, 112px);
+  gap: clamp(34px, 3.4vw, 62px);
 }
 
 .stanza {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
-  gap: clamp(28px, 4vw, 72px);
+  gap: clamp(24px, 3vw, 54px);
   align-items: center;
 }
 /* Zig-zag: la colonna del testo passa a destra nelle stanze pari. Senza,
@@ -3322,10 +3341,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .stanza-testo { position: relative; z-index: 1; min-width: 0; }
 .stanza-numero {
   display: block;
-  margin-bottom: clamp(12px, 1.4vw, 24px);
+  margin-bottom: clamp(6px, .8vw, 12px);
   font-family: var(--serif);
   font-weight: 900;
-  font-size: clamp(54px, 6.6vw, 108px);
+  font-size: clamp(42px, 4.6vw, 76px);
   line-height: .78;
   letter-spacing: -.05em;
   font-variant-numeric: tabular-nums;
@@ -3336,14 +3355,14 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   margin: 0 0 14px;
   font-family: var(--serif);
   font-weight: 900;
-  font-size: clamp(34px, 3.6vw, 60px);
-  line-height: .94;
+  font-size: clamp(30px, 2.9vw, 48px);
+  line-height: .96;
   letter-spacing: -.03em;
 }
 .stanza-testo > p {
   max-width: 34ch;
-  margin: 0 0 clamp(20px, 2.2vw, 32px);
-  font-size: clamp(16px, 1.35vw, 21px);
+  margin: 0 0 clamp(14px, 1.6vw, 22px);
+  font-size: clamp(15px, 1.15vw, 18px);
   line-height: 1.45;
 }
 .stanza-testo ul {
@@ -3354,7 +3373,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   border-top: 1px solid var(--line);
 }
 .stanza-testo li {
-  padding: 11px 0;
+  padding: 8px 0;
   border-bottom: 1px solid var(--line);
   font-size: 13px;
   line-height: 1.25;
@@ -3367,8 +3386,8 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .stanza-visuale .service-visual {
   position: relative;
   top: auto;
-  height: clamp(410px, 42vw, 600px);
-  border-radius: 26px;
+  height: clamp(300px, 28vw, 400px);
+  border-radius: 22px;
 }
 
 @supports (animation-timeline: view()) {
@@ -3434,7 +3453,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .stanza {
     grid-template-columns: 1fr;
     gap: 30px;
-    padding-top: 46px;
+    padding-top: 30px;
     border-top: 1px solid rgba(23, 18, 13, .18);
   }
   /* Su una colonna sola lo zig-zag non esiste, e invertire l'ordine
@@ -3444,10 +3463,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .stanza-filigrana,
   .stanza:nth-child(even) .stanza-filigrana { left: -4px; right: auto; font-size: 25vw; }
   .stanza-numero { font-size: clamp(64px, 20vw, 104px); }
-  .stanza-testo h3 { font-size: clamp(48px, 14vw, 78px); }
+  .stanza-testo h3 { font-size: clamp(36px, 10vw, 56px); }
   .stanza-testo > p { margin-block: 18px 22px; font-size: 19px; }
   .stanza-testo li { min-height: 44px; padding: 13px 0; font-size: 14px; }
-  .stanza-visuale .service-visual { height: clamp(420px, 108vw, 580px); border-radius: 22px; }
+  .stanza-visuale .service-visual { height: clamp(300px, 80vw, 420px); border-radius: 18px; }
 }
 
 /* Chiusura editoriale prima del footer: nessun Vesuvio illustrato, il luogo
@@ -4094,6 +4113,11 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .progetto-dati dt { font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--red-testo); }
 .progetto-dati dd { margin: 0; font-size: 12px; }
 
+/* I tasti di scorrimento si ancorano al primo antenato posizionato, e non
+   alla pista: metterla `position: relative` non li sposta di un pixel —
+   provato. Serve un contenitore intorno. */
+.pista { position: relative; }
+
 .pellicola {
   counter-reset: fotogramma;
   margin: 0;
@@ -4108,10 +4132,14 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   scroll-snap-type: x mandatory;
   scroll-padding-inline-start: max(5vw, calc((100% - 1320px) / 2 + 5vw));
   scroll-behavior: smooth;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(23, 18, 13, .35) transparent;
   scroll-marker-group: after;
 }
-.pellicola::-webkit-scrollbar { display: none; }
+.pellicola::-webkit-scrollbar { height: 6px; }
+.pellicola::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(23, 18, 13, .3); }
+.pellicola::-webkit-scrollbar-thumb:hover { background: rgba(23, 18, 13, .5); }
+.pellicola::-webkit-scrollbar-track { background: transparent; }
 
 .fotogramma {
   flex: 0 0 clamp(240px, 27vw, 360px);
@@ -4153,25 +4181,36 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 
 /* Le frecce. `content` non e' decorazione: senza, il tasto non nasce.
    Si spengono da sole a fondo corsa. */
+/* Le frecce stavano sopra la pellicola, con un `top` negativo: finivano
+   addosso al primo fotogramma e nessuno le trovava. Ora stanno a meta'
+   dell'immagine, appoggiate ai due bordi, dove un carosello le ha sempre
+   avute.
+   Non `top: 50%`: meta' del contenitore comprenderebbe anche l'indice
+   numerato sotto. Il fotogramma e' largo `clamp(...)` e alto 5/4 di quello,
+   quindi meta' della sua altezza vale .625 volte la larghezza. */
 .pellicola::scroll-button(*) {
   position: absolute;
-  top: calc(-1 * clamp(22px, 2.4vw, 38px) - 46px);
-  width: 42px;
-  height: 42px;
+  top: calc(clamp(240px, 27vw, 360px) * .625);
+  translate: 0 -50%;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(23, 18, 13, .3);
+  /* Fondo pieno e non trasparente: qui sotto ci passano fotografie, e un
+     contorno sottile su un'immagine scura sparisce. */
+  border: 1px solid rgba(23, 18, 13, .18);
   border-radius: 50%;
-  background: transparent;
+  background: var(--cream);
   color: var(--ink);
-  font-size: 15px;
+  font-size: 17px;
   cursor: pointer;
+  box-shadow: 0 6px 22px rgba(23, 18, 13, .22);
   transition: background .25s ease, color .25s ease, border-color .25s ease, opacity .25s ease;
 }
 .pellicola::scroll-button(*):hover:not(:disabled) { background: var(--red); border-color: var(--red); color: var(--cream); }
-.pellicola::scroll-button(*):disabled { opacity: .2; cursor: default; }
-.pellicola::scroll-button(left) { content: "\2190"; right: calc(5vw + 50px); }
-.pellicola::scroll-button(right) { content: "\2192"; right: 5vw; }
+.pellicola::scroll-button(*):disabled { opacity: 0; pointer-events: none; }
+.pellicola::scroll-button(left) { content: "\2190"; left: 12px; }
+.pellicola::scroll-button(right) { content: "\2192"; right: 12px; }
 
 .pellicola::scroll-marker-group {
   display: flex;

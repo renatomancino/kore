@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "../project-data";
-import { CaroselloProgetto } from "../carosello-progetto";
+import { ArchivioProgetti } from "../archivio-progetti";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
@@ -34,19 +34,7 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <nav className="archive-index" aria-label="Categorie presenti nell’archivio">
-        <span>Tutti</span><span>Branding</span><span>Content</span><span>Social</span><span>Photo</span><span>Web</span>
-      </nav>
-
-      {/* Un carosello per progetto, invece di una scheda che porta altrove:
-          l'archivio si guarda tutto restando qui. Le pagine di dettaglio
-          restano al loro posto e raggiungibili — il titolo di ogni progetto
-          ci porta — ma non sono piu' l'unico modo di vedere il lavoro. */}
-      <div className="archivio-pellicole">
-        {projects.map((project, index) => (
-          <CaroselloProgetto progetto={project} numero={index + 1} key={project.slug} />
-        ))}
-      </div>
+      <ArchivioProgetti progetti={projects} />
 
       <section className="archive-cta">
         <p>Il prossimo progetto potrebbe essere il tuo.</p>
