@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { projects } from "../project-data";
-import { ArchivioProgetti } from "../archivio-progetti";
+import { CaroselloProgetto } from "../carosello-progetto";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
@@ -34,7 +34,13 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <ArchivioProgetti progetti={projects} />
+      {/* Un carosello per progetto. La numerazione e' quella dell'archivio
+          intero, non dell'ordine in cui capitano: "07" resta "07". */}
+      <div className="archivio-pellicole">
+        {projects.map((project, index) => (
+          <CaroselloProgetto progetto={project} numero={index + 1} key={project.slug} />
+        ))}
+      </div>
 
       <section className="archive-cta">
         <p>Il prossimo progetto potrebbe essere il tuo.</p>

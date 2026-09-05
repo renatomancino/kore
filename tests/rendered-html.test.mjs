@@ -48,7 +48,7 @@ test("provides a projects archive and individual case-study routes", async () =>
   const [home, archive, elenco, detail, data] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/archivio-progetti.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/carosello-progetto.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/[slug]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/project-data.ts", import.meta.url), "utf8"),
   ]);
@@ -63,8 +63,8 @@ test("provides a projects archive and individual case-study routes", async () =>
      controlla che la pagina passi la lista intera a chi la disegna, e che
      chi la disegna la percorra: la stessa garanzia, senza dipendere da quale
      file contiene il ciclo. */
-  assert.match(archive, /progetti=\{projects\}/);
-  assert.match(elenco, /progetti\.map|visibili\.map/);
+  assert.match(archive, /projects\.map/);
+  assert.match(elenco, /pezzi\.map/);
   assert.match(detail, /generateStaticParams/);
   assert.match(detail, /generateMetadata/);
   assert.match(data, /trim-identita-digitale/);

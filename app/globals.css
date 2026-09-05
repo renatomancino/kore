@@ -1295,19 +1295,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 .archive-hero-bottom p { max-width: 610px; margin: 0; font-family: var(--serif); font-size: clamp(21px, 2vw, 32px); line-height: 1.12; }
 .archive-hero-bottom span { color: var(--red); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
-.archive-index {
-  padding: 18px 5vw;
-  border-block: 1px solid var(--ink);
-  display: flex;
-  gap: clamp(20px, 4vw, 64px);
-  overflow-x: auto;
-  color: var(--red);
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  font-size: 11px;
-  font-weight: 800;
-}
-.archive-index span { white-space: nowrap; }
 .project-archive-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--ink); }
 .archive-project-card { min-width: 0; padding: clamp(20px, 2.5vw, 42px); border-top: 1px solid var(--ink); }
 .archive-project-card:nth-child(odd) { border-right: 1px solid var(--ink); }
@@ -1377,7 +1364,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 @media (max-width: 520px) {
   .archive-hero { padding-inline: 18px; }
   .archive-hero-bottom { grid-template-columns: 1fr; }
-  .archive-index { padding-inline: 18px; }
   .archive-project-card { padding: 16px 18px 30px; }
   .archive-cta, .archive-footer, .project-detail-hero, .project-detail-story, .project-detail-note, .next-project { padding-inline: 18px; }
   .archive-footer > img { width: 94vw; }
@@ -1820,42 +1806,6 @@ html.lenis.lenis-stopped { overflow: clip; }
   border-radius: 999px;
   background: rgba(253, 64, 66, .08);
 }
-.projects-archive .archive-index {
-  position: sticky;
-  z-index: 10;
-  top: 0;
-  padding: 14px 5vw;
-  gap: 9px;
-  border-color: rgba(23, 18, 13, .22);
-  background: rgba(255, 236, 197, .9);
-  color: rgba(23, 18, 13, .62);
-  backdrop-filter: blur(16px);
-}
-.projects-archive .archive-index button {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 7px;
-  padding: 10px 14px 9px;
-  border: 1px solid rgba(23, 18, 13, .18);
-  border-radius: 999px;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: background .2s ease, color .2s ease, border-color .2s ease;
-}
-.projects-archive .archive-index button small { font-size: 9px; opacity: .6; font-variant-numeric: tabular-nums; }
-.projects-archive .archive-index button:hover { border-color: var(--ink); color: var(--ink); }
-/* Lo stato acceso lo dice `aria-pressed`, non la posizione nell'elenco: prima
-   era il primo figlio a essere evidenziato per sempre, qualunque cosa
-   premessi. */
-.projects-archive .archive-index button[aria-pressed="true"] {
-  border-color: var(--ink);
-  background: var(--ink);
-  color: var(--cream);
-}
-.projects-archive .archive-index button[aria-pressed="true"] small { opacity: .75; }
 .projects-archive .project-archive-grid {
   padding: clamp(54px, 6vw, 96px) 5vw clamp(100px, 10vw, 170px);
   gap: 22px;
@@ -1988,7 +1938,6 @@ html.lenis.lenis-stopped { overflow: clip; }
   .projects-archive .archive-hero h1 { font-size: clamp(68px, 18vw, 92px); }
   .projects-archive .archive-hero-bottom { grid-template-columns: 1fr; gap: 26px; }
   .projects-archive .archive-hero-bottom span { width: fit-content; }
-  .projects-archive .archive-index { padding: 12px 18px; }
   .projects-archive .project-archive-grid { padding: 42px 18px 92px; gap: 18px; }
   .projects-archive .archive-project-card { border-radius: 22px; }
   .projects-archive .archive-project-visual { height: 82vw; min-height: 330px; }
@@ -4192,23 +4141,27 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   position: absolute;
   top: calc(clamp(240px, 27vw, 360px) * .625);
   translate: 0 -50%;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   display: grid;
   place-items: center;
-  /* Fondo pieno e non trasparente: qui sotto ci passano fotografie, e un
-     contorno sottile su un'immagine scura sparisce. */
-  border: 1px solid rgba(23, 18, 13, .18);
+  /* Inchiostro, non panna. Le frecce cadono nel margine della pista, quindi
+     sopra la carta della sezione — e panna su carta sono #ffecc5 su #f6f0e5,
+     cioe' un tondo che non si vede. Scure si staccano da tutto: dalla carta
+     qui intorno e dalle fotografie se ci finiscono sopra. */
+  border: 0;
   border-radius: 50%;
-  background: var(--cream);
-  color: var(--ink);
-  font-size: 17px;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 6px 22px rgba(23, 18, 13, .22);
-  transition: background .25s ease, color .25s ease, border-color .25s ease, opacity .25s ease;
+  box-shadow: 0 8px 26px rgba(23, 18, 13, .3);
+  transition: background .25s ease, opacity .25s ease;
 }
-.pellicola::scroll-button(*):hover:not(:disabled) { background: var(--red); border-color: var(--red); color: var(--cream); }
-.pellicola::scroll-button(*):disabled { opacity: 0; pointer-events: none; }
+.pellicola::scroll-button(*):hover:not(:disabled) { background: var(--red); }
+/* A fondo corsa resta visibile, spenta: sparire del tutto toglie meta'
+   dell'indizio che la pista si scorre. */
+.pellicola::scroll-button(*):disabled { opacity: .22; cursor: default; }
 .pellicola::scroll-button(left) { content: "\2190"; left: 12px; }
 .pellicola::scroll-button(right) { content: "\2192"; right: 12px; }
 
