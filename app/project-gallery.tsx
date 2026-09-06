@@ -9,6 +9,12 @@ export type GalleryItem = {
   kind?: "image" | "video";
   poster?: string;
   group?: string;
+  /* Come sta l'immagine nel riquadro. Si deduceva dall'estensione — `.png`
+     intero, tutto il resto ritagliato — che vale finche' ogni logo e' un PNG
+     e ogni fotografia non lo e'. Un logo salvato in WebP veniva tagliato ai
+     bordi. Chi conosce l'immagine lo dichiara; per tutte le altre resta la
+     vecchia regola, quindi niente cambia dove andava gia' bene. */
+  fit?: "contain" | "cover";
 };
 
 function label(item: GalleryItem) {
@@ -57,7 +63,7 @@ export function ProjectGallery({ items }: { items: GalleryItem[] }) {
       </div>
 
       <div className="project-viewer">
-        <figure className="project-viewer-stage" data-fit={active.src.endsWith(".png") ? "contain" : "cover"}>
+        <figure className="project-viewer-stage" data-fit={active.fit ?? (active.src.endsWith(".png") ? "contain" : "cover")}>
           {active.kind === "video" ? (
             <video key={active.src} src={active.src} poster={active.poster} controls muted preload="metadata" playsInline aria-label={active.alt} />
           ) : (

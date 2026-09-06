@@ -72,10 +72,11 @@ img { display: block; width: 100%; }
    piu' niente da sfocare.
    Nessun bordo: su un fondo piatto la sfocatura non si vede, ed e' giusto
    cosi'. Una riga invece si vedrebbe anche dove non serve nulla. */
-/* La testata prende il colore pieno della sezione che ha sotto, e lo cambia
-   scorrendo. Non e' un vetro: e' lo stesso colore, quindi la testata smette
-   di essere una fascia sopra la pagina e diventa il bordo alto della sezione
-   in cui ci si trova.
+/* La testata prende il colore della sezione che ha sotto e lo cambia
+   scorrendo, ma scostato di un gradino: identico si confondeva col fondo, e
+   una riga di testo che le passava dietro sembrava tagliata a meta' invece
+   che coperta. Non e' un vetro e non e' un colore estraneo: e' la stessa
+   tinta, un poco piu' scura sul chiaro e un poco piu' chiara sullo scuro.
    Il colore lo scrive AdaptiveBrand, che gia' misura cos'ha sotto il marchio
    per decidere la tinta: e' la stessa misura, usata due volte. */
 .site-header {
@@ -1295,19 +1296,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 }
 .archive-hero-bottom p { max-width: 610px; margin: 0; font-family: var(--serif); font-size: clamp(21px, 2vw, 32px); line-height: 1.12; }
 .archive-hero-bottom span { color: var(--red); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
-.archive-index {
-  padding: 18px 5vw;
-  border-block: 1px solid var(--ink);
-  display: flex;
-  gap: clamp(20px, 4vw, 64px);
-  overflow-x: auto;
-  color: var(--red);
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  font-size: 11px;
-  font-weight: 800;
-}
-.archive-index span { white-space: nowrap; }
 .project-archive-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--ink); }
 .archive-project-card { min-width: 0; padding: clamp(20px, 2.5vw, 42px); border-top: 1px solid var(--ink); }
 .archive-project-card:nth-child(odd) { border-right: 1px solid var(--ink); }
@@ -1377,7 +1365,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 @media (max-width: 520px) {
   .archive-hero { padding-inline: 18px; }
   .archive-hero-bottom { grid-template-columns: 1fr; }
-  .archive-index { padding-inline: 18px; }
   .archive-project-card { padding: 16px 18px 30px; }
   .archive-cta, .archive-footer, .project-detail-hero, .project-detail-story, .project-detail-note, .next-project { padding-inline: 18px; }
   .archive-footer > img { width: 94vw; }
@@ -1820,23 +1807,6 @@ html.lenis.lenis-stopped { overflow: clip; }
   border-radius: 999px;
   background: rgba(253, 64, 66, .08);
 }
-.projects-archive .archive-index {
-  position: sticky;
-  z-index: 10;
-  top: 0;
-  padding: 14px 5vw;
-  gap: 9px;
-  border-color: rgba(23, 18, 13, .22);
-  background: rgba(255, 236, 197, .9);
-  color: rgba(23, 18, 13, .62);
-  backdrop-filter: blur(16px);
-}
-.projects-archive .archive-index span {
-  padding: 10px 14px 9px;
-  border: 1px solid rgba(23, 18, 13, .18);
-  border-radius: 999px;
-}
-.projects-archive .archive-index span:first-child { border-color: var(--ink); background: var(--ink); color: var(--cream); }
 .projects-archive .project-archive-grid {
   padding: clamp(54px, 6vw, 96px) 5vw clamp(100px, 10vw, 170px);
   gap: 22px;
@@ -1969,7 +1939,6 @@ html.lenis.lenis-stopped { overflow: clip; }
   .projects-archive .archive-hero h1 { font-size: clamp(68px, 18vw, 92px); }
   .projects-archive .archive-hero-bottom { grid-template-columns: 1fr; gap: 26px; }
   .projects-archive .archive-hero-bottom span { width: fit-content; }
-  .projects-archive .archive-index { padding: 12px 18px; }
   .projects-archive .project-archive-grid { padding: 42px 18px 92px; gap: 18px; }
   .projects-archive .archive-project-card { border-radius: 22px; }
   .projects-archive .archive-project-visual { height: 82vw; min-height: 330px; }
@@ -3172,7 +3141,6 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .kicker, .eyebrow { font-size: 11px; line-height: 1.4; }
   .service-list,
   .logo-wall,
-  .carosello,
   .reel-orbit { touch-action: pan-x pan-y; }
 }
 
@@ -3237,344 +3205,219 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 }
 
 /* ============================================================
-   Carosello progetti — nessuna riga di JavaScript.
-   Le frecce sono `::scroll-button()`, l'indice numerato sotto sono
-   `::scroll-marker`: primitive del browser, quindi arrivano gia' con
-   tastiera, fuoco, ruolo di gruppo e tasto disattivato a fondo corsa.
-   Dove non esistono ancora resta una pista che si trascina e si aggancia.
+   I servizi, sei stanze in fila.
+
+   Prima erano un nastro orizzontale agganciato in cima: misurato su uno
+   schermo alto 900px, il blocco fermo era 8100px — otto schermate in cui lo
+   scorrimento non produceva movimento verticale, il 46% dell'intera pagina.
+   Da fuori non si legge come un effetto, si legge come un sito piantato.
+
+   Qui non c'e' nessun aggancio. Il movimento orizzontale non e' sparito: e'
+   passato alla filigrana, che scivola di lato mentre la stanza attraversa lo
+   schermo — sulla linea temporale della stanza stessa, quindi e' lo
+   scorrimento a produrlo e la pagina non si ferma mai.
    ============================================================ */
-.pista { position: relative; max-width: 1320px; margin: clamp(38px, 4vw, 70px) auto 0; }
-
-.carosello {
-  counter-reset: progetto;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  gap: clamp(16px, 1.8vw, 30px);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  scroll-marker-group: after;
-}
-.carosello::-webkit-scrollbar { display: none; }
-
-.carta {
-  flex: 0 0 clamp(250px, 27vw, 366px);
-  scroll-snap-align: start;
-  counter-increment: progetto;
-}
-.carta > a {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  color: inherit;
-}
-
-/* La lastra segue il `tone` gia' dichiarato nei dati: quattro di questi
-   marchi sono a inchiostro scuro, due sono testo bianco. Su un fondo solo,
-   meta' sparirebbero. */
-.carta-lastra {
+.servizi {
   position: relative;
-  aspect-ratio: 4 / 3;
-  display: grid;
-  place-items: center;
-  padding: clamp(20px, 2.4vw, 40px);
-  background: #fff8ea;
-  border: 1px solid rgba(255, 236, 197, .14);
-  overflow: hidden;
-}
-.carta-lastra-dark { background: #181818; }
-.carta-lastra-photo { background: #fff; }
-.carta-lastra img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  transition: transform .55s cubic-bezier(.2, .8, .2, 1);
-}
-.carta > a:hover .carta-lastra img,
-.carta > a:focus-visible .carta-lastra img { transform: scale(1.07); }
-
-/* L'anno in pastiglia corallo e non in sovrimpressione: sopra sei lastre di
-   tre fondi diversi, un colore solo non sarebbe leggibile su tutte. */
-.carta-anno {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 6px 10px;
-  background: var(--red);
-  color: var(--cream);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .16em;
-  font-variant-numeric: tabular-nums;
-}
-
-.carta-categoria {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin: clamp(14px, 1.4vw, 22px) 0 8px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255, 236, 197, .55);
-}
-.carta-categoria b { color: var(--red); font-variant-numeric: tabular-nums; }
-
-.carta h3 {
-  margin: 0 0 10px;
-  font-family: var(--serif);
-  font-weight: 900;
-  font-size: clamp(23px, 2.2vw, 34px);
-  line-height: 1.02;
-  letter-spacing: -.022em;
-  text-wrap: balance;
-  transition: color .25s ease;
-}
-.carta > a:hover h3 { color: var(--red); }
-.carta-sintesi {
-  margin: 0 0 clamp(16px, 1.6vw, 24px);
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(255, 236, 197, .7);
-}
-
-.carta-vai {
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 236, 197, .16);
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  transition: border-color .25s ease, color .25s ease;
-}
-.carta-vai i { font-style: normal; transition: transform .25s ease; }
-.carta > a:hover .carta-vai { border-color: var(--red); color: var(--red); }
-.carta > a:hover .carta-vai i { transform: translate(4px, -4px); }
-
-/* Le frecce. `content` non e' decorazione: senza, il tasto non viene
-   nemmeno generato. Si disattivano da sole a fondo corsa. */
-.carosello::scroll-button(*) {
-  position: absolute;
-  top: calc(-1 * clamp(38px, 4vw, 70px) - 52px);
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 236, 197, .28);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--cream);
-  font-size: 17px;
-  cursor: pointer;
-  transition: background .25s ease, border-color .25s ease, opacity .25s ease;
-}
-.carosello::scroll-button(*):hover:not(:disabled) { background: var(--red); border-color: var(--red); }
-.carosello::scroll-button(*):disabled { opacity: .22; cursor: default; }
-.carosello::scroll-button(left) { content: "\2190"; right: 58px; }
-.carosello::scroll-button(right) { content: "\2192"; right: 0; }
-
-/* L'indice sotto la pista: numeri, come ovunque nel sito. */
-.carosello::scroll-marker-group {
-  display: flex;
-  gap: 6px;
-  padding-top: clamp(20px, 2.2vw, 34px);
-}
-.carta::scroll-marker {
-  content: counter(progetto, decimal-leading-zero);
-  padding: 7px 11px;
-  border: 1px solid rgba(255, 236, 197, .16);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  font-variant-numeric: tabular-nums;
-  color: rgba(255, 236, 197, .45);
-  cursor: pointer;
-  transition: color .25s ease, background .25s ease, border-color .25s ease;
-}
-.carta::scroll-marker:hover { color: var(--cream); border-color: rgba(255, 236, 197, .4); }
-.carta::scroll-marker:target-current {
-  color: var(--cream);
-  background: var(--red);
-  border-color: var(--red);
-}
-
-/* Le carte entrano da destra man mano che la pista scorre: la linea
-   temporale e' quella della pista stessa, asse in linea. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .carta > a {
-      animation: carta-entra linear both;
-      animation-timeline: view(inline);
-      animation-range: entry 0% entry 86%;
-    }
-    @keyframes carta-entra {
-      from { opacity: 0; transform: translateY(22px) scale(.94); }
-      to { opacity: 1; transform: none; }
-    }
-  }
-}
-
-/* ============================================================
-   Servizi a scorrimento orizzontale.
-
-   Su desktop la viewport resta ferma e la pagina trasforma lo scroll
-   verticale in un racconto orizzontale. Su tablet e telefono la stessa
-   struttura torna intenzionalmente verticale: niente pin, trascinamenti o
-   larghezze che possano far uscire la pagina dallo schermo.
-   ============================================================ */
-.services-scroll-showcase {
-  position: relative;
-  background: var(--paper);
+  /* `clip` e non `hidden`: `hidden` su un asse rende l'elemento un
+     contenitore di scorrimento anche sull'altro, e le linee temporali delle
+     stanze si aggancerebbero a lui invece che alla pagina. */
+  overflow-x: clip;
+  padding: clamp(52px, 5vw, 88px) 5vw clamp(48px, 4.5vw, 78px);
+  background:
+    radial-gradient(circle at 84% 10%, rgba(254, 64, 66, .1), transparent 34%),
+    linear-gradient(135deg, #f8f2e7 0%, var(--cream) 100%);
   color: var(--ink);
 }
-.services-scroll-viewport {
-  position: relative;
-  width: 100%;
-  height: 100svh;
-  min-height: 680px;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 78% 48%, rgba(254, 64, 66, .11), transparent 31%),
-    linear-gradient(135deg, #f8f2e7 0%, var(--cream) 100%);
-}
-.services-scroll-watermark {
-  position: absolute;
-  z-index: 0;
-  top: 7%;
-  left: -2vw;
-  color: rgba(23, 18, 13, .055);
-  font-family: var(--serif);
-  font-size: clamp(110px, 15vw, 250px);
-  font-weight: 900;
-  line-height: .72;
-  letter-spacing: -.075em;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-}
-.services-scroll-header {
-  position: absolute;
-  z-index: 4;
-  top: clamp(82px, 8vh, 108px);
-  left: 5vw;
-  max-width: 620px;
-  pointer-events: none;
-}
-.services-scroll-header .kicker {
+
+.servizi-intro { max-width: 1320px; margin: 0 auto clamp(30px, 3vw, 52px); }
+.servizi-intro .kicker {
   width: fit-content;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   padding: 8px 12px 7px;
   border: 1px solid rgba(23, 18, 13, .28);
   border-radius: 999px;
   background: rgba(254, 64, 66, .08);
   color: var(--red-testo);
 }
-.services-scroll-header h2 {
+.servizi-intro h2 {
   margin: 0;
-  max-width: 10ch;
+  max-width: 13ch;
   font-family: var(--serif);
-  font-size: clamp(39px, 4vw, 68px);
   font-weight: 900;
-  line-height: .84;
+  font-size: clamp(34px, 4vw, 64px);
+  line-height: .88;
   letter-spacing: -.04em;
 }
-.services-scroll-track {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  display: flex;
-  will-change: transform;
-}
-.services-scroll-slide {
-  position: relative;
-  flex: 0 0 100vw;
-  width: 100vw;
-  height: 100%;
-  padding: clamp(102px, 11vh, 132px) 5vw clamp(72px, 9vh, 98px);
+
+.servizi-stanze {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
   display: grid;
-  grid-template-columns: minmax(290px, .62fr) minmax(580px, 1.38fr);
-  gap: clamp(50px, 7vw, 126px);
+  gap: clamp(34px, 3.4vw, 62px);
+}
+
+.stanza {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  gap: clamp(24px, 3vw, 54px);
   align-items: center;
 }
-.services-scroll-copy {
-  align-self: center;
-  padding-top: clamp(150px, 21vh, 205px);
+/* Zig-zag: la colonna del testo passa a destra nelle stanze pari. Senza,
+   sei righe identiche una sotto l'altra sono un elenco, non una sequenza. */
+.stanza:nth-child(even) > .stanza-testo { order: 2; }
+.stanza:nth-child(even) > .stanza-visuale { order: 1; }
+
+.stanza-filigrana {
+  position: absolute;
+  z-index: 0;
+  top: -.34em;
+  left: -1.5vw;
+  color: rgba(23, 18, 13, .055);
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(96px, 13vw, 218px);
+  line-height: .72;
+  letter-spacing: -.075em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
 }
-.services-scroll-index {
+.stanza:nth-child(even) .stanza-filigrana { left: auto; right: -1.5vw; }
+
+.stanza-testo { position: relative; z-index: 1; min-width: 0; }
+.stanza-numero {
   display: block;
-  margin-bottom: 16px;
-  color: transparent;
-  -webkit-text-stroke: 1.2px var(--red-testo);
+  margin-bottom: clamp(6px, .8vw, 12px);
   font-family: var(--serif);
-  font-size: clamp(66px, 7vw, 112px);
   font-weight: 900;
-  line-height: .68;
+  font-size: clamp(42px, 4.6vw, 76px);
+  line-height: .78;
   letter-spacing: -.05em;
-  transition: color .35s ease, transform .5s cubic-bezier(.16, 1, .3, 1);
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--red);
 }
-.services-scroll-slide[data-active="true"] .services-scroll-index {
-  color: rgba(254, 64, 66, .12);
-  transform: translateX(8px);
-}
-.services-scroll-copy h3 {
-  margin: 0;
+.stanza-testo h3 {
+  margin: 0 0 14px;
   font-family: var(--serif);
-  font-size: clamp(46px, 5.3vw, 88px);
   font-weight: 900;
-  line-height: .8;
-  letter-spacing: -.045em;
+  font-size: clamp(30px, 2.9vw, 48px);
+  line-height: .96;
+  letter-spacing: -.03em;
 }
-.services-scroll-copy > p {
-  max-width: 31ch;
-  margin: 24px 0 30px;
-  color: rgba(23, 18, 13, .67);
-  font-family: var(--serif);
-  font-size: clamp(18px, 1.55vw, 25px);
+.stanza-testo > p {
+  max-width: 34ch;
+  margin: 0 0 clamp(14px, 1.6vw, 22px);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.45;
+}
+.stanza-testo ul {
+  max-width: 420px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+.stanza-testo li {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
   line-height: 1.25;
 }
-.services-scroll-copy ul { max-width: 420px; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
-.services-scroll-copy li { padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.25; }
-.services-scroll-visual {
-  min-width: 0;
-  display: flex;
-  justify-content: flex-end;
-}
-.services-scroll-showcase .service-visual {
+
+.stanza-visuale { position: relative; z-index: 1; min-width: 0; }
+/* La scheda era `sticky` da quando stava in una colonna sola che restava
+   ferma accanto all'elenco. Dentro a una stanza si incollerebbe di nuovo, ed
+   e' esattamente il difetto che questa sezione doveva togliere. */
+.stanza-visuale .service-visual {
   position: relative;
   top: auto;
-  width: min(100%, 820px);
-  height: clamp(490px, 68vh, 690px);
-  border-radius: 28px;
-  box-shadow: 0 30px 90px rgba(87, 47, 21, .2);
+  height: clamp(300px, 28vw, 400px);
+  border-radius: 22px;
 }
-.services-scroll-showcase .service-scene { padding: clamp(20px, 2.2vw, 32px); }
-.services-scroll-showcase .service-canvas { min-height: 0; }
-.services-scroll-hud {
-  position: absolute;
-  z-index: 5;
-  right: 5vw;
-  bottom: 24px;
-  left: 5vw;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 24px;
-  align-items: center;
-  color: rgba(23, 18, 13, .56);
-  text-transform: uppercase;
-  letter-spacing: .13em;
-  font-size: 10px;
-  font-weight: 800;
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .stanza { view-timeline-name: --stanza; view-timeline-axis: block; }
+
+    /* Il movimento orizzontale che il cliente vedeva prima, senza il prezzo
+       che pagava: qui e' la filigrana a scorrere, e scorre perche' scorre
+       la pagina. */
+    .stanza-filigrana {
+      animation: filigrana-scorre linear both;
+      animation-timeline: --stanza;
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes filigrana-scorre {
+      from { transform: translateX(7%); }
+      to { transform: translateX(-13%); }
+    }
+    .stanza:nth-child(even) .stanza-filigrana { animation-name: filigrana-scorre-al-rovescio; }
+    @keyframes filigrana-scorre-al-rovescio {
+      from { transform: translateX(-13%); }
+      to { transform: translateX(7%); }
+    }
+
+    .stanza-numero {
+      animation: numero-sale linear both;
+      animation-timeline: --stanza;
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes numero-sale {
+      from { transform: translateY(16%); }
+      to { transform: translateY(-16%); }
+    }
+
+    /* Lo stato iniziale sta nei fotogrammi e non nella regola: se la linea
+       temporale non si aggancia, l'animazione non si applica e la stanza
+       resta visibile invece di restare a `opacity: 0` per sempre. */
+    .stanza-testo {
+      animation: stanza-entra linear both;
+      animation-timeline: --stanza;
+      animation-range: entry 4% cover 22%;
+    }
+    .stanza-visuale {
+      animation: visuale-entra linear both;
+      animation-timeline: --stanza;
+      animation-range: entry 4% cover 28%;
+    }
+    @keyframes stanza-entra {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes visuale-entra {
+      from { opacity: 0; transform: translate(var(--verso, 4%), 28px); }
+      to { opacity: 1; transform: none; }
+    }
+    .stanza:nth-child(even) { --verso: -4%; }
+  }
 }
-.services-scroll-progress { height: 1px; overflow: hidden; background: rgba(23, 18, 13, .18); }
-.services-scroll-progress i { display: block; width: 100%; height: 100%; background: var(--red-testo); transform: scaleX(0); transform-origin: left center; }
+
+@media (max-width: 900px) {
+  .servizi { padding-inline: 18px; }
+  .servizi-intro h2 { max-width: 11ch; font-size: clamp(48px, 12vw, 78px); }
+  .stanza {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(23, 18, 13, .18);
+  }
+  /* Su una colonna sola lo zig-zag non esiste, e invertire l'ordine
+     metterebbe la figura prima del nome di cio' che rappresenta. */
+  .stanza:nth-child(even) > .stanza-testo { order: 0; }
+  .stanza:nth-child(even) > .stanza-visuale { order: 0; }
+  .stanza-filigrana,
+  .stanza:nth-child(even) .stanza-filigrana { left: -4px; right: auto; font-size: 25vw; }
+  .stanza-numero { font-size: clamp(64px, 20vw, 104px); }
+  .stanza-testo h3 { font-size: clamp(36px, 10vw, 56px); }
+  .stanza-testo > p { margin-block: 18px 22px; font-size: 19px; }
+  .stanza-testo li { min-height: 44px; padding: 13px 0; font-size: 14px; }
+  .stanza-visuale .service-visual { height: clamp(300px, 80vw, 420px); border-radius: 18px; }
+}
 
 /* Chiusura editoriale prima del footer: nessun Vesuvio illustrato, il luogo
    resta una firma testuale mentre l'attenzione va all'inizio del progetto. */
@@ -3654,46 +3497,12 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .closing-cta-bottom i { color: var(--red-testo); font-style: normal; transition: transform .25s ease; }
 .closing-cta-bottom a:hover i { transform: translateX(10px); }
 
-@media (max-width: 1100px) and (min-width: 901px) {
-  .services-scroll-slide { grid-template-columns: minmax(250px, .72fr) minmax(500px, 1.28fr); gap: 42px; }
-  .services-scroll-copy { padding-top: 170px; }
-  .services-scroll-showcase .service-visual { height: min(62vh, 600px); }
-}
-
 @media (max-width: 900px) {
-  .services-scroll-viewport { height: auto; min-height: 0; overflow: visible; }
-  .services-scroll-watermark { top: 48px; font-size: 25vw; }
-  .services-scroll-header { position: relative; top: auto; left: auto; max-width: none; padding: 20px 0 34px; }
-  .services-scroll-header h2 { max-width: 11ch; font-size: clamp(48px, 12vw, 78px); }
-  .services-scroll-track { height: auto; display: block; transform: none !important; will-change: auto; }
-  .services-scroll-slide {
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    padding: 58px 18px 76px;
-    grid-template-columns: 1fr;
-    gap: 34px;
-    border-top: 1px solid rgba(23, 18, 13, .18);
-  }
-  .services-scroll-copy { padding-top: 0; }
-  .services-scroll-index { margin-bottom: 18px; font-size: clamp(70px, 22vw, 108px); }
-  .services-scroll-copy h3 { font-size: clamp(54px, 15vw, 82px); }
-  .services-scroll-copy > p { margin-block: 20px 24px; font-size: 20px; }
-  .services-scroll-copy li { min-height: 44px; padding: 13px 0; font-size: 14px; }
-  .services-scroll-visual { justify-content: stretch; }
-  .services-scroll-showcase .service-visual { width: 100%; height: clamp(450px, 125vw, 640px); border-radius: 22px; }
-  .services-scroll-hud { display: none; }
   .closing-cta-bottom { grid-template-columns: 1fr; text-align: center; }
   .closing-cta-bottom > span:last-child { text-align: center; }
 }
 
 @media (max-width: 600px) {
-  .services-scroll-header { padding-top: 12px; }
-  .services-scroll-header .kicker { margin-bottom: 18px; }
-  .services-scroll-slide { padding-top: 50px; }
-  .services-scroll-showcase .service-scene { padding: 18px; }
-  .services-scroll-showcase .service-control-row { gap: 6px; }
-  .services-scroll-showcase .service-control-row button { min-height: 46px; padding-inline: 10px; font-size: 8px; }
   .closing-cta { min-height: 0; padding: 96px 18px 0; }
   .closing-cta-rings { top: -10vw; width: 150vw; }
   .closing-cta-main > .kicker { margin-bottom: 24px; }
@@ -3705,7 +3514,6 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .services-scroll-track { transform: none !important; }
   .closing-cta-rings { transform: translateX(-50%); }
 }
 
@@ -3790,11 +3598,6 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .project-stream-link { grid-template-columns: 1fr auto; border-radius: 20px; }
   .project-stream-link > span { grid-column: 1 / -1; }
   .project-stream-link strong { text-align: left; font-size: 20px; }
-}
-
-@media (max-width: 900px) {
-  .carta { flex-basis: 74vw; }
-  .carosello::scroll-button(*) { display: none; }
 }
 
 /* ============================================================
@@ -4183,4 +3986,231 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .project-detail-story-copy { padding-left: 0; border-left: 0; }
   .project-detail-story dl div { grid-template-columns: 82px minmax(0, 1fr); }
   .next-project i { width: 58px; }
+}
+
+/* ============================================================
+   L'archivio come pellicole.
+   Ogni progetto e' una riga che scorre di lato per conto suo, con le frecce
+   e l'indice numerato del browser, `::scroll-marker`. Prima
+   ogni progetto era una scheda che portava altrove, e per vedere nove
+   immagini si cambiava pagina tre volte.
+   ============================================================ */
+.archivio-pellicole {
+  display: grid;
+  /* `minmax(0, 1fr)` e non `1fr`: la traccia di una griglia si dimensiona
+     sul contenuto minimo, e dentro c'e' una pista larga ventimila pixel.
+     Senza questo la pista non scorre — si allarga, e a scorrere e' la
+     pagina. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(56px, 6vw, 108px);
+  padding: clamp(48px, 5vw, 90px) 0 clamp(60px, 6vw, 110px);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.progetto { position: relative; min-width: 0; }
+
+.progetto-testata {
+  max-width: 1320px;
+  margin: 0 auto clamp(22px, 2.4vw, 38px);
+  padding-inline: 5vw;
+  display: grid;
+  /* Aree esplicite: senza, il quarto figlio (i dati) andava a capo nella
+     prima colonna, cioe' sotto al numero, e sbordava sotto al nome. */
+  grid-template-columns: auto minmax(0, 1.05fr) minmax(0, 1fr) auto;
+  grid-template-areas:
+    "numero nome sommario frecce"
+    "numero nome dati     frecce";
+  gap: clamp(10px, 1.4vw, 20px) clamp(18px, 2.6vw, 48px);
+  align-items: end;
+}
+.progetto-numero { grid-area: numero; }
+.progetto-nome { grid-area: nome; min-width: 0; }
+.progetto-sommario { grid-area: sommario; align-self: end; }
+.progetto-dati { grid-area: dati; align-self: start; }
+
+/* Le frecce stanno in testata e non sopra le immagini: fuori dalla pista non
+   competono con le fotografie, restano allo stesso posto a ogni larghezza, e
+   si vedono prima ancora di guardare la pellicola. */
+.progetto-frecce { grid-area: frecce; align-self: center; display: flex; gap: 8px; }
+.progetto-frecce button {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--cream);
+  font-size: 17px;
+  cursor: pointer;
+  transition: background .2s ease, opacity .2s ease;
+}
+.progetto-frecce button:hover:not(:disabled) { background: var(--red); }
+/* A fondo corsa resta visibile, spenta: sparire toglierebbe meta' dell'indizio
+   che la pellicola si scorre. */
+.progetto-frecce button:disabled { opacity: .2; cursor: default; }
+.progetto-numero {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(34px, 3.4vw, 58px);
+  line-height: .8;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--red);
+}
+.progetto-nome h2 {
+  margin: 0 0 6px;
+  text-wrap: balance;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(30px, 3.6vw, 58px);
+  line-height: .94;
+  letter-spacing: -.03em;
+}
+.progetto-nome h2 a { color: inherit; transition: color .25s ease; }
+.progetto-nome h2 a:hover, .progetto-nome h2 a:focus-visible { color: var(--red-testo); }
+.progetto-titolo {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(23, 18, 13, .55);
+}
+.progetto-sommario { margin: 0 0 10px; max-width: 46ch; font-size: clamp(14px, 1.15vw, 17px); line-height: 1.5; }
+.progetto-dati { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; }
+.progetto-dati div { display: flex; gap: 7px; align-items: baseline; }
+.progetto-dati dt { font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--red-testo); }
+.progetto-dati dd { margin: 0; font-size: 12px; }
+
+.pellicola {
+  counter-reset: fotogramma;
+  margin: 0;
+  /* Il primo fotogramma si allinea al testo sopra; l'ultimo puo' uscire dal
+     bordo destro, cosi' si vede che la riga continua. */
+  padding: 0 5vw 0 max(5vw, calc((100% - 1320px) / 2 + 5vw));
+  list-style: none;
+  display: flex;
+  gap: clamp(12px, 1.4vw, 22px);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline-start: max(5vw, calc((100% - 1320px) / 2 + 5vw));
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(23, 18, 13, .35) transparent;
+  scroll-marker-group: after;
+}
+.pellicola::-webkit-scrollbar { height: 6px; }
+.pellicola::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(23, 18, 13, .3); }
+.pellicola::-webkit-scrollbar-thumb:hover { background: rgba(23, 18, 13, .5); }
+.pellicola::-webkit-scrollbar-track { background: transparent; }
+
+.fotogramma {
+  flex: 0 0 clamp(240px, 27vw, 360px);
+  scroll-snap-align: start;
+  counter-increment: fotogramma;
+}
+.fotogramma figure {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(23, 18, 13, .16);
+  border-radius: 18px;
+  background: #0e0e0d;
+}
+.fotogramma img, .fotogramma video { width: 100%; height: 100%; object-fit: cover; }
+/* Un logo o una grafica per il feed va contenuta, non tagliata: il fondo
+   chiaro le fa da foglio. */
+.fotogramma figure[data-fit="contain"] { background: #f8f0df; }
+.fotogramma figure[data-fit="contain"] img { padding: clamp(14px, 2vw, 30px); object-fit: contain; }
+.fotogramma figcaption {
+  position: absolute;
+  z-index: 2;
+  inset: auto 0 0;
+  padding: clamp(30px, 4vw, 52px) clamp(13px, 1.4vw, 20px) clamp(13px, 1.4vw, 18px);
+  background: linear-gradient(transparent, rgba(8, 7, 6, .88));
+  color: var(--cream);
+}
+.fotogramma figcaption span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--red);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.fotogramma figcaption strong { display: block; font-size: 13px; line-height: 1.25; text-wrap: pretty; }
+
+/* Le frecce. `content` non e' decorazione: senza, il tasto non nasce.
+   Si spengono da sole a fondo corsa. */
+.pellicola::scroll-marker-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding: clamp(14px, 1.6vw, 24px) 5vw 0;
+}
+.fotogramma::scroll-marker {
+  content: counter(fotogramma, decimal-leading-zero);
+  padding: 5px 9px;
+  border: 1px solid rgba(23, 18, 13, .18);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(23, 18, 13, .45);
+  cursor: pointer;
+  transition: color .25s ease, background .25s ease, border-color .25s ease;
+}
+/* Quarantotto numerini sono una parete. Sopra la dozzina l'indice dice
+   "quanti" e "dove sei", non "quale". */
+.pellicola-lunga .fotogramma::scroll-marker {
+  content: "";
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border-radius: 50%;
+}
+.fotogramma::scroll-marker:hover { color: var(--ink); border-color: rgba(23, 18, 13, .45); }
+.fotogramma::scroll-marker:target-current {
+  color: var(--cream);
+  background: var(--red);
+  border-color: var(--red);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fotogramma figure {
+      animation: fotogramma-entra linear both;
+      animation-timeline: view(inline);
+      animation-range: entry 0% entry 88%;
+    }
+    @keyframes fotogramma-entra {
+      from { opacity: 0; transform: translateY(16px) scale(.95); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .progetto-testata {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: "numero nome" "sommario sommario" "dati dati";
+    gap: 12px 16px;
+    padding-inline: 18px;
+    align-items: center;
+  }
+  .pellicola { padding-inline: 18px; scroll-padding-inline-start: 18px; }
+  .fotogramma { flex-basis: 74vw; }
+  /* Da telefono si trascina col dito: due tondi in piu' sarebbero solo
+     ingombro in una testata gia' stretta. */
+  .progetto-frecce { display: none; }
+  .pellicola::scroll-marker-group { padding-inline: 18px; }
 }

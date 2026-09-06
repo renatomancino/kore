@@ -6,7 +6,7 @@ import { TestoRivelato } from "./testo-rivelato";
 import { AdaptiveBrand } from "./adaptive-brand";
 import { ClosingCta } from "./closing-cta";
 import { ScrollEffects } from "./scroll-effects";
-import { ServiceScrollShowcase } from "./service-scroll-showcase";
+import { ServiziInSequenza } from "./servizi-in-sequenza";
 import { services } from "./services-data";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
@@ -132,7 +132,7 @@ export default function Home() {
         </div>
       </div>
 
-      <ServiceScrollShowcase title="Non facciamo solo una cosa." />
+      <ServiziInSequenza title="Non facciamo solo una cosa." />
 
       <ProjectStream>
         <Link className="project-stream-link" href="/progetti">

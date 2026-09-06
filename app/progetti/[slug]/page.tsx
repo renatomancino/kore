@@ -36,7 +36,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   if (projectIndex === -1) notFound();
 
   const project = projects[projectIndex];
-  const nextProject = projects[(projectIndex + 1) % projects.length];
 
   return (
     <main className="project-detail">
@@ -93,9 +92,15 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         )}
       </article>
 
-      <Link className="next-project" href={`/progetti/${nextProject.slug}`}>
-        <span>Progetto successivo</span>
-        <strong>{nextProject.client}</strong>
+      {/* Prima qui c'era "Progetto successivo" col nome del progetto che
+          veniva dopo nell'elenco: dopo Centro Revisioni TRIM arrivava
+          "L'isola che non c'e'" solo perche' e' il secondo dell'array, senza
+          nessun legame di categoria, servizio o tono. Ora che l'archivio
+          mostra ogni progetto con la sua pellicola, la destinazione utile e'
+          quella — e non e' piu' un accostamento casuale. */}
+      <Link className="next-project" href="/progetti">
+        <span>Continua a guardare</span>
+        <strong>Tutti i progetti</strong>
         <i aria-hidden="true">→</i>
       </Link>
 

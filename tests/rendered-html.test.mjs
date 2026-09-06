@@ -45,9 +45,10 @@ test("is configured as a native Vercel Next.js project", async () => {
 });
 
 test("provides a projects archive and individual case-study routes", async () => {
-  const [home, archive, detail, data] = await Promise.all([
+  const [home, archive, elenco, detail, data] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/carosello-progetto.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/[slug]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/project-data.ts", import.meta.url), "utf8"),
   ]);
@@ -55,7 +56,15 @@ test("provides a projects archive and individual case-study routes", async () =>
   assert.match(home, /Vedi tutti i progetti/);
   assert.match(home, /href="\/progetti"/);
   assert.match(archive, /Progetti con/);
+
+  /* Il test chiedeva la stringa `projects.map` dentro alla pagina, e si e'
+     rotto nel momento in cui l'elenco e' passato a un componente suo — senza
+     che l'archivio smettesse un istante di mostrare i progetti. Qui si
+     controlla che la pagina passi la lista intera a chi la disegna, e che
+     chi la disegna la percorra: la stessa garanzia, senza dipendere da quale
+     file contiene il ciclo. */
   assert.match(archive, /projects\.map/);
+  assert.match(elenco, /pezzi\.map/);
   assert.match(detail, /generateStaticParams/);
   assert.match(detail, /generateMetadata/);
   assert.match(data, /trim-identita-digitale/);
@@ -73,7 +82,30 @@ test("includes a scroll-driven spiral video showreel in the home page", async ()
   assert.match(showreel, /ScrollTrigger\.create/);
   assert.match(showreel, /orbitItems/);
   assert.match(showreel, /playsInline/);
-  assert.match(showreel, /videos\/social\/photo-session\.mp4/);
+
+  /* Il test chiedeva un nome di file preciso, e si e' rotto nel momento in cui
+     i filmati segnaposto hanno lasciato il posto al lavoro vero dei clienti.
+     Il nome dei clip cambiera' ancora; cio' che non deve cambiare e' che ogni
+     reel abbia una sorgente e un poster, e che i file citati esistano davvero
+     in `public/` — un `src` che punta al nulla e' un riquadro nero in pagina,
+     ed e' esattamente quello che un test dovrebbe intercettare. */
+  const sorgenti = [...showreel.matchAll(/src:\s*"(\/[^"]+\.mp4)"/g)].map((m) => m[1]);
+  const poster = [...showreel.matchAll(/poster:\s*"(\/[^"]+)"/g)].map((m) => m[1]);
+  assert.ok(sorgenti.length >= 3, `il carosello ha ${sorgenti.length} video, ne servono almeno 3`);
+  assert.equal(poster.length, sorgenti.length, "ogni video deve avere il suo poster");
+  await Promise.all(
+    [...sorgenti, ...poster].map((f) =>
+      access(new URL(`../public${f}`, import.meta.url)).catch(() => {
+        throw new Error(`il showreel cita ${f}, che non esiste in public/`);
+      }),
+    ),
+  );
+
+  /* La sorgente resta staccata finche' la sezione non e' vicina: i quattro
+     reel pesano decine di megabyte e con l'`autoplay` il browser li scarica
+     appena esistono, `preload="metadata"` o no. */
+  assert.match(showreel, /src=\{\s*\w+\s*\?\s*reel\.src\s*:\s*undefined\s*\}/);
+
   assert.match(css, /\.reel-orbit/);
   assert.match(css, /aspect-ratio:\s*9 \/ 16/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);

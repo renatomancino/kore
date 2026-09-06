@@ -25,6 +25,26 @@ function contrasto(a: number[], b: number[]) {
   return (x + 0.05) / (y + 0.05);
 }
 
+/* Il gradino fra la testata e la sezione che ha sotto.
+   Non una percentuale fissa: spostare del 9% verso il nero stacca bene una
+   carta chiara (1.23) e quasi per niente il corallo (1.07), perche' su un
+   tono medio quello spostamento vale poco. Qui si cresce finche' il
+   contrasto arriva dove serve, cosi' il gradino si vede uguale su ogni
+   fondo — poco, ma sempre.
+   Il verso lo decide la luminanza: sopra la meta' percettiva si scurisce,
+   sotto si schiarisce. */
+const STACCO = 1.25;
+
+function scosta(fondo: number[]) {
+  const verso = luminanza(fondo) > 0.18 ? 0 : 255;
+  let ultimo = fondo;
+  for (let quanto = 0.06; quanto <= 0.62; quanto += 0.02) {
+    ultimo = fondo.map((c) => Math.round(c + (verso - c) * quanto));
+    if (contrasto(ultimo, fondo) >= STACCO) return ultimo;
+  }
+  return ultimo;
+}
+
 /**
  * Il marchio in testata prende il colore da cio' che ha sotto.
  *
@@ -80,6 +100,31 @@ export function AdaptiveBrand() {
       return null;
     };
 
+    /* Il fondo della regione, non dell'oggetto che ci sta sopra.
+       `sfondoIn` restituisce il primo colore che incontra venendo dal
+       davanti, ed e' quello che serve al marchio: il marchio deve leggersi
+       su cio' che ha davvero sotto, fosse anche una fotografia.
+       Alla testata serve l'opposto. Da quando l'archivio ha le pellicole,
+       sotto al marchio passano schede a fondo nero: la testata seguiva
+       quelle e lampeggiava fra la carta della sezione e il nero a ogni
+       riquadro che le scorreva dietro. Qui si sale percio' alla sezione che
+       contiene il punto e si misura da li' in su: il colore diventa quello
+       del campo, non quello della scheda appoggiata sopra.
+       Non il piu' esterno in assoluto: quello sarebbe il fondo della pagina,
+       uguale dalla prima all'ultima sezione, e la testata smetterebbe di
+       cambiare colore del tutto. */
+    const fondoRegione = (x: number, y: number) => {
+      for (const trovato of document.elementsFromPoint(x, y)) {
+        if (testata.contains(trovato)) continue;
+        const regione = trovato.closest("section, footer") ?? trovato;
+        for (let n: Element | null = regione; n && n !== document.body; n = n.parentElement) {
+          const c = coloreDi(n);
+          if (c) return c;
+        }
+      }
+      return null;
+    };
+
     /* Vero se a quell'altezza il corallo si legge meglio della panna. */
     const vinceCorallo = (x: number, y: number) => {
       const c = sfondoIn(x, y);
@@ -126,13 +171,18 @@ export function AdaptiveBrand() {
       fasce.push(`${tinta ? "#000" : "transparent"} ${(da * 100).toFixed(2)}% 100%`);
       const maschera = `linear-gradient(to bottom, ${fasce.join(",")})`;
 
-      /* Lo stesso colore misurato tinge la testata: cosi' non e' una fascia
-         sopra la pagina ma il bordo alto della sezione in cui ci si trova.
+      /* La testata prende il colore della sezione che ha sotto, ma scostato.
+         Identico non andava: diventava lo stesso campo del fondo, e una riga
+         di testo che le passava dietro sembrava tagliata a meta' invece che
+         coperta da una fascia. Serve un gradino — piccolo, quanto basta a
+         dire "qui finisce la barra" — non un colore estraneo.
+         Il verso lo decide la luminosita': un fondo chiaro si scurisce, uno
+         scuro si schiarisce, cosi' lo scalino si vede su entrambi.
          Si campiona al centro del marchio, cioe' dove il marchio deve
          leggersi — se due sezioni si incontrano a meta' testata vince quella
          sotto al marchio, che e' l'unica che conta per la leggibilita'. */
-      const fondo = sfondoIn(x, r.top + r.height / 2);
-      if (fondo) testata.style.setProperty("--fondo-testata", `rgb(${fondo.join(",")})`);
+      const fondo = fondoRegione(x, r.top + r.height / 2) ?? sfondoIn(x, r.top + r.height / 2);
+      if (fondo) testata.style.setProperty("--fondo-testata", `rgb(${scosta(fondo).join(",")})`);
 
       if (maschera === ultima) return;
       corallo.style.maskImage = maschera;
