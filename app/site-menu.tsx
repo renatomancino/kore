@@ -11,7 +11,7 @@ import { services } from "./services-data";
  * c'era menu: si navigava solo col tasto indietro. Ora sono un pezzo solo,
  * usato ovunque.
  *
- * Le ancore sono assolute (`/#servizi`): dalle altre pagine quelle sezioni non
+ * Le ancore sono assolute (`/#mondo`): dalle altre pagine quelle sezioni non
  * esistono, quindi portano prima alla home e poi al punto giusto.
  */
 export function SiteMenu() {
@@ -62,7 +62,7 @@ export function SiteMenu() {
         <div className="menu-column">
           <p>Cosa facciamo</p>
           {services.map((voce) => (
-            <Link href="/#servizi" key={voce.name} onClick={chiudi}>{voce.name}</Link>
+            <Link href="/servizi" key={voce.name} onClick={chiudi}>{voce.name}</Link>
           ))}
         </div>
         <div className="menu-column">

@@ -19,6 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${indirizzoSito}/`, lastModified: oggi, changeFrequency: "monthly", priority: 1 },
     { url: `${indirizzoSito}/idea`, lastModified: oggi, changeFrequency: "yearly", priority: 0.9 },
+    { url: `${indirizzoSito}/servizi`, lastModified: oggi, changeFrequency: "monthly", priority: 0.85 },
     { url: `${indirizzoSito}/progetti`, lastModified: oggi, changeFrequency: "monthly", priority: 0.8 },
     ...projects.map((progetto) => ({
       url: `${indirizzoSito}/progetti/${progetto.slug}`,
