@@ -4257,9 +4257,12 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 }
 .servizi-sommario a {
   display: inline-flex;
-  align-items: baseline;
+  align-items: center;
   gap: 9px;
-  padding: 11px 16px 10px;
+  /* 44px anche da desktop: nel resto del sito i comandi sono tutti almeno
+     cosi', e questi erano rimasti a 40. */
+  min-height: 44px;
+  padding: 0 16px;
   border: 1px solid rgba(255, 236, 197, .26);
   border-radius: 999px;
   text-transform: uppercase;

@@ -15,12 +15,12 @@ import { VideoShowcase } from "./video-showcase";
 
 
 const clientSlots = [
-  { name: "Centro Revisioni TRIM", project: "Centro Revisioni TRIM", image: "/clients/trim.png", tone: "light" },
-  { name: "L’isola che non c’è", project: "L’isola che non c’è", image: "/clients/isola-che-non-ce.png", tone: "dark" },
-  { name: "Panariello", project: "Panariello · Falegnameria sartoriale", image: "/clients/panariello.png", tone: "light" },
-  { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.png", tone: "light" },
-  { name: "Primobanco", project: "Primobanco", image: "/clients/primobanco.png", tone: "light" },
-  { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.png", tone: "dark" },
+  { name: "Centro Revisioni TRIM", project: "Centro Revisioni TRIM", image: "/clients/trim.webp", tone: "light" },
+  { name: "L’isola che non c’è", project: "L’isola che non c’è", image: "/clients/isola-che-non-ce.webp", tone: "dark" },
+  { name: "Panariello", project: "Panariello · Falegnameria sartoriale", image: "/clients/panariello.webp", tone: "light" },
+  { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.webp", tone: "light" },
+  { name: "Primobanco", project: "Primobanco", image: "/clients/primobanco.webp", tone: "light" },
+  { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.webp", tone: "dark" },
 ];
 
 const process = [
@@ -179,11 +179,11 @@ export default function Home() {
         </div>
         <div className="partner-rail" aria-label="Partner Kore">
           <div>
-            <img src="/partners/il-meridiano-sport.png" alt="Il Meridiano Sport" />
+            <img src="/partners/il-meridiano-sport.webp" alt="Il Meridiano Sport" />
             <span>Partner editoriale</span>
           </div>
           <div>
-            <img src="/partners/metropolis.png" alt="Metropolis" />
+            <img src="/partners/metropolis.webp" alt="Metropolis" />
             <span>Media partner</span>
           </div>
         </div>
