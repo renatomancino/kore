@@ -4214,3 +4214,270 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .progetto-frecce { display: none; }
   .pellicola::scroll-marker-group { padding-inline: 18px; }
 }
+
+/* ============================================================
+   Pagina servizi: sei atti.
+   Ogni servizio e' una stanza a tutta pagina, e le stanze si alternano
+   chiaro e scuro chiudendo sul corallo. Non e' decorazione: la testata
+   misura cio' che ha sotto, quindi cambia tinta sei volte scendendo, e la
+   sequenza si sente scorrendo invece di doverla contare.
+   Niente aggancio: la pagina non si ferma mai, come sui servizi in home.
+   ============================================================ */
+.pagina-servizi { background: var(--paper); color: var(--ink); }
+
+.servizi-apertura {
+  padding: clamp(120px, 15vh, 210px) 5vw clamp(60px, 6vw, 100px);
+  background: var(--ink);
+  color: var(--cream);
+}
+.servizi-apertura .kicker { color: var(--red); }
+.servizi-apertura h1 {
+  max-width: 14ch;
+  margin: clamp(18px, 2vw, 30px) 0 0;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(52px, 9vw, 152px);
+  line-height: .84;
+  letter-spacing: -.045em;
+}
+.servizi-apertura h1 em { color: var(--red); font-style: italic; }
+.servizi-apertura-nota {
+  max-width: 46ch;
+  margin: clamp(26px, 3vw, 46px) 0 0;
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.9vw, 30px);
+  line-height: 1.25;
+  color: rgba(255, 236, 197, .78);
+}
+.servizi-sommario {
+  margin-top: clamp(40px, 4.4vw, 76px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.servizi-sommario a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 11px 16px 10px;
+  border: 1px solid rgba(255, 236, 197, .26);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 11px;
+  font-weight: 800;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.servizi-sommario a span { color: var(--red); font-variant-numeric: tabular-nums; }
+.servizi-sommario a:hover, .servizi-sommario a:focus-visible {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--ink);
+}
+.servizi-sommario a:hover span { color: var(--red-testo); }
+
+/* --- l'atto ------------------------------------------------ */
+.atto {
+  position: relative;
+  overflow-x: clip;
+  padding: clamp(66px, 8vw, 132px) 5vw clamp(56px, 6vw, 104px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "titolo  scheda"
+    "voci    scheda"
+    "consegne scheda"
+    "lavori  lavori";
+  gap: clamp(20px, 2.4vw, 40px) clamp(28px, 4vw, 78px);
+  align-items: start;
+}
+/* `--tinta-atto` esiste perche' il numero e' testo svuotato: ha `color:
+   transparent`, quindi un contorno a `currentColor` sarebbe trasparente pure
+   lui — invisibile. Il colore del contorno va detto a parte. */
+.atto-chiaro { background: var(--cream); color: var(--ink); --tinta-atto: var(--ink); }
+.atto-scuro { background: var(--ink); color: var(--cream); --tinta-atto: var(--cream); }
+.atto-corallo { background: var(--red); color: var(--ink); --tinta-atto: var(--ink); }
+
+/* Il numero e' una filigrana: grande, ma dietro a cio' che conta — lo stesso
+   trattamento delle coordinate nel riquadro "dove" e del 404.
+   A destra ci finiva sotto alla scheda e non si vedeva affatto. A sinistra
+   passa dietro al titolo, che e' il posto in cui un numero di capitolo sta da
+   sempre: sotto la parola, non accanto. */
+.atto-numero {
+  position: absolute;
+  top: clamp(6px, 1.4vw, 26px);
+  left: 2vw;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(120px, 22vw, 380px);
+  line-height: .74;
+  letter-spacing: -.06em;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--tinta-atto, var(--ink));
+  opacity: .22;
+  pointer-events: none;
+  user-select: none;
+}
+
+.atto > * { position: relative; z-index: 1; }
+/* Piu' specifica di `.atto > *`, che altrimenti vince perche' viene dopo e
+   pesa uguale: rimetteva il numero in flusso, e da elemento di griglia
+   finiva ottocento pixel piu' in basso, in coda all'atto. */
+.atto > .atto-numero { position: absolute; z-index: 0; }
+.atto-titolo { grid-area: titolo; }
+.atto-titolo h2 {
+  margin: clamp(30px, 4vw, 74px) 0 0;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(54px, 8.5vw, 150px);
+  line-height: .82;
+  letter-spacing: -.05em;
+}
+.atto-titolo > p {
+  max-width: 34ch;
+  margin: clamp(14px, 1.6vw, 24px) 0 0;
+  font-family: var(--serif);
+  font-size: clamp(19px, 2vw, 32px);
+  line-height: 1.24;
+}
+
+.atto-etichetta {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-size: 10px;
+  font-weight: 800;
+  opacity: .6;
+}
+.atto-comprende { grid-area: voci; }
+.atto-voci { margin: 0; padding: 0; list-style: none; max-width: 44ch; }
+.atto-voci li {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0;
+  border-top: 1px solid currentColor;
+  font-size: clamp(15px, 1.3vw, 19px);
+  line-height: 1.3;
+}
+.atto-voci li:last-child { border-bottom: 1px solid currentColor; }
+.atto-voci li span { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 11px; letter-spacing: .12em; opacity: .55; }
+.atto-consegne { grid-area: consegne; }
+
+/* La scheda sale fin sopra la riga del titolo e sborda a destra: e' appoggiata
+   sulla pagina, non incolonnata accanto al testo. */
+.atto-scheda {
+  grid-area: scheda;
+  margin: clamp(-70px, -4vw, 0px) clamp(-5vw, -2vw, 0px) 0 clamp(-60px, -3vw, 0px);
+}
+.atto-scheda .service-visual {
+  position: relative;
+  top: auto;
+  height: clamp(340px, 40vw, 560px);
+  border-radius: 24px;
+}
+
+/* --- dove l'abbiamo fatto ---------------------------------- */
+.atto-lavori { grid-area: lavori; margin-top: clamp(16px, 2vw, 34px); }
+.atto-lavori .kicker { opacity: .6; }
+.atto-lavori ul {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.atto-lavori a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px 8px 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  transition: background .2s ease, color .2s ease;
+}
+.atto-lavori img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #fff8ea;
+  padding: 3px;
+}
+.atto-lavori strong { font-size: 13px; font-weight: 800; }
+.atto-lavori i { font-style: normal; font-size: 13px; opacity: .6; }
+.atto-chiaro .atto-lavori a:hover, .atto-corallo .atto-lavori a:hover { background: var(--ink); color: var(--cream); }
+.atto-scuro .atto-lavori a:hover { background: var(--cream); color: var(--ink); }
+
+/* Il buco dichiarato. Deve somigliare a un cartellino di cantiere, non a una
+   frase del sito: chi lo vede deve capire in un istante che li' manca
+   qualcosa e che nessuno ha provato a spacciarlo per testo finito. */
+.da-scrivere {
+  max-width: 48ch;
+  margin: clamp(14px, 1.6vw, 22px) 0 0;
+  padding: 12px 14px;
+  border: 1px dashed currentColor;
+  border-radius: 10px;
+  font-family: var(--sans, inherit);
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: .68;
+}
+.da-scrivere b { text-transform: uppercase; letter-spacing: .14em; font-size: 10px; }
+
+/* --- chiusura ---------------------------------------------- */
+.servizi-chiusura {
+  padding: clamp(80px, 9vw, 150px) 5vw clamp(90px, 10vw, 160px);
+  background: var(--paper);
+  color: var(--ink);
+}
+.servizi-chiusura h2 {
+  margin: clamp(16px, 1.8vw, 26px) 0 0;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(44px, 6.4vw, 108px);
+  line-height: .86;
+  letter-spacing: -.045em;
+}
+.servizi-chiusura h2 em { color: var(--red-testo); font-style: italic; }
+.servizi-chiusura > p { max-width: 44ch; margin: clamp(18px, 2vw, 30px) 0 clamp(28px, 3vw, 46px); font-size: clamp(16px, 1.4vw, 21px); line-height: 1.5; }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .atto-titolo, .atto-scheda {
+      animation: atto-entra linear both;
+      animation-timeline: view();
+      animation-range: entry 4% cover 26%;
+    }
+    @keyframes atto-entra {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: none; }
+    }
+    .atto-numero {
+      animation: numero-deriva linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes numero-deriva {
+      from { transform: translateY(14%); }
+      to { transform: translateY(-14%); }
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .atto {
+    padding-inline: 18px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "titolo" "scheda" "voci" "consegne" "lavori";
+    gap: clamp(18px, 4vw, 30px);
+  }
+  .atto-scheda { margin-left: 0; }
+  .atto-scheda .service-visual { height: clamp(300px, 78vw, 420px); border-radius: 18px; }
+  .atto-numero { font-size: 34vw; right: 8px; }
+  .servizi-apertura { padding-inline: 18px; }
+  .servizi-chiusura { padding-inline: 18px; }
+  /* Il minimo tattile e' 44px: le pastiglie stavano a 40. */
+  .atto-lavori a, .servizi-sommario a { min-height: 44px; }
+}
