@@ -72,10 +72,11 @@ img { display: block; width: 100%; }
    piu' niente da sfocare.
    Nessun bordo: su un fondo piatto la sfocatura non si vede, ed e' giusto
    cosi'. Una riga invece si vedrebbe anche dove non serve nulla. */
-/* La testata prende il colore pieno della sezione che ha sotto, e lo cambia
-   scorrendo. Non e' un vetro: e' lo stesso colore, quindi la testata smette
-   di essere una fascia sopra la pagina e diventa il bordo alto della sezione
-   in cui ci si trova.
+/* La testata prende il colore della sezione che ha sotto e lo cambia
+   scorrendo, ma scostato di un gradino: identico si confondeva col fondo, e
+   una riga di testo che le passava dietro sembrava tagliata a meta' invece
+   che coperta. Non e' un vetro e non e' un colore estraneo: e' la stessa
+   tinta, un poco piu' scura sul chiaro e un poco piu' chiara sullo scuro.
    Il colore lo scrive AdaptiveBrand, che gia' misura cos'ha sotto il marchio
    per decidere la tinta: e' la stessa misura, usata due volte. */
 .site-header {
