@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("keeps the Kore identity and complete editorial structure", async () => {
@@ -34,14 +34,44 @@ test("is configured as a native Vercel Next.js project", async () => {
   assert.doesNotMatch(packageJson, /vinext|wrangler|sites-vite-plugin/);
   assert.match(vercelConfig, /"framework": "nextjs"/);
 
-  await Promise.all([
-    access(new URL("../public/kore-brand.png", import.meta.url)),
-    access(new URL("../public/favicon.png", import.meta.url)),
-    access(new URL("../public/images/designer.jpg", import.meta.url)),
-    access(new URL("../public/brand/kore-logo-coral.png", import.meta.url)),
-    access(new URL("../public/clients/osteria-annunziata.jpg", import.meta.url)),
-    access(new URL("../public/partners/metropolis.png", import.meta.url)),
-  ]);
+  /* Prima qui c'erano sei file scelti a mano, e uno di quei sei si e' rotto
+     nel momento in cui un logo e' passato da PNG a WebP — mentre nessuna
+     immagine del sito era sparita davvero. Un elenco copiato controlla se
+     stesso, non il sito.
+     Adesso si legge il codice, si raccolgono tutti i percorsi di file
+     scritti per esteso e si verifica che esistano: cosi' la prossima
+     conversione, rinomina o cancellazione la trova il test, e non il
+     visitatore davanti a un riquadro vuoto. */
+  const cartellaApp = new URL("../app/", import.meta.url);
+  const sorgenti = [];
+  const raccogli = async (dir) => {
+    for (const voce of await readdir(dir, { withFileTypes: true })) {
+      const dentro = new URL(voce.name + (voce.isDirectory() ? "/" : ""), dir);
+      if (voce.isDirectory()) await raccogli(dentro);
+      else if (/\.tsx?$/.test(voce.name)) sorgenti.push(await readFile(dentro, "utf8"));
+    }
+  };
+  await raccogli(cartellaApp);
+
+  const citati = new Set();
+  for (const testo of sorgenti) {
+    for (const [, percorso] of testo.matchAll(/"(\/[A-Za-z0-9_./-]+\.(?:png|jpe?g|webp|svg|mp4|mov|woff2?))"/g)) {
+      citati.add(percorso);
+    }
+  }
+  assert.ok(citati.size > 40, `trovati solo ${citati.size} file citati: la scansione non sta leggendo il codice`);
+
+  const mancanti = [];
+  await Promise.all(
+    [...citati].map(async (percorso) => {
+      try {
+        await access(new URL(`../public${percorso}`, import.meta.url));
+      } catch {
+        mancanti.push(percorso);
+      }
+    }),
+  );
+  assert.deepEqual(mancanti, [], `il codice cita file che non esistono in public/: ${mancanti.join(", ")}`);
 });
 
 test("provides a projects archive and individual case-study routes", async () => {
