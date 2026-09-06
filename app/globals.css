@@ -4293,9 +4293,11 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 /* `--tinta-atto` esiste perche' il numero e' testo svuotato: ha `color:
    transparent`, quindi un contorno a `currentColor` sarebbe trasparente pure
    lui — invisibile. Il colore del contorno va detto a parte. */
-.atto-chiaro { background: var(--cream); color: var(--ink); --tinta-atto: var(--ink); }
-.atto-scuro { background: var(--ink); color: var(--cream); --tinta-atto: var(--cream); }
-.atto-corallo { background: var(--red); color: var(--ink); --tinta-atto: var(--ink); }
+.atto-chiaro { background: var(--cream); color: var(--ink); --tinta-atto: var(--ink); --accento-atto: var(--red-testo); }
+.atto-scuro { background: var(--ink); color: var(--cream); --tinta-atto: var(--cream); --accento-atto: var(--red); }
+/* Sull'atto corallo l'accento e' inchiostro: corallo su corallo non e' un
+   accento, e' una macchia che sparisce. */
+.atto-corallo { background: var(--red); color: var(--ink); --tinta-atto: var(--ink); --accento-atto: var(--ink); }
 
 /* Il numero e' una filigrana: grande, ma dietro a cio' che conta — lo stesso
    trattamento delle coordinate nel riquadro "dove" e del 404.
@@ -4372,15 +4374,21 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   min-height: clamp(340px, 40vw, 560px);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: center;
+  gap: 0;
   padding: clamp(20px, 2.4vw, 34px);
-  border: 1px dashed currentColor;
+  border: 1px solid currentColor;
   border-radius: 24px;
-  opacity: .62;
 }
-.atto-figura p { margin: 0; font-size: 13px; line-height: 1.5; max-width: 40ch; }
-.atto-figura b { text-transform: uppercase; letter-spacing: .14em; font-size: 10px; }
+.atto-figura figcaption {
+  margin-top: 12px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: 9px;
+  font-weight: 800;
+  opacity: .5;
+}
+.tavola { width: 100%; height: auto; display: block; flex: 1; min-height: 0; }
 
 /* Il buco dichiarato. Deve somigliare a un cartellino di cantiere, non a una
    frase del sito: chi lo vede deve capire in un istante che li' manca

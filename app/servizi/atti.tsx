@@ -1,4 +1,5 @@
 import type { Service } from "../service-showcase";
+import { MockupServizio } from "./mockup";
 
 /* Il colore di ogni atto. Sei stanze che si alternano chiaro e scuro, e il
    corallo tenuto per l'ultima: la testata misura cio' che ha sotto e cambia
@@ -42,16 +43,12 @@ export function AttiDeiServizi({ servizi }: { servizi: Service[] }) {
             </p>
           </div>
 
-          {/* Il riquadro resta della misura giusta anche vuoto: quando arriva
-              l'immagine si incastra qui senza rifare l'impaginazione. */}
-          <div className="atto-figura">
-            <p><b>Immagine da scegliere</b></p>
-            <p>
-              Una figura che racconti il mestiere di {servizio.name.toLowerCase()} — un gesto, uno
-              strumento, un dettaglio di lavorazione. Non un lavoro di un cliente: quelli stanno
-              nell’archivio.
-            </p>
-          </div>
+          <figure className="atto-figura">
+            <MockupServizio servizio={servizio} />
+            <figcaption>
+              Disegno di costruzione · nessun lavoro di cliente
+            </figcaption>
+          </figure>
 
           <div className="atto-comprende">
             <p className="atto-etichetta">Cosa comprende</p>
