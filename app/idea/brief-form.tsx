@@ -2,11 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BUDGET, CANALI, MINIMO_PROGETTO, OBIETTIVI, SERVIZI, TEMPI, type Voce } from "./brief-data";
+import { RECAPITI } from "../recapiti";
 
-/* L'indirizzo a cui arriva il brief. Finche' e' vuoto il modulo non finge di
-   spedire: mette il brief negli appunti e lo dice. Meglio un passaggio in piu'
-   che una richiesta persa in un mailto senza destinatario. */
-const EMAIL_KORE: string = "";
+/* L'indirizzo a cui arriva il brief, dalla fonte unica dei recapiti: prima
+   stava qui in una costante sua, e sarebbe stato il terzo posto in cui
+   scrivere la stessa mail il giorno in cui arriva.
+   Finche' e' vuoto il modulo non finge di spedire: mette il brief negli
+   appunti e lo dice. Meglio un passaggio in piu' che una richiesta persa in
+   un mailto senza destinatario. */
+const EMAIL_KORE: string = RECAPITI.email;
 
 const BOZZA = "kore-brief-bozza";
 

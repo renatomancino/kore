@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { vociRecapito } from "./recapiti";
 
 /**
  * Il footer del sito, uno solo per tutte le pagine.
@@ -48,11 +49,18 @@ export function SiteFooter() {
             <Link href="/#metodo">Metodo</Link>
             <Link href="/#mondo">Agenzia</Link>
           </nav>
+          {/* Le tre voci portavano tutte a "/#contatti", una sezione che di
+              recapiti non ne aveva: adesso o sono il recapito vero, o portano
+              dove i recapiti stanno. */}
           <div>
             <p>Contatti</p>
-            <Link href="/#contatti">Email · da inserire</Link>
-            <Link href="/#contatti">Instagram</Link>
-            <Link href="/#contatti">LinkedIn</Link>
+            {vociRecapito().map((voce) =>
+              voce.href ? (
+                <a href={voce.href} key={voce.chiave}>{voce.etichetta} · {voce.valore}</a>
+              ) : (
+                <Link href="/idea" key={voce.chiave}>{voce.etichetta} · da inserire</Link>
+              ),
+            )}
           </div>
         </div>
       </div>

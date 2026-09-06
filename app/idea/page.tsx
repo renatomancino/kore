@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
 import { BriefForm } from "./brief-form";
+import { RECAPITI, vociRecapito } from "../recapiti";
 
 const TITOLO = "Hai un’idea? — Kore Studio";
 const DESCRIZIONE =
@@ -64,9 +64,43 @@ export default function IdeaPage() {
         </ol>
       </section>
 
-      <section className="brief-scorciatoia">
-        <p>Preferisci scrivere di tuo pugno?</p>
-        <Link href="/#contatti">Vai ai contatti <span aria-hidden="true">↗</span></Link>
+      {/* Qui c'era un rimando a "/#contatti": una sezione della home che di
+          recapiti non ne conteneva nessuno e rimandava a sua volta a questo
+          modulo. Chi non voleva compilare girava in tondo. Ora i recapiti
+          stanno qui, accanto al brief e non dentro: c'e' chi vuole essere
+          guidato e chi vuole solo un indirizzo, e perdere i secondi per non
+          aver scritto una mail sarebbe un peccato. */}
+      <section className="recapiti" aria-labelledby="recapiti-titolo">
+        <div className="recapiti-intro">
+          <p className="kicker">Preferisci scrivere di tuo pugno?</p>
+          <h2 id="recapiti-titolo">Scrivici e basta.</h2>
+          <p>
+            Il brief serve a noi per capire in fretta, non è un pedaggio. Se hai due righe da
+            dire, dille come preferisci.
+          </p>
+        </div>
+
+        <dl className="recapiti-elenco">
+          {vociRecapito().map((voce) => (
+            <div key={voce.chiave}>
+              <dt>{voce.etichetta}</dt>
+              <dd>
+                {voce.href ? (
+                  <a href={voce.href}>{voce.valore}</a>
+                ) : (
+                  /* Il buco si dichiara invece di riempirlo con un recapito
+                     verosimile: un indirizzo inventato perde le richieste
+                     senza che nessuno se ne accorga. */
+                  <span className="recapito-mancante">Da inserire</span>
+                )}
+              </dd>
+            </div>
+          ))}
+          <div>
+            <dt>Dove siamo</dt>
+            <dd>{RECAPITI.luogo}</dd>
+          </div>
+        </dl>
       </section>
 
       <SiteFooter />
