@@ -85,16 +85,18 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
           <div><dt>Competenze</dt><dd>{progetto.services.join(" · ")}</dd></div>
         </dl>
 
-        {pezzi.length > 1 && (
-          <div className="progetto-frecce">
-            <button type="button" onClick={() => muovi(-1)} disabled={aInizio} aria-label={`Materiali precedenti di ${progetto.client}`}>
-              <span aria-hidden="true">←</span>
-            </button>
-            <button type="button" onClick={() => muovi(1)} disabled={aFine} aria-label={`Altri materiali di ${progetto.client}`}>
-              <span aria-hidden="true">→</span>
-            </button>
-          </div>
-        )}
+        {/* Le frecce ci sono su tutti e nove, anche dove non c'e' niente da
+            scorrere: nascoste, la testata di quei progetti cambiava forma e
+            le righe non si somigliavano piu'. Spente dicono la stessa cosa —
+            di qua non si va — senza spostare niente. */}
+        <div className="progetto-frecce">
+          <button type="button" onClick={() => muovi(-1)} disabled={aInizio} aria-label={`Materiali precedenti di ${progetto.client}`}>
+            <span aria-hidden="true">←</span>
+          </button>
+          <button type="button" onClick={() => muovi(1)} disabled={aFine} aria-label={`Altri materiali di ${progetto.client}`}>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
       </header>
 
       {/* Sopra la dozzina i numerini diventano una parete: l'indice passa a
