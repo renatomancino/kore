@@ -4284,10 +4284,9 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-areas:
-    "titolo  scheda"
-    "voci    scheda"
-    "consegne scheda"
-    "lavori  lavori";
+    "titolo   figura"
+    "voci     figura"
+    "consegne figura";
   gap: clamp(20px, 2.4vw, 40px) clamp(28px, 4vw, 78px);
   align-items: start;
 }
@@ -4364,51 +4363,24 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .atto-voci li span { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 11px; letter-spacing: .12em; opacity: .55; }
 .atto-consegne { grid-area: consegne; }
 
-/* La scheda sale fin sopra la riga del titolo e sborda a destra: e' appoggiata
-   sulla pagina, non incolonnata accanto al testo. */
-.atto-scheda {
-  grid-area: scheda;
+/* La figura sale fin sopra la riga del titolo e sborda a destra: e' appoggiata
+   sulla pagina, non incolonnata accanto al testo. Finche' l'immagine non c'e'
+   il riquadro tiene la misura, cosi' quando arriva non si rifa' nulla. */
+.atto-figura {
+  grid-area: figura;
   margin: clamp(-70px, -4vw, 0px) clamp(-5vw, -2vw, 0px) 0 clamp(-60px, -3vw, 0px);
-}
-.atto-scheda .service-visual {
-  position: relative;
-  top: auto;
-  height: clamp(340px, 40vw, 560px);
+  min-height: clamp(340px, 40vw, 560px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: clamp(20px, 2.4vw, 34px);
+  border: 1px dashed currentColor;
   border-radius: 24px;
+  opacity: .62;
 }
-
-/* --- dove l'abbiamo fatto ---------------------------------- */
-.atto-lavori { grid-area: lavori; margin-top: clamp(16px, 2vw, 34px); }
-.atto-lavori .kicker { opacity: .6; }
-.atto-lavori ul {
-  margin: 14px 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-.atto-lavori a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px 16px 8px 8px;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  transition: background .2s ease, color .2s ease;
-}
-.atto-lavori img {
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #fff8ea;
-  padding: 3px;
-}
-.atto-lavori strong { font-size: 13px; font-weight: 800; }
-.atto-lavori i { font-style: normal; font-size: 13px; opacity: .6; }
-.atto-chiaro .atto-lavori a:hover, .atto-corallo .atto-lavori a:hover { background: var(--ink); color: var(--cream); }
-.atto-scuro .atto-lavori a:hover { background: var(--cream); color: var(--ink); }
+.atto-figura p { margin: 0; font-size: 13px; line-height: 1.5; max-width: 40ch; }
+.atto-figura b { text-transform: uppercase; letter-spacing: .14em; font-size: 10px; }
 
 /* Il buco dichiarato. Deve somigliare a un cartellino di cantiere, non a una
    frase del sito: chi lo vede deve capire in un istante che li' manca
@@ -4445,7 +4417,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .atto-titolo, .atto-scheda {
+    .atto-titolo, .atto-figura {
       animation: atto-entra linear both;
       animation-timeline: view();
       animation-range: entry 4% cover 26%;
@@ -4470,14 +4442,13 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .atto {
     padding-inline: 18px;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "titolo" "scheda" "voci" "consegne" "lavori";
+    grid-template-areas: "titolo" "figura" "voci" "consegne";
     gap: clamp(18px, 4vw, 30px);
   }
-  .atto-scheda { margin-left: 0; }
-  .atto-scheda .service-visual { height: clamp(300px, 78vw, 420px); border-radius: 18px; }
+  .atto-figura { margin: 0; min-height: clamp(220px, 52vw, 320px); border-radius: 18px; }
   .atto-numero { font-size: 34vw; right: 8px; }
   .servizi-apertura { padding-inline: 18px; }
   .servizi-chiusura { padding-inline: 18px; }
   /* Il minimo tattile e' 44px: le pastiglie stavano a 40. */
-  .atto-lavori a, .servizi-sommario a { min-height: 44px; }
+  .servizi-sommario a { min-height: 44px; }
 }
