@@ -7,7 +7,7 @@ import Link from "next/link";
  * progetti una versione ridotta col solo logo, e la pagina di dettaglio di un
  * progetto non ne aveva nessuno — quindi da lì non si tornava da nessuna parte.
  *
- * Le ancore sono assolute (`/#servizi`) perche' devono funzionare anche dalle
+ * Le ancore sono assolute (`/#mondo`) perche' devono funzionare anche dalle
  * pagine dell'archivio, dove quelle sezioni non esistono: da lì portano alla
  * home e poi al punto giusto. E sono <Link>, non <a>: per Next una navigazione
  * interna con un <a> e' un errore, non un avviso.
@@ -43,7 +43,7 @@ export function SiteFooter() {
           </div>
           <nav aria-label="Navigazione footer">
             <p>Esplora</p>
-            <Link href="/#servizi">Servizi</Link>
+            <Link href="/servizi">Servizi</Link>
             <Link href="/progetti">Progetti</Link>
             <Link href="/#metodo">Metodo</Link>
             <Link href="/#mondo">Agenzia</Link>
