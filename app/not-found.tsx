@@ -20,13 +20,11 @@ export const metadata: Metadata = {
  * lasciarlo davanti a una schermata muta e' il modo piu' rapido di fargli
  * chiudere la scheda.
  *
- * Qui ci sono la testata, il fondo pagina e soprattutto delle destinazioni
- * vere: le tre pagine del sito e l'ultimo progetto. Non un "torna alla home"
- * generico, che e' il vicolo cieco travestito da uscita.
+ * Qui ci sono la testata, il fondo pagina e soprattutto quattro destinazioni
+ * vere. Non un "torna alla home" generico, che e' il vicolo cieco travestito
+ * da uscita.
  */
 export default function NonTrovata() {
-  const ultimo = projects[0];
-
   return (
     <main className="assente">
       <AdaptiveBrand />
@@ -62,10 +60,10 @@ export default function NonTrovata() {
             <b>Raccontaci la tua idea</b>
             <i>Il brief, in quattro passi</i>
           </Link>
-          <Link href={`/progetti/${ultimo.slug}`}>
+          <Link href="/servizi">
             <span>04</span>
-            <b>{ultimo.client}</b>
-            <i>L’ultimo progetto pubblicato</i>
+            <b>I servizi</b>
+            <i>Come possiamo lavorare insieme</i>
           </Link>
         </nav>
       </section>

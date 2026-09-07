@@ -68,6 +68,7 @@ export function SiteMenu() {
         <div className="menu-column">
           <p>Kore</p>
           <Link href="/" onClick={chiudi}>Home</Link>
+          <Link href="/servizi" onClick={chiudi}>Servizi</Link>
           <Link href="/progetti" onClick={chiudi}>Progetti</Link>
           <Link href="/#mondo" onClick={chiudi}>Il nostro mondo</Link>
           <Link href="/#partner" onClick={chiudi}>Partner</Link>

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type { Project } from "./project-data";
 
 /**
@@ -66,16 +65,11 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
     : [{ src: progetto.cover, alt: `Identità di ${progetto.client}`, fit: "contain" as const, group: undefined, kind: undefined, poster: undefined }];
 
   return (
-    <section className="progetto" id={progetto.slug} aria-labelledby={`progetto-${progetto.slug}`}>
+    <section className="progetto" id={progetto.slug} data-tone={progetto.tone} aria-labelledby={`progetto-${progetto.slug}`}>
       <header className="progetto-testata">
         <span className="progetto-numero" aria-hidden="true">{String(numero).padStart(2, "0")}</span>
         <div className="progetto-nome">
-          {/* Il nome porta ancora alla scheda completa: quelle pagine
-              esistono, hanno la loro anteprima social e la transizione sulla
-              copertina, e toglierne l'unico ingresso le renderebbe orfane. */}
-          <h2 id={`progetto-${progetto.slug}`}>
-            <Link href={`/progetti/${progetto.slug}`} data-transizione>{progetto.client}</Link>
-          </h2>
+          <h2 id={`progetto-${progetto.slug}`}>{progetto.client}</h2>
           <p className="progetto-titolo">{progetto.title}</p>
         </div>
         <p className="progetto-sommario">{progetto.summary}</p>
@@ -85,26 +79,31 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
           <div><dt>Competenze</dt><dd>{progetto.services.join(" · ")}</dd></div>
         </dl>
 
-        {/* Le frecce ci sono su tutti e nove, anche dove non c'e' niente da
-            scorrere: nascoste, la testata di quei progetti cambiava forma e
-            le righe non si somigliavano piu'. Spente dicono la stessa cosa —
-            di qua non si va — senza spostare niente. */}
-        <div className="progetto-frecce">
-          <button type="button" onClick={() => muovi(-1)} disabled={aInizio} aria-label={`Materiali precedenti di ${progetto.client}`}>
-            <span aria-hidden="true">←</span>
-          </button>
-          <button type="button" onClick={() => muovi(1)} disabled={aFine} aria-label={`Altri materiali di ${progetto.client}`}>
-            <span aria-hidden="true">→</span>
-          </button>
+        <div className="progetto-azioni">
+          {/* Le frecce restano visibili anche quando sono disabilitate: la
+              posizione dei comandi non cambia passando da un caso all'altro. */}
+          <div className="progetto-frecce">
+            <button type="button" onClick={() => muovi(-1)} disabled={aInizio} aria-label={`Materiali precedenti di ${progetto.client}`}>
+              <span aria-hidden="true">←</span>
+            </button>
+            <button type="button" onClick={() => muovi(1)} disabled={aFine} aria-label={`Altri materiali di ${progetto.client}`}>
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Sopra la dozzina i numerini diventano una parete: l'indice passa a
           pallini, che dicono "quanti" e "dove sei" senza pretendere di essere
           letti uno per uno. Gender ne ha quarantotto. */}
-      <div className="pista">
-        <ol className={`pellicola${pezzi.length > 12 ? " pellicola-lunga" : ""}`} ref={pista}>
-        {pezzi.map((pezzo, i) => (
+      <div className={`progetto-galleria${pezzi.length === 1 ? " progetto-galleria-singola" : ""}`}>
+        <div className="progetto-galleria-intro" aria-hidden="true">
+          <span>Materiali selezionati</span>
+          <span>{String(pezzi.length).padStart(2, "0")} fotogrammi · trascina per esplorare</span>
+        </div>
+        <div className="pista">
+          <ol className={`pellicola${pezzi.length > 12 ? " pellicola-lunga" : ""}`} ref={pista}>
+          {pezzi.map((pezzo, i) => (
             <li className="fotogramma" key={`${pezzo.src}-${i}`}>
             <figure data-fit={pezzo.fit ?? (pezzo.src.endsWith(".png") ? "contain" : "cover")}>
               {pezzo.kind === "video" ? (
@@ -118,7 +117,7 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
                   aria-label={pezzo.alt}
                 />
               ) : (
-                <Image src={pezzo.src} alt={pezzo.alt} fill sizes="(max-width: 900px) 78vw, 30vw" />
+                <Image src={pezzo.src} alt={pezzo.alt} fill sizes="(max-width: 900px) 84vw, 46vw" />
               )}
               <figcaption>
                 {pezzo.group && <span>{pezzo.group}</span>}
@@ -127,7 +126,8 @@ export function CaroselloProgetto({ progetto, numero }: { progetto: Project; num
             </figure>
           </li>
           ))}
-        </ol>
+          </ol>
+        </div>
       </div>
     </section>
   );

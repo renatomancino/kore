@@ -74,12 +74,11 @@ test("is configured as a native Vercel Next.js project", async () => {
   assert.deepEqual(mancanti, [], `il codice cita file che non esistono in public/: ${mancanti.join(", ")}`);
 });
 
-test("provides a projects archive and individual case-study routes", async () => {
-  const [home, archive, elenco, detail, data] = await Promise.all([
+test("provides a projects archive without individual project routes", async () => {
+  const [home, archive, elenco, data] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/progetti/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/carosello-progetto.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/progetti/[slug]/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/project-data.ts", import.meta.url), "utf8"),
   ]);
 
@@ -95,8 +94,8 @@ test("provides a projects archive and individual case-study routes", async () =>
      file contiene il ciclo. */
   assert.match(archive, /projects\.map/);
   assert.match(elenco, /pezzi\.map/);
-  assert.match(detail, /generateStaticParams/);
-  assert.match(detail, /generateMetadata/);
+  assert.doesNotMatch(archive + elenco, /href=\{`\/progetti\//);
+  await assert.rejects(access(new URL("../app/progetti/[slug]/page.tsx", import.meta.url)));
   assert.match(data, /trim-identita-digitale/);
   assert.match(data, /osteria-annunziata-territorio/);
 });
