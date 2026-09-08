@@ -10,13 +10,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-# Finche' il sito vive solo sul sottodominio .netlify.app e' un cantiere: mezza
-# pagina servizi e' ancora da scrivere e i recapiti mancano. Questo lo tiene
-# fuori dai motori di ricerca.
-# DA TOGLIERE il giorno che si collega il dominio vero, altrimenti il sito
-# resta invisibile su Google.
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Robots-Tag = "noindex"

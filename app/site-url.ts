@@ -37,3 +37,18 @@ function deduci() {
 }
 
 export const indirizzoSito = deduci();
+
+/**
+ * Se il sito e' pubblicato per davvero.
+ *
+ * Il segnale non e' "sto girando in produzione" — anche un'anteprima su un
+ * sottodominio .netlify.app gira in produzione — ma "qualcuno ha dichiarato
+ * a quale indirizzo questo sito vive". Finche' quella variabile non c'e',
+ * quello che e' online e' un cantiere, e va tenuto fuori dai motori di
+ * ricerca: un sito incompleto indicizzato col nome del cliente si toglie
+ * dalle ricerche molto piu' lentamente di quanto ci sia finito.
+ *
+ * Il giorno che si imposta NEXT_PUBLIC_SITE_URL col dominio vero,
+ * l'indicizzazione si riaccende da sola. Nessuno deve ricordarsene.
+ */
+export const sitoPubblicato = Boolean(process.env.NEXT_PUBLIC_SITE_URL);

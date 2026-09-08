@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Bodoni_Moda, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { indirizzoSito } from "./site-url";
+import { indirizzoSito, sitoPubblicato } from "./site-url";
 import { TransizioniDiVista } from "./transizioni-di-vista";
 
 /* Il serif del sito era dichiarato come `Didot, "Bodoni MT", Georgia` —
@@ -40,6 +40,10 @@ export const metadata: Metadata = {
      costruisce l'anteprima non sa a quale dominio appartengono: la scheda
      resta vuota anche avendo l'immagine. */
   metadataBase: new URL(indirizzoSito),
+  /* robots.txt chiede ai motori di non passare; questo lo dice anche a chi
+     arriva alla pagina per altre strade — un link condiviso, per esempio.
+     Il file si puo' ignorare, il meta tag sulla pagina molto meno. */
+  robots: sitoPubblicato ? undefined : { index: false, follow: false },
   title: TITOLO,
   description: DESCRIZIONE,
   icons: {
