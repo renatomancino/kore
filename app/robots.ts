@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { indirizzoSito } from "./site-url";
+import { indirizzoSito, sitoPubblicato } from "./site-url";
 
 /**
  * Cosa possono leggere i motori di ricerca.
@@ -12,6 +12,9 @@ import { indirizzoSito } from "./site-url";
  * condiviso senza anteprima e' un danno.
  */
 export default function robots(): MetadataRoute.Robots {
+  /* Cantiere: nessun motore, e nessuna sitemap che li inviti a guardare. */
+  if (!sitoPubblicato) return { rules: { userAgent: "*", disallow: "/" } };
+
   return {
     rules: { userAgent: "*", allow: "/" },
     sitemap: `${indirizzoSito}/sitemap.xml`,
