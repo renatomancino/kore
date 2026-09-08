@@ -1,0 +1,12 @@
+# Netlify builds this site from the machine that runs `netlify deploy --build`,
+# so the Next.js adapter has to be a real dependency: the automatic install only
+# happens on Netlify's own build servers, which we are not using yet.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
