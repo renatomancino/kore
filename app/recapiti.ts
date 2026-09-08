@@ -22,7 +22,7 @@ type Recapiti = { email: string; telefono: string; instagram: string; linkedin: 
 
 export const RECAPITI: Recapiti = {
   /** L'indirizzo a cui arriva il brief. Vuoto: il modulo copia negli appunti. */
-  email: "",
+  email: "info@korestudioadv.it",
   /** Con il prefisso internazionale se si vuole usarlo anche su WhatsApp. */
   telefono: "",
   /** L'indirizzo completo del profilo, non la sola maniglia. */
