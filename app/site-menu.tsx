@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { services } from "./services-data";
+import { Freccia } from "./freccia";
 
 /**
  * Il menu del sito: il tasto e il pannello, insieme.
@@ -72,7 +73,7 @@ export function SiteMenu() {
           <Link href="/progetti" onClick={chiudi}>Progetti</Link>
           <Link href="/#mondo" onClick={chiudi}>Il nostro mondo</Link>
           <Link href="/#partner" onClick={chiudi}>Partner</Link>
-          <Link className="menu-contact" href="/idea" onClick={chiudi}>Raccontaci la tua idea ↗</Link>
+          <Link className="menu-contact" href="/idea" onClick={chiudi}>Raccontaci la tua idea <Freccia /></Link>
         </div>
       </nav>
     </>

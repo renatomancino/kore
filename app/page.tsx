@@ -12,6 +12,7 @@ import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
 import { ProjectStream } from "./project-stream";
 import { VideoShowcase } from "./video-showcase";
+import { Freccia } from "./freccia";
 
 
 const clientSlots = [
@@ -68,7 +69,7 @@ export default function Home() {
           </h1>
           <div className="hero-actions">
             <p>Una regia creativa per brand, contenuti, esperienze e progetti digitali che lasciano il segno.</p>
-            <Link className="hero-cta" href="/idea">Raccontaci la tua idea <span aria-hidden="true">↗</span></Link>
+            <Link className="hero-cta" href="/idea">Raccontaci la tua idea <span aria-hidden="true"><Freccia /></span></Link>
           </div>
         </div>
         <div className="scroll-cue" aria-hidden="true">Scorri ↓</div>
@@ -138,7 +139,7 @@ export default function Home() {
         <Link className="project-stream-link" href="/progetti">
           <span>Archivio completo</span>
           <strong>Vedi tutti i progetti</strong>
-          <i aria-hidden="true">↗</i>
+          <i aria-hidden="true"><Freccia /></i>
         </Link>
       </ProjectStream>
 

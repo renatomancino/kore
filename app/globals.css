@@ -1946,7 +1946,9 @@ html.lenis.lenis-stopped { overflow: clip; }
   .projects-archive .archive-project-copy h2 { max-width: none; font-size: 43px; }
   .projects-archive .archive-project-summary { font-size: 13px; }
   .projects-archive .archive-cta { padding: 82px 18px; }
-  .projects-archive .archive-cta a { font-size: 21vw; }
+  /* 21vw voleva dire 82px su un telefono da 390: "Parliamone" misurava 504px
+     in una riga da 354 e arrivava a schermo come "Parliamon". */
+  .projects-archive .archive-cta a { font-size: clamp(30px, 14vw, 76px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3094,7 +3096,13 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   }
   .video-showcase .video-showcase-intro .kicker { margin-bottom: 14px; }
   .video-showcase .video-showcase-intro h2 {
-    max-width: 7.5ch;
+    /* Erano 7.5ch, ma "movimento." ne occupa dieci: l'ultima lettera e il
+       punto finivano fuori dal riquadro, e la pagina non scorre in orizzontale
+       — quindi sparivano invece di sporgere. Il limite era in `ch`, che scala
+       col corpo: allargarlo di mezzo carattere per volta non finiva mai,
+       perche' parola e riquadro si stringono insieme. Qui la misura la da'
+       gia' la colonna, e `text-wrap: balance` pareggia le righe. */
+    max-width: none;
     font-size: clamp(46px, 13.5vw, 62px);
     line-height: .86;
     text-wrap: balance;
@@ -3562,7 +3570,12 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .closing-cta { min-height: 0; padding: 96px 18px 0; }
   .closing-cta-rings { top: -10vw; width: 150vw; }
   .closing-cta-main > .kicker { margin-bottom: 24px; }
-  .closing-cta-title { font-size: clamp(57px, 16.5vw, 82px); line-height: .76; letter-spacing: -.055em; }
+  /* Le tre righe sono `<span>` a blocco: non vanno a capo, quindi la parola
+     piu' lunga ("Progettiamo") deve entrare intera. A 16.5vw misurava 494px
+     dentro una colonna di 354: mancava l'ultima sillaba, e il minimo di 57px
+     la tagliava anche su schermi piu' stretti. 11.5vw fa entrare la parola
+     fino a 320px di larghezza. */
+  .closing-cta-title { font-size: clamp(32px, 11.5vw, 62px); line-height: .78; letter-spacing: -.05em; }
   .closing-cta-lead { margin-top: 36px; font-size: 18px; }
   .closing-cta-button { width: 100%; margin-top: 28px; justify-content: space-between; }
   .closing-cta-bottom { margin-top: 96px; padding-bottom: 34px; gap: 25px; }
@@ -4072,7 +4085,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .project-detail-story dt { margin: 0; }
 .project-detail-story dd { font-size: clamp(17px, 1.5vw, 22px); }
 .next-project { position: relative; overflow: hidden; border-top: 1px solid rgba(23,18,13,.2); background: #e9e0d1; transition: background .3s ease, color .3s ease; }
-.next-project::after { content: "↗"; position: absolute; right: 4vw; top: 50%; color: rgba(23,18,13,.08); font-family: var(--serif); font-size: min(34vw, 430px); line-height: 0; transform: translateY(-10%); pointer-events: none; }
+/* Residuo della fascia "Progetto successivo", tolta dal sito: nessun
+   componente usa piu' .next-project. Se un giorno tornasse, la freccia
+   va disegnata come in app/freccia.tsx e non scritta come carattere. */
+.next-project::after { content: ""; position: absolute; right: 4vw; top: 50%; color: rgba(23,18,13,.08); font-family: var(--serif); font-size: min(34vw, 430px); line-height: 0; transform: translateY(-10%); pointer-events: none; }
 .next-project > * { position: relative; z-index: 1; }
 .next-project:hover { background: #0e0e0d; color: var(--cream); }
 .next-project i { width: 80px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid currentColor; border-radius: 50%; transition: transform .3s ease; }
@@ -4598,7 +4614,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   .work-catalogue { padding-block: 74px 100px; }
   .work-catalogue-heading h2 { font-size: clamp(56px, 17vw, 78px); }
   .work-card-media { aspect-ratio: 4 / 5; }
-  .work-card-copy h3 { font-size: 40px; }
+  /* Era un corpo fisso, quindi su un telefono da 320 "Disconnection" non
+     entrava piu' nella scheda. Ora scende con la larghezza e si ferma dove
+     stava prima. */
+  .work-card-copy h3 { font-size: clamp(28px, 11vw, 40px); }
   .project-detail-story { padding: 82px 18px; grid-template-columns: 1fr; }
   .project-detail-story-copy { padding: 0; border: 0; }
   .project-detail-story h2 { font-size: 38px; }
@@ -4855,3 +4874,26 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   /* Il minimo tattile e' 44px: le pastiglie stavano a 40. */
   .servizi-sommario a { min-height: 44px; }
 }
+
+/* ============================================================
+   Telefoni stretti (iPhone SE e simili, 320-360px)
+   Due titoli nascono con `clamp(54px, ...)`: sotto una certa larghezza il
+   minimo smette di scendere mentre la colonna continua a stringersi, e la
+   parola piu' lunga viene tagliata via — la pagina non scorre in orizzontale,
+   quindi non sporge: sparisce. La soglia misurata e' 345px per "Raccontacela"
+   e 329px per "Advertising". Si abbassa solo qui: sopra i 360px il corpo
+   originale entra e resta quello disegnato.
+   ============================================================ */
+@media (max-width: 360px) {
+  .brief-apertura h1 { font-size: 44px; }
+  .atto-titolo h2 { font-size: 46px; }
+  /* Qui la colonna utile e' 248px — il riquadro e' largo 284 ma ha 18px di
+     margine interno per lato — e "in movimento." ne chiedeva 255. */
+  .video-showcase .video-showcase-intro h2 { font-size: 42px; }
+}
+
+/* La freccia disegnata (app/freccia.tsx) prende il posto del carattere `↗`,
+   che su iOS e Android diventava un'emoji a colori. Misura 1em, quindi eredita
+   il corpo da chi la contiene; qui si allinea solo alla riga di testo, perche'
+   un glifo sta sulla linea di base e un SVG no. */
+.freccia { vertical-align: -.12em; }
