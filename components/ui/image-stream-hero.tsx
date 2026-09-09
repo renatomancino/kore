@@ -43,7 +43,7 @@ function keyframes(direction: 1 | -1, name: string, path: Required<CorridorPath>
     const turn = path.turnBirth + (path.turnExit - path.turnBirth) * progress;
 
     steps.push(
-      `${(progress * 100).toFixed(2)}%{transform:translate3d(${(direction * rail).toFixed(2)}cqw,0,${depth.toFixed(2)}cqw) rotateY(${(-direction * turn).toFixed(2)}deg)}`,
+      `${(progress * 100).toFixed(2)}%{transform:translate3d(calc(${(direction * rail).toFixed(2)} * var(--unita)),0,calc(${depth.toFixed(2)} * var(--unita))) rotateY(${(-direction * turn).toFixed(2)}deg)}`,
     );
   }
 
@@ -88,7 +88,7 @@ export function ImageStreamHero({
       <div
         className="image-stream-perspective"
         aria-hidden="true"
-        style={{ perspective: `${geometry.perspective}cqw`, perspectiveOrigin: `50% ${axis}%` }}
+        style={{ perspective: `calc(${geometry.perspective} * var(--unita))`, perspectiveOrigin: `50% ${axis}%` }}
       >
         <div className="image-stream-plane">
           {[right, left].map((animationName, directionIndex) =>
@@ -104,11 +104,11 @@ export function ImageStreamHero({
                   style={{
                     left: "50%",
                     top: `${axis}%`,
-                    width: `${geometry.cardWidth}cqw`,
-                    height: `${geometry.cardHeight}cqw`,
-                    marginLeft: `${-geometry.cardWidth / 2}cqw`,
-                    marginTop: `${-geometry.cardHeight / 2}cqw`,
-                    borderRadius: `${geometry.cardRadius}cqw`,
+                    width: `calc(${geometry.cardWidth} * var(--unita))`,
+                    height: `calc(${geometry.cardHeight} * var(--unita))`,
+                    marginLeft: `calc(${-geometry.cardWidth / 2} * var(--unita))`,
+                    marginTop: `calc(${-geometry.cardHeight / 2} * var(--unita))`,
+                    borderRadius: `calc(${geometry.cardRadius} * var(--unita))`,
                     animation: `${animationName} ${speed}s linear infinite`,
                     animationDelay: `${-((index + directionIndex * 0.5) * speed) / cards}s`,
                   }}
