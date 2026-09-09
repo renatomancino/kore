@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BUDGET, CANALI, MINIMO_PROGETTO, OBIETTIVI, SERVIZI, TEMPI, type Voce } from "./brief-data";
 import { RECAPITI } from "../recapiti";
+import { Freccia } from "../freccia";
 
 /* L'indirizzo a cui arriva il brief, dalla fonte unica dei recapiti: prima
    stava qui in una costante sua, e sarebbe stato il terzo posto in cui
@@ -463,11 +464,11 @@ export function BriefForm() {
             )}
             {passo < PASSI.length - 1 ? (
               <button type="button" className="brief-bottone" onClick={avanti}>
-                Avanti <span aria-hidden="true">↗</span>
+                Avanti <span aria-hidden="true"><Freccia /></span>
               </button>
             ) : (
               <button type="submit" className="brief-bottone">
-                Manda il brief <span aria-hidden="true">↗</span>
+                Manda il brief <span aria-hidden="true"><Freccia /></span>
               </button>
             )}
           </div>

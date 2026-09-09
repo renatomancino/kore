@@ -5,6 +5,7 @@ import { projects } from "../project-data";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
+import { Freccia } from "../freccia";
 
 const TITOLO = "Progetti — Kore Studio";
 const DESCRIZIONE =
@@ -84,7 +85,7 @@ export default function ProjectsPage() {
 
       <section className="archive-cta">
         <p>Il prossimo progetto potrebbe essere il tuo.</p>
-        <Link href="/idea">Parliamone <span aria-hidden="true">↗</span></Link>
+        <Link href="/idea">Parliamone <span aria-hidden="true"><Freccia /></span></Link>
       </section>
 
       <SiteFooter />

@@ -4085,7 +4085,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .project-detail-story dt { margin: 0; }
 .project-detail-story dd { font-size: clamp(17px, 1.5vw, 22px); }
 .next-project { position: relative; overflow: hidden; border-top: 1px solid rgba(23,18,13,.2); background: #e9e0d1; transition: background .3s ease, color .3s ease; }
-.next-project::after { content: "↗"; position: absolute; right: 4vw; top: 50%; color: rgba(23,18,13,.08); font-family: var(--serif); font-size: min(34vw, 430px); line-height: 0; transform: translateY(-10%); pointer-events: none; }
+/* Residuo della fascia "Progetto successivo", tolta dal sito: nessun
+   componente usa piu' .next-project. Se un giorno tornasse, la freccia
+   va disegnata come in app/freccia.tsx e non scritta come carattere. */
+.next-project::after { content: ""; position: absolute; right: 4vw; top: 50%; color: rgba(23,18,13,.08); font-family: var(--serif); font-size: min(34vw, 430px); line-height: 0; transform: translateY(-10%); pointer-events: none; }
 .next-project > * { position: relative; z-index: 1; }
 .next-project:hover { background: #0e0e0d; color: var(--cream); }
 .next-project i { width: 80px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid currentColor; border-radius: 50%; transition: transform .3s ease; }
@@ -4888,3 +4891,9 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
      margine interno per lato — e "in movimento." ne chiedeva 255. */
   .video-showcase .video-showcase-intro h2 { font-size: 42px; }
 }
+
+/* La freccia disegnata (app/freccia.tsx) prende il posto del carattere `↗`,
+   che su iOS e Android diventava un'emoji a colori. Misura 1em, quindi eredita
+   il corpo da chi la contiene; qui si allinea solo alla riga di testo, perche'
+   un glifo sta sulla linea di base e un SVG no. */
+.freccia { vertical-align: -.12em; }

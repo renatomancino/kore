@@ -5,6 +5,7 @@ import { services } from "../services-data";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
 import { AttiDeiServizi } from "./atti";
+import { Freccia } from "../freccia";
 
 const TITOLO = "Servizi — Kore Studio";
 const DESCRIZIONE =
@@ -51,7 +52,7 @@ export default function PaginaServizi() {
         <p className="kicker">Il prossimo progetto</p>
         <h2>Non sai da quale<br /><em>cominciare?</em></h2>
         <p>Raccontaci il problema: la competenza giusta la scegliamo noi.</p>
-        <Link className="giant-link" href="/idea">Raccontaci la tua idea <span aria-hidden="true">↗</span></Link>
+        <Link className="giant-link" href="/idea">Raccontaci la tua idea <span aria-hidden="true"><Freccia /></span></Link>
       </section>
 
       <SiteFooter />
