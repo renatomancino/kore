@@ -1,6 +1,15 @@
 "use client";
 
+/*
+ * Le fotografie passano dall'ottimizzatore di Next e non da un `<img>` nudo.
+ * Con i file originali il corridoio scaricava 5,6 MB e decodificava 54,3
+ * megapixel — 207 MB di bitmap in memoria — per disegnarli in riquadri da
+ * 243x329: ventiquattro volte i pixel necessari, tutti insieme nell'istante in
+ * cui la sezione entra in campo. Era li' che lo scorrimento si inceppava.
+ */
+
 import * as React from "react";
+import Image from "next/image";
 
 export type CorridorPath = {
   perspective?: number;
@@ -113,7 +122,18 @@ export function ImageStreamHero({
                     animationDelay: `${-((index + directionIndex * 0.5) * speed) / cards}s`,
                   }}
                 >
-                  {image ? <img src={image.src} alt={image.alt ?? ""} loading="lazy" decoding="async" draggable={false} /> : null}
+                  {image ? (
+                    <Image
+                      src={image.src}
+                      alt={image.alt ?? ""}
+                      fill
+                      /* La scheda e' larga 17 unita' del contenitore, che qui e'
+                         largo quanto la finestra: chiedere 18vw lascia un margine
+                         e non fa scaricare il doppio del necessario. */
+                      sizes="(max-width: 600px) 46vw, 18vw"
+                      draggable={false}
+                    />
+                  ) : null}
                 </div>
               );
             }),
