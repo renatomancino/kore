@@ -142,7 +142,16 @@ img { display: block; width: 100%; }
   height: 100%;
   max-height: none;
   margin: 0;
-  padding: 120px 6vw 7vh;
+  /* L'imbottitura sta in tre variabili perche' il campo corallo la rovescia in
+     margini negativi per uscire fino al bordo: se i due numeri fossero scritti
+     due volte, prima o poi divergerebbero e resterebbe una riga di inchiostro
+     lungo il bordo. In alto segue l'altezza dello schermo — su un portatile
+     basso o su un telefono coricato, 120px fissi sono un terzo dello schermo
+     buttato via prima ancora di cominciare. */
+  --menu-alto: clamp(84px, 13vh, 120px);
+  --menu-lato: 6vw;
+  --menu-basso: 7vh;
+  padding: var(--menu-alto) var(--menu-lato) var(--menu-basso);
   border: 0;
   overflow: visible;
   background: var(--ink);
@@ -156,13 +165,13 @@ img { display: block; width: 100%; }
     display .55s allow-discrete,
     overlay .55s allow-discrete;
 }
-/* Una colonna sola da quando i sei servizi non stanno piu' nel menu. Non
-   resta una griglia a due con un buco a destra: la lista prende tutta la
-   larghezza e lo spazio libero diventa margine, che e' come sta il resto del
-   sito. */
+/* Due celle, ma non le due colonne di elenchi di prima: a sinistra la
+   navigazione, a destra il recapito, che e' l'unica cosa che si vuole davvero
+   da un menu e ora pesa quanto tutto il resto messo insieme. */
 .menu-panel:popover-open {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 40%);
+  gap: 6vw;
   transform: translateY(0);
 }
 /* Da dove parte l'animazione all'apertura: senza, il pannello nasce gia' a
@@ -175,7 +184,7 @@ img { display: block; width: 100%; }
    pannello copre la testata, e "Chiudi" deve restare sotto il dito. */
 .menu-chiudi { position: absolute; top: 16px; right: 5vw; }
 .menu-column { display: flex; flex-direction: column; align-items: flex-start; }
-.menu-column p { margin: 0 0 30px; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
+.menu-column p { margin: 0 0 clamp(14px, 3.4vh, 30px); font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
 /* `padding-block` e non un'altezza: il bersaglio arriva a 44 senza toccare
    il corpo, che qui e' la voce del menu. */
 /* Il corpo risponde a tutte e due le misure dello schermo, non solo alla
@@ -191,7 +200,69 @@ img { display: block; width: 100%; }
    nemmeno lasciare un buco fra l'ultima e il recapito in fondo. */
 .menu-column a { padding-block: clamp(6px, 1.1vh, 14px); font-family: var(--serif); font-size: clamp(30px, min(5vw, 8vh), 84px); line-height: 1.04; letter-spacing: -.025em; transition: color .2s ease, transform .2s ease; }
 .menu-column a:hover, .menu-column a:focus { color: var(--red); transform: translateX(8px); }
-.menu-column .menu-contact { margin-top: auto; color: var(--red); }
+/* Il campo corallo. Esce dall'imbottitura del pannello con margini negativi
+   pari all'imbottitura stessa, cosi' tocca il bordo in alto, a destra e in
+   basso: un colore che si ferma prima del bordo sembra un riquadro appoggiato,
+   uno che ci arriva sembra meta' della pagina.
+   Inchiostro su corallo, non panna: 5,31:1 contro 3,0: e' la stessa coppia
+   che il sito usa gia' nelle altre sezioni corallo. */
+.menu-contact {
+  display: flex;
+  flex-direction: column;
+  /* Il testo sta in basso e non in cima: sopra ci passa il tasto "Chiudi", che
+     nel top layer copre la testata e finisce dentro a questo campo. Appoggiato
+     al fondo si legge anche come un manifesto — il titolo sta giu', il colore
+     sopra e' il colore e basta. */
+  justify-content: flex-end;
+  margin: calc(var(--menu-alto) * -1) calc(var(--menu-lato) * -1) calc(var(--menu-basso) * -1) 0;
+  padding: var(--menu-alto) clamp(28px, 3.4vw, 64px) var(--menu-basso);
+  background: var(--red);
+  color: var(--ink);
+  transition: background-color .3s ease;
+}
+.menu-contact-testo {
+  font-family: var(--serif);
+  font-size: clamp(30px, min(5.6vw, 9vh), 92px);
+  line-height: .98;
+  letter-spacing: -.03em;
+  /* Senza, la riga si spezza dove capita e lascia "idea" da solo sotto. Con
+     `balance` il browser distribuisce le parole fra le righe, che e' quello
+     che si fa a mano su un titolo. */
+  text-wrap: balance;
+}
+/* La freccia in fondo a destra, grande come un segno e non come un accessorio
+   del testo: e' lei a dire "di qua". Al passaggio del mouse parte nella
+   direzione in cui punta. */
+.menu-contact-freccia {
+  align-self: flex-end;
+  margin-top: clamp(24px, 4vh, 64px);
+  font-size: clamp(38px, min(5.4vw, 9vh), 104px);
+  line-height: 0;
+  transition: translate .35s cubic-bezier(.4, 0, .2, 1);
+}
+.menu-contact:hover, .menu-contact:focus-visible { background: #ff5a5c; }
+.menu-contact:hover .menu-contact-freccia,
+.menu-contact:focus-visible .menu-contact-freccia { translate: 10px -10px; }
+@media (prefers-reduced-motion: reduce) {
+  .menu-contact, .menu-contact-freccia { transition: none; }
+}
+
+/* In verticale la seconda colonna diventa una striscia alta e stretta col
+   titolo rimpicciolito in fondo: il colore c'e' ma la frase non pesa piu'
+   niente. Sotto i 900 in verticale il campo passa quindi sotto l'elenco, a
+   tutta larghezza — dove la stessa frase ci sta su una riga sola e grande.
+   In orizzontale no: li' la colonna e' larga e funziona. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .menu-panel:popover-open {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    gap: clamp(20px, 4vh, 34px);
+  }
+  .menu-contact {
+    margin: 0 calc(var(--menu-lato) * -1) calc(var(--menu-basso) * -1);
+    padding: clamp(28px, 5vh, 56px) var(--menu-lato) var(--menu-basso);
+  }
+}
 
 .marquee { overflow: hidden; padding: 17px 0 13px; border-block: 1px solid var(--ink); background: var(--cream); color: var(--ink); }
 .marquee-track { display: flex; width: max-content; white-space: nowrap; font-family: var(--serif); font-weight: 900; font-size: clamp(20px, 2.6vw, 40px); letter-spacing: -.015em; text-transform: uppercase; animation: marquee 22s linear infinite; }
@@ -526,17 +597,37 @@ html.lenis.lenis-stopped { overflow: clip; }
   .hero::after { background: linear-gradient(0deg, rgba(40,10,5,.65), transparent 75%); }
   .hero-art { background-position: 58% center; }
   .scroll-cue { display: none; }
-  .menu-panel { grid-template-columns: 1fr; padding: 95px 24px 40px; overflow: auto; }
+  .menu-panel {
+    --menu-alto: clamp(78px, 12vh, 95px);
+    --menu-lato: 24px;
+    --menu-basso: 40px;
+    padding: var(--menu-alto) var(--menu-lato) var(--menu-basso);
+    overflow: auto;
+  }
+  /* La disposizione va scritta su `:popover-open`, non su `.menu-panel`: la
+     regola a due colonne sta li' sopra, e una classe da sola non batte una
+     classe piu' una pseudo-classe. Scritta com'era, su un telefono coricato
+     restavano due colonne — e il campo corallo, che ne pretende 300, spingeva
+     l'elenco in un vicolo. */
+  .menu-panel:popover-open {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    gap: clamp(20px, 4vh, 34px);
+  }
   /* Sul telefono le due colonne si impilavano e le voci dovevano restare
      piccole per starci tutte e dodici. Ora sono sei: il corpo puo' crescere,
      e con lui il bersaglio da toccare. */
-  .menu-column a { font-size: clamp(30px, 11vw, 52px); }
-  /* Il recapito e' l'unica voce che non ci sta su una riga sola: misurata su
-     un telefono da 390 chiede 457px e ne ha 342, su uno da 320 ne chiede 375
-     e ne ha 272. Andare a capo lascia "idea ↗" orfano sotto, quindi qui ha un
-     corpo suo — che e' anche giusto, visto che non e' una parola di menu ma
-     una frase. Sul tablet in su ci sta e resta grande come le altre. */
-  .menu-column .menu-contact { font-size: clamp(22px, 7.8vw, 34px); }
+  /* Anche qui la larghezza da sola non basta: un telefono coricato e' largo
+     844 e alto 390, e 11vw ci darebbero voci alte come mezzo schermo. */
+  .menu-column a { font-size: clamp(26px, min(11vw, 7.4vh), 52px); }
+  /* Il campo corallo passa sotto l'elenco e prende tutta la larghezza: sfora
+     a sinistra oltre che a destra, e resta appoggiato al fondo dello schermo. */
+  .menu-contact {
+    margin: 0 calc(var(--menu-lato) * -1) calc(var(--menu-basso) * -1);
+    padding: clamp(20px, 4.4vh, 44px) var(--menu-lato) var(--menu-basso);
+  }
+  .menu-contact-testo { font-size: clamp(26px, min(9.4vw, 8vh), 46px); }
+  .menu-contact-freccia { margin-top: clamp(12px, 2.4vh, 18px); font-size: clamp(30px, min(11vw, 10vh), 56px); }
   .section-pad { padding: 15vw 18px; }
   .logo-wall { grid-template-columns: 1fr; }
   .logo-wall button { min-height: 120px; }

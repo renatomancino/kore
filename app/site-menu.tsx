@@ -73,8 +73,16 @@ export function SiteMenu() {
           <Link href="/progetti" onClick={chiudi}>Progetti</Link>
           <Link href="/#mondo" onClick={chiudi}>Il nostro mondo</Link>
           <Link href="/#partner" onClick={chiudi}>Partner</Link>
-          <Link className="menu-contact" href="/idea" onClick={chiudi}>Raccontaci la tua idea <Freccia /></Link>
         </div>
+
+        {/* Il recapito non e' l'ultima voce dell'elenco: e' l'altra meta' del
+            pannello. Sta fuori dalla colonna perche' deve occupare una cella
+            sua nella griglia — un campo corallo a tutta altezza, che e' anche
+            cio' che riempie il vuoto lasciato dalla colonna dei servizi. */}
+        <Link className="menu-contact" href="/idea" onClick={chiudi}>
+          <span className="menu-contact-testo">Raccontaci la tua idea</span>
+          <span className="menu-contact-freccia" aria-hidden="true"><Freccia /></span>
+        </Link>
       </nav>
     </>
   );
