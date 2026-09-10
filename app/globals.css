@@ -198,7 +198,7 @@ img { display: block; width: 100%; }
 /* Lo spazio fra una voce e l'altra segue l'altezza dello schermo come il
    corpo: con sei voci al posto di dodici la lista non deve stare stretta, ma
    nemmeno lasciare un buco fra l'ultima e il recapito in fondo. */
-.menu-column a { padding-block: clamp(6px, 1.1vh, 14px); font-family: var(--serif); font-size: clamp(30px, min(5vw, 8vh), 84px); line-height: 1.04; letter-spacing: -.025em; transition: color .2s ease, transform .2s ease; }
+.menu-column a { padding-block: clamp(6px, 1.1vh, 14px); font-family: var(--serif); font-weight: 700; font-size: clamp(30px, min(5vw, 8vh), 84px); line-height: 1.04; letter-spacing: -.025em; transition: color .2s ease, transform .2s ease; }
 .menu-column a:hover, .menu-column a:focus { color: var(--red); transform: translateX(8px); }
 /* Il campo corallo. Esce dall'imbottitura del pannello con margini negativi
    pari all'imbottitura stessa, cosi' tocca il bordo in alto, a destra e in
@@ -222,6 +222,13 @@ img { display: block; width: 100%; }
 }
 .menu-contact-testo {
   font-family: var(--serif);
+  /* Il Bodoni senza peso dichiarato cade a 400, il suo taglio piu' sottile:
+     e' un carattere a forte contrasto, a quel peso le aste sottili sono
+     capelli e su un fondo saturo come il corallo si spengono. Tutta la
+     tendina sta a 700 — che e' anche il peso con cui il footer scrive le
+     stesse voci, cosi' le due navigazioni parlano con la stessa voce e
+     cambiano solo di volume. */
+  font-weight: 700;
   font-size: clamp(30px, min(5.6vw, 9vh), 92px);
   line-height: .98;
   letter-spacing: -.03em;
