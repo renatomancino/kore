@@ -23,16 +23,22 @@ test("keeps the Kore identity and complete editorial structure", async () => {
   assert.doesNotMatch(page + layout, /SkeletonPreview|codex-preview/);
 });
 
-test("is configured as a native Vercel Next.js project", async () => {
-  const [packageJson, vercelConfig] = await Promise.all([
+test("is configured as a Next.js project published on Netlify", async () => {
+  const [packageJson, netlifyConfig] = await Promise.all([
     readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readFile(new URL("../vercel.json", import.meta.url), "utf8"),
+    readFile(new URL("../netlify.toml", import.meta.url), "utf8"),
   ]);
 
   assert.match(packageJson, /"build": "next build"/);
   assert.match(packageJson, /"next": "\^16\.2\.6"/);
   assert.doesNotMatch(packageJson, /vinext|wrangler|sites-vite-plugin/);
-  assert.match(vercelConfig, /"framework": "nextjs"/);
+  /* Il sito si compila sulla macchina di chi pubblica, non sui server di
+     Netlify: l'adattatore deve quindi essere una dipendenza vera, e il
+     comando di build deve stare qui dentro. */
+  assert.match(netlifyConfig, /command = "npm run build"/);
+  assert.match(netlifyConfig, /publish = "\.next"/);
+  assert.match(netlifyConfig, /@netlify\/plugin-nextjs/);
+  assert.match(packageJson, /"@netlify\/plugin-nextjs"/);
 
   /* Prima qui c'erano sei file scelti a mano, e uno di quei sei si e' rotto
      nel momento in cui un logo e' passato da PNG a WebP — mentre nessuna

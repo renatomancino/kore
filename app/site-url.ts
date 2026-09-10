@@ -10,9 +10,9 @@
  *
  *     NEXT_PUBLIC_SITE_URL=https://kore.it
  *
- * Senza quella si prova a dedurlo da cio' che espone la piattaforma — Vercel e
- * Netlify lo passano da soli, quindi un'anteprima corretta si ottiene anche
- * senza configurare niente. Se non c'e' nessuno dei due si continua con
+ * Senza quella si prova a dedurlo da cio' che espone la piattaforma: Netlify
+ * passa il dominio da sola, quindi un'anteprima corretta si ottiene anche
+ * senza configurare niente. Se non arriva nemmeno quello si continua con
  * localhost, ma stampando un avviso: il build non si ferma (romperlo a chi si
  * limita a compilare in locale sarebbe peggio del problema), pero' nessuno
  * scopre fra un mese che ogni link condiviso puntava alla propria macchina.
@@ -20,10 +20,7 @@
 function deduci() {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
 
-  /* Vercel e Netlify passano il dominio di produzione con nomi diversi. */
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
+  /* `URL` e' il dominio di produzione che Netlify espone durante il build. */
   if (process.env.URL?.startsWith("http")) return process.env.URL;
 
   if (process.env.NODE_ENV === "production") {
