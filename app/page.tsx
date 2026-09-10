@@ -13,6 +13,7 @@ import { SiteHeader } from "./site-header";
 import { ProjectStream } from "./project-stream";
 import { VideoShowcase } from "./video-showcase";
 import { Freccia } from "./freccia";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
 
 const clientSlots = [
@@ -69,7 +70,7 @@ export default function Home() {
           </h1>
           <div className="hero-actions">
             <p>Una regia creativa per brand, contenuti, esperienze e progetti digitali che lasciano il segno.</p>
-            <Link className="hero-cta" href="/idea">Raccontaci la tua idea <span aria-hidden="true"><Freccia /></span></Link>
+            <InteractiveHoverButton href="/idea" text="Raccontaci la tua idea" />
           </div>
         </div>
         <div className="scroll-cue" aria-hidden="true">Scorri ↓</div>

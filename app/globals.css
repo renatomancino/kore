@@ -117,8 +117,6 @@ img { display: block; width: 100%; }
 .eyebrow, .kicker { margin: 0 0 20px; text-transform: uppercase; letter-spacing: .14em; font-size: clamp(11px, .75vw, 13px); }
 .hero h1, .section-heading h2, .many-things > h2, .numbers > h2, .case-copy h2, .process > h2, .story h2, .partners h2, .location h2, .final-cta h2 { margin: 0; font-family: var(--serif); font-weight: 900; letter-spacing: -.035em; }
 .hero h1 { max-width: 680px; font-size: clamp(44px, 5.4vw, 96px); line-height: .92; }
-.hero-cta { margin-top: 44px; display: inline-flex; gap: 34px; align-items: center; padding: 15px 22px; background: var(--cream); color: var(--red); text-transform: uppercase; letter-spacing: .16em; font-size: 11px; transition: transform .2s ease, background .2s ease; }
-.hero-cta:hover { transform: translateY(-3px); background: white; }
 .scroll-cue { position: absolute; z-index: 3; right: 24px; bottom: 28px; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; writing-mode: vertical-rl; }
 
 /* Il pannello e' un popover: sta nel top layer, quindi niente z-index. Le
@@ -653,42 +651,8 @@ html.lenis.lenis-stopped { overflow: clip; }
 .hero-actions p { max-width: 370px; margin: 0; color: var(--ink); font-size: 14px; line-height: 1.55; text-align: left; }
 /* E' l'unica azione della prima schermata, quindi deve pesare quanto pesa:
    prima era una pillola da 11px accanto a un titolo alto 150. */
-.hero-cta {
-  flex: 0 0 auto;
-  margin: 0;
-  padding: 11px 11px 11px clamp(24px, 2.2vw, 34px);
-  gap: clamp(16px, 1.6vw, 26px);
-  border: 1px solid var(--ink);
-  border-radius: 100px;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: clamp(12px, 1vw, 14px);
-  letter-spacing: .13em;
-  font-weight: 700;
-  /* L'ombra la stacca dal rosso: senza, la pillola sembra stampata sul fondo
-     invece che appoggiata sopra. */
-  box-shadow: 0 16px 32px rgba(70,12,12,.3);
-  transition: transform .2s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
-}
 /* La freccia in un disco suo: e' quello che la fa leggere come un tasto e non
    come una scritta con un segno accanto. */
-.hero-cta span {
-  width: clamp(38px, 3.4vw, 50px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--cream);
-  color: var(--ink);
-  font-size: clamp(15px, 1.3vw, 19px);
-  transition: background .25s ease, color .25s ease, transform .3s ease;
-}
-.hero-cta:hover {
-  background: var(--cream);
-  color: var(--ink);
-  box-shadow: 0 22px 40px rgba(70,12,12,.34);
-}
-.hero-cta:hover span { background: var(--ink); color: var(--cream); transform: rotate(45deg); }
 /* Indice servizi statico: niente marquee automatico o stelline decorative. */
 .service-index-bar {
   display: flex;
@@ -1164,8 +1128,6 @@ html.lenis.lenis-stopped { overflow: clip; }
 
 @media (prefers-reduced-motion: reduce) {
   .footer-particle { animation: none; }
-  .hero-cta, .hero-cta span { transition: none; }
-  .hero-cta:hover { transform: none; }
 }
 
 /* Progetti selezionati in home. */
@@ -4925,3 +4887,82 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
    il corpo da chi la contiene; qui si allinea solo alla riga di testo, perche'
    un glifo sta sulla linea di base e un SVG no. */
 .freccia { vertical-align: -.12em; }
+
+/* ============================================================
+   Il pulsante con la pastiglia che attraversa — .pulsante-vivo
+   La freccia sta in un cerchio chiaro a destra. Al passaggio del mouse il
+   cerchio scivola fino al bordo sinistro ruotando di 45 gradi, e lo spazio
+   interno si ribalta: quello che era a destra passa a sinistra, cosi' il testo
+   si sposta invece di restare fermo mentre il cerchio gli passa sotto.
+
+   Il ribaltamento e' su `padding` e non su una trasformazione perche' il testo
+   deve davvero cambiare posto nel flusso: spostarlo con `translate` lo
+   farebbe uscire dalla pillola nel mezzo del percorso.
+   ============================================================ */
+.hero-actions > .pulsante-vivo { flex: 0 0 auto; }
+
+.pulsante-vivo {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  height: 48px;
+  /* A destra lo spazio della pastiglia piu' il suo margine; a sinistra quello
+     normale. In `:hover` i due valori si scambiano. */
+  padding: 0 56px 0 26px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 700;
+  line-height: 1;
+  /* La scritta e' un'etichetta: andando a capo il pulsante raddoppierebbe di
+     altezza e la pastiglia finirebbe fuori asse. */
+  white-space: nowrap;
+  transition: padding .5s cubic-bezier(.4, 0, .2, 1), background .3s ease, color .3s ease;
+}
+.pulsante-vivo-testo {
+  position: relative;
+  z-index: 2;
+}
+.pulsante-vivo-pastiglia {
+  position: absolute;
+  z-index: 1;
+  right: 4px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 16px;
+  transition: right .5s cubic-bezier(.4, 0, .2, 1), rotate .5s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* `:focus-visible` accanto a `:hover`: chi arriva col tasto di tabulazione
+   deve vedere la stessa cosa, non una scorciatoia. */
+.pulsante-vivo:hover,
+.pulsante-vivo:focus-visible { padding: 0 26px 0 56px; }
+.pulsante-vivo:hover .pulsante-vivo-pastiglia,
+.pulsante-vivo:focus-visible .pulsante-vivo-pastiglia {
+  right: calc(100% - 44px);
+  rotate: 45deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulsante-vivo,
+  .pulsante-vivo-pastiglia { transition: none; }
+}
+
+/* Nella chiusura il pulsante e' centrato; su mobile occupa tutta la riga e la
+   pastiglia resta appoggiata al bordo destro. */
+.closing-cta-main > .pulsante-vivo { margin: 34px auto 0; }
+@media (max-width: 600px) {
+  .closing-cta-main > .pulsante-vivo { width: 100%; margin-top: 28px; justify-content: flex-start; }
+}

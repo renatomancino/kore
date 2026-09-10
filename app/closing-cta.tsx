@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Freccia } from "./freccia";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,7 +54,7 @@ export function ClosingCta({ id }: { id: string }) {
           <span>successo.</span>
         </h2>
         <p className="closing-cta-lead">Una regia creativa, le competenze giuste e un progetto costruito intorno a ciò che vuoi far crescere.</p>
-        <Link className="closing-cta-button" href="/idea">Raccontaci la tua idea <span aria-hidden="true"><Freccia /></span></Link>
+        <InteractiveHoverButton href="/idea" text="Raccontaci la tua idea" />
       </div>
 
       <div className="closing-cta-bottom">
