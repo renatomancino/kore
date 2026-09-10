@@ -22,6 +22,12 @@
   /* Il serif del sito, in un posto solo. I font di sistema restano in coda
      come rete: se il caricamento fallisce si torna a quello che c'era. */
   --serif: var(--font-display), Didot, "Bodoni MT", Georgia, serif;
+  /* Il carattere del testo, in un posto solo. Era scritto in tre modi diversi
+     — `var(--font-geist-sans)`, `Arial, Helvetica, sans-serif` e `Arial,
+     sans-serif` — e in tredici punti su ventidue vinceva Arial: quei pezzi di
+     sito erano in Arial mentre il carattere vero stava caricato e inutilizzato.
+     Una variabile sola, come gia' fa --serif. */
+  --testo: var(--font-testo), Helvetica, Arial, sans-serif;
   /* L'ombra dura dei controlli del brief: nessuna sfocatura, uno spostamento
      secco. Il secondo valore e' la stessa ombra "premuta". */
   --ombra-dura: 3px 4px 0 1px var(--red);
@@ -34,7 +40,7 @@
 /* --corallo e --red sono lo stesso valore: il rosso del sito e' il corallo di Torre del Greco. */
 * { box-sizing: border-box; }
 html { width: 100%; max-width: 100%; overflow-x: clip; scroll-behavior: smooth; overscroll-behavior-x: none; }
-body { width: 100%; max-width: 100%; margin: 0; overflow-x: clip; overscroll-behavior-x: none; background: var(--red); color: var(--cream); font-family: Arial, Helvetica, sans-serif; }
+body { width: 100%; max-width: 100%; margin: 0; overflow-x: clip; overscroll-behavior-x: none; background: var(--red); color: var(--cream); font-family: var(--testo); }
 main { width: 100%; max-width: 100%; overflow-x: clip; }
 a { color: inherit; text-decoration: none; }
 
@@ -1134,7 +1140,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   margin-bottom: 0;
   padding: 13px 0;
   color: rgba(255,236,197,.76);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--testo);
   font-size: clamp(12px, 1vw, 15px);
   font-weight: 600;
   line-height: 1.25;
@@ -1392,7 +1398,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .reel-navigation > p strong { color: var(--ink); font-family: var(--serif); font-size: clamp(54px, 5vw, 82px); line-height: 1; }
 .reel-navigation > div { display: flex; flex-direction: column; }
 .reel-navigation button { padding: 16px 0; border: 0; border-bottom: 1px solid rgba(23,18,13,.24); background: transparent; color: rgba(23,18,13,.52); display: flex; gap: 15px; align-items: center; text-align: left; cursor: pointer; font-family: var(--serif); font-size: clamp(17px, 1.5vw, 23px); transition: color .2s ease, padding .2s ease; }
-.reel-navigation button span { color: inherit; font-family: Arial, sans-serif; font-size: 11px; letter-spacing: .14em; }
+.reel-navigation button span { color: inherit; font-family: var(--testo); font-size: 11px; letter-spacing: .14em; }
 .reel-navigation button[aria-pressed="true"] { padding-left: 10px; color: var(--cream); }
 .reel-navigation small { display: block; margin-top: 30px; text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
 @keyframes reel-poster-drift { from { transform: scale(1.02); } to { transform: scale(1.1) translate3d(-1.5%, -1%, 0); } }
@@ -1575,7 +1581,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   background: rgba(255, 236, 197, .1);
   text-transform: uppercase;
   letter-spacing: .14em;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--testo);
   font-size: 9px;
   font-weight: 800;
   backdrop-filter: blur(10px);
@@ -1668,7 +1674,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .logo-wall .client-choice-index {
   position: absolute;
   color: currentColor;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--testo);
   font-size: 9px;
   font-weight: 800;
   line-height: 1;
@@ -1843,7 +1849,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   color: rgba(255, 236, 197, .62) !important;
   text-transform: none !important;
   letter-spacing: 0 !important;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--testo);
   font-size: 14px !important;
   font-weight: 500 !important;
   line-height: 1.55;
@@ -2219,7 +2225,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .web-browser { flex: 1; min-height: 430px; overflow: hidden; border: 1px solid var(--ink); border-radius: 22px; background: var(--cream); box-shadow: 0 24px 50px rgba(78, 12, 14, .22); }
 .web-browser-bar { height: 46px; padding: 0 15px; border-bottom: 1px solid var(--ink); display: flex; align-items: center; gap: 7px; }
 .web-browser-bar > span { width: 8px; aspect-ratio: 1; border-radius: 50%; background: var(--ink); opacity: .42; }
-.web-browser-bar b { margin-left: 8px; font-family: Arial, sans-serif; font-size: 9px; letter-spacing: .08em; font-weight: 700; }
+.web-browser-bar b { margin-left: 8px; font-family: var(--testo); font-size: 9px; letter-spacing: .08em; font-weight: 700; }
 .web-page { height: calc(100% - 46px); min-height: 380px; padding: clamp(22px, 3vw, 38px); display: flex; flex-direction: column; background: var(--cream); transition: background .3s ease, color .3s ease; }
 .web-page-1 { background: #0e0e0d; color: var(--cream); }
 .web-page-2 { background: #f1d7ae; }
@@ -2260,7 +2266,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .advertising-scene dd { margin: 8px 0 0; color: var(--red); font-family: var(--serif); font-size: 28px; font-weight: 900; }
 .events-overlay p { max-width: 390px; margin: 20px 0 0; color: rgba(255,236,197,.72); line-height: 1.5; }
 .events-stamp { position: absolute; z-index: 3; top: 25px; right: 25px; width: 94px; aspect-ratio: 1; display: grid; place-content: center; border: 1px solid var(--red); border-radius: 50%; background: rgba(14,14,13,.5); color: var(--cream); text-align: center; font-family: var(--serif); font-size: 31px; font-weight: 900; line-height: .65; backdrop-filter: blur(10px); }
-.events-stamp small { color: var(--red); text-transform: uppercase; letter-spacing: .1em; font-family: Arial, sans-serif; font-size: 7px; }
+.events-stamp small { color: var(--red); text-transform: uppercase; letter-spacing: .1em; font-family: var(--testo); font-size: 7px; }
 
 /* Metriche dimostrative con conteggio attivato allo scroll. */
 .numbers { position: relative; overflow: hidden; padding-block: clamp(92px, 9vw, 150px); }
@@ -2279,7 +2285,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-positioning p { font-size: clamp(38px, 3.5vw, 60px); line-height: .88; }
 .footer-positioning span,
 .footer-directory p,
-.footer-legal { font-family: Arial, Helvetica, sans-serif; }
+.footer-legal { font-family: var(--testo); }
 .footer-directory a,
 .footer-directory > div > span {
   /* 9px davano link alti 39: sotto i 44 minimi per un bersaglio da dito.
@@ -2932,8 +2938,6 @@ html.lenis.lenis-stopped { overflow: clip; }
    La palette resta quella Kore; il gesto distintivo e' la spirale di reel
    che attraversa un asse corallo mentre la pagina continua a scorrere.
    ============================================================ */
-body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
-
 .video-showcase {
   position: relative;
   display: block;
@@ -3007,7 +3011,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   max-width: 350px;
   margin-top: 28px;
   color: rgba(255,236,197,.72);
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: var(--testo);
   font-size: 15px;
   line-height: 1.5;
 }
@@ -3149,7 +3153,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   border-bottom: 1px solid rgba(255,236,197,.18);
   background: transparent;
   color: rgba(255,236,197,.48);
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: var(--testo);
   font-size: 12px;
   font-weight: 700;
 }
@@ -3844,7 +3848,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
     border-top: 1px solid rgba(255,236,197,.28);
     border-radius: 0;
     background: transparent;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--testo);
     font-size: 16px;
     line-height: 1.45;
     text-align: left;
@@ -4552,7 +4556,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .archive-index ol::-webkit-scrollbar { display: none; }
 .archive-index li { flex: 0 0 auto; }
 .archive-index a { height: 100%; display: flex; align-items: center; gap: 8px; padding: 0 15px; border-bottom: 2px solid transparent; white-space: nowrap; font-family: var(--serif); font-weight: 750; font-size: 16px; transition: color .2s ease, border-color .2s ease; }
-.archive-index a span { color: var(--red-testo); font-family: Arial, Helvetica, sans-serif; font-size: 10px; letter-spacing: .12em; }
+.archive-index a span { color: var(--red-testo); font-family: var(--testo); font-size: 10px; letter-spacing: .12em; }
 .archive-index a:hover, .archive-index a:focus-visible { color: var(--red-testo); border-bottom-color: var(--red); }
 
 .archivio-pellicole { gap: 0; padding: 0; }
@@ -4567,7 +4571,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   grid-template-areas: "numero nome sommario azioni" "numero nome dati azioni";
   gap: 13px clamp(24px, 3.3vw, 58px);
 }
-.progetto-numero { align-self: start; min-width: 62px; padding-top: 5px; border-top: 2px solid var(--red); color: var(--red-testo); -webkit-text-stroke: 0; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height: 1.2; letter-spacing: .15em; }
+.progetto-numero { align-self: start; min-width: 62px; padding-top: 5px; border-top: 2px solid var(--red); color: var(--red-testo); -webkit-text-stroke: 0; font-family: var(--testo); font-size: 11px; line-height: 1.2; letter-spacing: .15em; }
 .progetto-nome h2 { margin-bottom: 9px; font-size: clamp(44px, 5.2vw, 82px); line-height: .88; letter-spacing: -.045em; }
 .progetto-titolo { color: rgba(23,18,13,.56); }
 .progetto-sommario { max-width: 47ch; margin-bottom: 8px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.55; text-wrap: pretty; }
@@ -4650,7 +4654,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   max-width: 1100px;
   margin: 0 0 clamp(28px, 4vh, 48px);
   padding: 0;
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: var(--testo);
   font-size: clamp(70px, 9.1vw, 146px);
   line-height: .76;
   letter-spacing: -.07em;
@@ -4661,12 +4665,12 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .projects-archive .archive-hero-bottom { margin: 0; padding: 0; border: 0; display: grid; grid-template-columns: 1.25fr .9fr; gap: 3.2vw; align-items: stretch; }
 .projects-archive .archive-hero-bottom > a { min-height: 72px; padding: 0 28px; display: flex; align-items: center; justify-content: center; gap: 28px; background: var(--red); color: var(--ink); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 900; transition: background-color .2s ease, color .2s ease; }
 .projects-archive .archive-hero-bottom > a:hover { background: var(--cream); }
-.projects-archive .archive-hero-bottom > p { margin: 0; padding: 12px 0 0; max-width: 540px; border-top: 1px solid rgba(244,242,237,.24); color: rgba(244,242,237,.7); font-family: var(--font-geist-sans), Arial, sans-serif; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.55; }
+.projects-archive .archive-hero-bottom > p { margin: 0; padding: 12px 0 0; max-width: 540px; border-top: 1px solid rgba(244,242,237,.24); color: rgba(244,242,237,.7); font-family: var(--testo); font-size: clamp(15px, 1.25vw, 18px); line-height: 1.55; }
 
 .work-catalogue { padding: clamp(88px, 9vw, 150px) 4vw clamp(100px, 11vw, 180px); background: var(--ink); color: var(--cream); }
 .work-catalogue-heading { margin-bottom: clamp(52px, 7vw, 104px); padding-top: 20px; display: grid; grid-template-columns: 1.25fr .75fr; gap: 8vw; align-items: end; border-top: 1px solid rgba(255,236,197,.22); }
 .work-catalogue-heading .kicker { margin-bottom: 24px; color: var(--red); }
-.work-catalogue-heading h2 { margin: 0; font-family: var(--font-geist-sans), Arial, sans-serif; font-size: clamp(62px, 8.2vw, 132px); font-weight: 900; line-height: .78; letter-spacing: -.065em; text-transform: uppercase; }
+.work-catalogue-heading h2 { margin: 0; font-family: var(--testo); font-size: clamp(62px, 8.2vw, 132px); font-weight: 900; line-height: .78; letter-spacing: -.065em; text-transform: uppercase; }
 .work-catalogue-heading > p { max-width: 43ch; margin: 0 0 5px; color: rgba(255,236,197,.62); font-size: 16px; line-height: 1.6; }
 .work-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(42px, 5vw, 82px) clamp(16px, 2vw, 30px); }
 .work-card { min-width: 0; display: block; }
@@ -4678,7 +4682,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .work-card-media > span { position: absolute; z-index: 2; top: 18px; right: 18px; min-width: 42px; aspect-ratio: 1; display: grid; place-items: center; border: 1px solid rgba(255,236,197,.52); border-radius: 50%; background: rgba(14,14,13,.42); color: var(--cream); font-size: 10px; font-weight: 800; letter-spacing: .1em; backdrop-filter: blur(8px); }
 .work-card-copy { position: relative; padding: 19px 64px 0 0; border-top: 1px solid rgba(255,236,197,.28); }
 .work-card-copy p { margin: 0 0 12px; color: var(--red); text-transform: uppercase; letter-spacing: .14em; font-size: 10px; font-weight: 800; }
-.work-card-copy h3 { margin: 0; font-family: var(--font-geist-sans), Arial, sans-serif; font-size: clamp(33px, 3.8vw, 61px); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
+.work-card-copy h3 { margin: 0; font-family: var(--testo); font-size: clamp(33px, 3.8vw, 61px); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
 .work-card-copy > span { position: absolute; right: 2px; top: 25px; font-size: 27px; transition: transform .25s ease, color .25s ease; }
 .work-card:hover .work-card-media img { transform: scale(1.035); filter: saturate(1.08); }
 .work-card:hover .work-card-copy > span { transform: rotate(45deg); color: var(--red); }
@@ -4707,7 +4711,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .project-detail-shade { position: absolute; z-index: -2; inset: 0; background: linear-gradient(180deg, rgba(7,7,6,.69), rgba(7,7,6,.16) 40%, rgba(7,7,6,.9)), linear-gradient(90deg, rgba(7,7,6,.36), transparent 68%); }
 .project-detail-heading { z-index: 1; align-self: end; padding: 0 0 clamp(22px, 3vh, 38px); }
 .project-detail-heading .kicker { margin-bottom: 22px; padding: 0; border: 0; border-radius: 0; background: transparent; color: var(--red); }
-.project-detail-heading h1 { max-width: 1180px; margin: 0; font-family: var(--font-geist-sans), Arial, sans-serif; font-size: clamp(66px, 9.1vw, 146px); font-weight: 900; line-height: .76; letter-spacing: -.07em; text-transform: uppercase; }
+.project-detail-heading h1 { max-width: 1180px; margin: 0; font-family: var(--testo); font-size: clamp(66px, 9.1vw, 146px); font-weight: 900; line-height: .76; letter-spacing: -.07em; text-transform: uppercase; }
 .project-detail-heading h1 span, .project-detail-heading h1 em { display: block; }
 .project-detail-heading h1 em { max-width: 11ch; color: var(--red); font-weight: 480; font-style: italic; }
 .project-detail-bottom { position: relative; z-index: 1; display: grid; grid-template-columns: 1.25fr .9fr; gap: 3.2vw; align-items: stretch; }
@@ -4721,7 +4725,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 .project-detail-story::before { color: rgba(23,18,13,.36); }
 .project-detail-story-copy { border-color: rgba(23,18,13,.18); }
 .project-detail-story .kicker, .project-detail-story dt { color: var(--red-testo); }
-.project-detail-story h2 { font-family: var(--font-geist-sans), Arial, sans-serif; font-weight: 800; letter-spacing: -.055em; text-transform: uppercase; }
+.project-detail-story h2 { font-family: var(--testo); font-weight: 800; letter-spacing: -.055em; text-transform: uppercase; }
 .project-detail-story dl { border-color: rgba(23,18,13,.2); background: rgba(255,255,255,.25); box-shadow: none; }
 .project-detail-story dl div { border-color: rgba(23,18,13,.18); }
 .project-detail-gallery { background: #eee7da; }
@@ -4948,7 +4952,7 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
   padding: 12px 14px;
   border: 1px dashed currentColor;
   border-radius: 10px;
-  font-family: var(--sans, inherit);
+  font-family: var(--testo);
   font-size: 13px;
   line-height: 1.5;
   opacity: .68;

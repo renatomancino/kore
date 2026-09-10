@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Geist, Geist_Mono } from "next/font/google";
+import { Bodoni_Moda, Inter } from "next/font/google";
 import "./globals.css";
 import { indirizzoSito, sitoPubblicato } from "./site-url";
 import { TransizioniDiVista } from "./transizioni-di-vista";
@@ -21,14 +21,15 @@ const bodoni = Bodoni_Moda({
   display: "swap",
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/* Il carattere del testo e' Inter perche' e' quello dichiarato dal marchio
+   (Kore, 10/09/2026), non una scelta nostra. E' variabile, quindi copre da
+   sola tutti i pesi.
+   Prima c'era Geist, e accanto Geist Mono: il monospazio era caricato e non
+   lo usava nessuna riga del sito. Un carattere in meno da scaricare. */
+const inter = Inter({
+  variable: "--font-testo",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const TITOLO = "Kore — Diamo forma alle idee";
@@ -77,7 +78,7 @@ export default function RootLayout({
     /* Le variabili dei font stanno su <html> e non su <body>: --serif e' un
        token di :root, e :root e' <html>. Definendole piu' in basso, var(...)
        li' sopra non risolveva e ogni titolo tornava al sans. */
-    <html lang="it" data-scroll-behavior="smooth" className={`${bodoni.variable} ${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="it" data-scroll-behavior="smooth" className={`${bodoni.variable} ${inter.variable}`}>
       <body
         className="antialiased"
       >
