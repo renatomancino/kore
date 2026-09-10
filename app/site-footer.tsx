@@ -48,6 +48,7 @@ export function SiteFooter() {
             <Link href="/progetti">Progetti</Link>
             <Link href="/#metodo">Metodo</Link>
             <Link href="/#mondo">Agenzia</Link>
+            <Link href="/#partner">Partner</Link>
           </nav>
           {/* Le tre voci portavano tutte a "/#contatti", una sezione che di
               recapiti non ne aveva. Ora o sono il recapito vero, o dicono che

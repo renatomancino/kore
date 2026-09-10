@@ -14,6 +14,16 @@ import { Freccia } from "./freccia";
  * Le ancore sono assolute (`/#mondo`): dalle altre pagine quelle sezioni non
  * esistono, quindi portano prima alla home e poi al punto giusto.
  *
+ * Le voci sono le stesse del footer, con gli stessi nomi. Erano due liste
+ * diverse: qui mancava "Metodo", che esisteva ed era raggiungibile solo da
+ * laggiu' — un menu che elenca meno posti di quanti il sito ne abbia insegna
+ * che del footer ci si puo' fidare di piu'. E `/#mondo` si chiamava "Il nostro
+ * mondo" qui e "Agenzia" li': lo stesso posto sotto due nomi, senza modo di
+ * capire che fosse lo stesso. In una navigazione l'etichetta deve nominare un
+ * posto, quindi "Agenzia"; il tono editoriale sta nei titoli, non qui.
+ * L'unica differenza rimasta e' "Home", che in un menu a tutto schermo ci si
+ * aspetta e in un footer no, dove ci pensa il marchio.
+ *
  * C'era una seconda colonna, "Cosa facciamo", coi sei servizi. Portavano tutti
  * a `/servizi` secco, senza ancora: sei nomi diversi che lasciavano nello
  * stesso identico punto, cioe' dove porta gia' la voce "Servizi" qui sotto.
@@ -71,7 +81,8 @@ export function SiteMenu() {
           <Link href="/" onClick={chiudi}>Home</Link>
           <Link href="/servizi" onClick={chiudi}>Servizi</Link>
           <Link href="/progetti" onClick={chiudi}>Progetti</Link>
-          <Link href="/#mondo" onClick={chiudi}>Il nostro mondo</Link>
+          <Link href="/#metodo" onClick={chiudi}>Metodo</Link>
+          <Link href="/#mondo" onClick={chiudi}>Agenzia</Link>
           <Link href="/#partner" onClick={chiudi}>Partner</Link>
         </div>
 

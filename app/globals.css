@@ -148,12 +148,17 @@ img { display: block; width: 100%; }
      lungo il bordo. In alto segue l'altezza dello schermo — su un portatile
      basso o su un telefono coricato, 120px fissi sono un terzo dello schermo
      buttato via prima ancora di cominciare. */
-  --menu-alto: clamp(84px, 13vh, 120px);
+  --menu-alto: clamp(80px, 13vh, 120px);
   --menu-lato: 6vw;
   --menu-basso: 7vh;
   padding: var(--menu-alto) var(--menu-lato) var(--menu-basso);
   border: 0;
-  overflow: visible;
+  /* `auto` e non `visible`: il pannello e' fisso e alto quanto lo schermo, e
+     quello che non ci sta non scorre — resta dipinto fuori dallo schermo,
+     irraggiungibile. Con sei voci succedeva su un telefono coricato. Non
+     serviva un popover con la sua barra, serviva che l'ultima voce fosse
+     raggiungibile anche quando lo schermo e' basso. */
+  overflow: auto;
   background: var(--ink);
   color: var(--cream);
   transform: translateY(-102%);
@@ -198,7 +203,7 @@ img { display: block; width: 100%; }
 /* Lo spazio fra una voce e l'altra segue l'altezza dello schermo come il
    corpo: con sei voci al posto di dodici la lista non deve stare stretta, ma
    nemmeno lasciare un buco fra l'ultima e il recapito in fondo. */
-.menu-column a { padding-block: clamp(6px, 1.1vh, 14px); font-family: var(--serif); font-weight: 700; font-size: clamp(30px, min(5vw, 8vh), 84px); line-height: 1.04; letter-spacing: -.025em; transition: color .2s ease, transform .2s ease; }
+.menu-column a { padding-block: clamp(4px, 1.1vh, 14px); font-family: var(--serif); font-weight: 700; font-size: clamp(30px, min(5vw, 8vh), 84px); line-height: 1.04; letter-spacing: -.025em; transition: color .2s ease, transform .2s ease; }
 .menu-column a:hover, .menu-column a:focus { color: var(--red); transform: translateX(8px); }
 /* Il campo corallo. Esce dall'imbottitura del pannello con margini negativi
    pari all'imbottitura stessa, cosi' tocca il bordo in alto, a destra e in
@@ -605,11 +610,10 @@ html.lenis.lenis-stopped { overflow: clip; }
   .hero-art { background-position: 58% center; }
   .scroll-cue { display: none; }
   .menu-panel {
-    --menu-alto: clamp(78px, 12vh, 95px);
+    --menu-alto: clamp(74px, 12vh, 95px);
     --menu-lato: 24px;
     --menu-basso: 40px;
     padding: var(--menu-alto) var(--menu-lato) var(--menu-basso);
-    overflow: auto;
   }
   /* La disposizione va scritta su `:popover-open`, non su `.menu-panel`: la
      regola a due colonne sta li' sopra, e una classe da sola non batte una
