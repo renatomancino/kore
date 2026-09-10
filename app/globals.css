@@ -166,10 +166,13 @@ img { display: block; width: 100%; }
     display .55s allow-discrete,
     overlay .55s allow-discrete;
 }
+/* Una colonna sola da quando i sei servizi non stanno piu' nel menu. Non
+   resta una griglia a due con un buco a destra: la lista prende tutta la
+   larghezza e lo spazio libero diventa margine, che e' come sta il resto del
+   sito. */
 .menu-panel:popover-open {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 8vw;
+  grid-template-columns: 1fr;
   transform: translateY(0);
 }
 /* Da dove parte l'animazione all'apertura: senza, il pannello nasce gia' a
@@ -182,10 +185,21 @@ img { display: block; width: 100%; }
    pannello copre la testata, e "Chiudi" deve restare sotto il dito. */
 .menu-chiudi { position: absolute; top: 16px; right: 5vw; }
 .menu-column { display: flex; flex-direction: column; align-items: flex-start; }
-.menu-column p { margin: 0 0 22px; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
+.menu-column p { margin: 0 0 30px; font-size: 11px; text-transform: uppercase; letter-spacing: .15em; opacity: .55; }
 /* `padding-block` e non un'altezza: il bersaglio arriva a 44 senza toccare
    il corpo, che qui e' la voce del menu. */
-.menu-column a { padding-block: 6px; font-family: var(--serif); font-size: clamp(26px, 3.2vw, 50px); line-height: 1.12; letter-spacing: -.02em; transition: color .2s ease, transform .2s ease; }
+/* Il corpo risponde a tutte e due le misure dello schermo, non solo alla
+   larghezza: `min(5vw, 8vh)`. Sei voci a 84px su un portatile basso — 1440
+   per 720 — sfonderebbero il pannello, e un menu che scorre e' un menu che
+   nasconde meta' di se'. Cosi' su uno schermo schiacciato e' l'altezza a
+   decidere, e la lista entra sempre intera.
+   La riga si e' stretta da 1.12 a 1.04 perche' a questo corpo l'interlinea
+   larga slega le voci una dall'altra: da lontano non si legge piu' come un
+   elenco. */
+/* Lo spazio fra una voce e l'altra segue l'altezza dello schermo come il
+   corpo: con sei voci al posto di dodici la lista non deve stare stretta, ma
+   nemmeno lasciare un buco fra l'ultima e il recapito in fondo. */
+.menu-column a { padding-block: clamp(6px, 1.1vh, 14px); font-family: var(--serif); font-size: clamp(30px, min(5vw, 8vh), 84px); line-height: 1.04; letter-spacing: -.025em; transition: color .2s ease, transform .2s ease; }
 .menu-column a:hover, .menu-column a:focus { color: var(--red); transform: translateX(8px); }
 .menu-column .menu-contact { margin-top: auto; color: var(--red); }
 
@@ -522,8 +536,17 @@ html.lenis.lenis-stopped { overflow: clip; }
   .hero::after { background: linear-gradient(0deg, rgba(40,10,5,.65), transparent 75%); }
   .hero-art { background-position: 58% center; }
   .scroll-cue { display: none; }
-  .menu-panel { grid-template-columns: 1fr; gap: 40px; padding: 95px 24px 40px; overflow: auto; }
-  .menu-column a { font-size: clamp(26px, 8vw, 40px); }
+  .menu-panel { grid-template-columns: 1fr; padding: 95px 24px 40px; overflow: auto; }
+  /* Sul telefono le due colonne si impilavano e le voci dovevano restare
+     piccole per starci tutte e dodici. Ora sono sei: il corpo puo' crescere,
+     e con lui il bersaglio da toccare. */
+  .menu-column a { font-size: clamp(30px, 11vw, 52px); }
+  /* Il recapito e' l'unica voce che non ci sta su una riga sola: misurata su
+     un telefono da 390 chiede 457px e ne ha 342, su uno da 320 ne chiede 375
+     e ne ha 272. Andare a capo lascia "idea ↗" orfano sotto, quindi qui ha un
+     corpo suo — che e' anche giusto, visto che non e' una parola di menu ma
+     una frase. Sul tablet in su ci sta e resta grande come le altre. */
+  .menu-column .menu-contact { font-size: clamp(22px, 7.8vw, 34px); }
   .section-pad { padding: 15vw 18px; }
   .logo-wall { grid-template-columns: 1fr; }
   .logo-wall button { min-height: 120px; }

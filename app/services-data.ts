@@ -1,8 +1,9 @@
 import type { Service } from "./service-showcase";
 
-/* I servizi stanno qui e non nella home perche' ora li legge anche il menu,
-   che e' su ogni pagina: due copie della stessa lista sono due liste che
-   prima o poi divergono. */
+/* I servizi stanno qui e non nella home perche' li leggono in quattro: la
+   home, la pagina /servizi, il suo indice e l'immagine di anteprima. Due
+   copie della stessa lista sono due liste che prima o poi divergono.
+   (Li leggeva anche il menu, finche' aveva la colonna "Cosa facciamo".) */
 export const services: Service[] = [
   {
     id: "branding",

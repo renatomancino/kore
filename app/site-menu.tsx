@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { services } from "./services-data";
 import { Freccia } from "./freccia";
 
 /**
@@ -14,6 +13,13 @@ import { Freccia } from "./freccia";
  *
  * Le ancore sono assolute (`/#mondo`): dalle altre pagine quelle sezioni non
  * esistono, quindi portano prima alla home e poi al punto giusto.
+ *
+ * C'era una seconda colonna, "Cosa facciamo", coi sei servizi. Portavano tutti
+ * a `/servizi` secco, senza ancora: sei nomi diversi che lasciavano nello
+ * stesso identico punto, cioe' dove porta gia' la voce "Servizi" qui sotto.
+ * Sette link su dodici finivano nella stessa pagina. Tolta: chi cerca un
+ * servizio preciso lo trova nell'indice in cima a /servizi, che le ancore le
+ * usa davvero.
  */
 export function SiteMenu() {
   const [aperto, setAperto] = useState(false);
@@ -60,12 +66,6 @@ export function SiteMenu() {
           <span>Chiudi</span>
           <span className="menu-dot" aria-hidden="true" />
         </button>
-        <div className="menu-column">
-          <p>Cosa facciamo</p>
-          {services.map((voce) => (
-            <Link href="/servizi" key={voce.name} onClick={chiudi}>{voce.name}</Link>
-          ))}
-        </div>
         <div className="menu-column">
           <p>Kore</p>
           <Link href="/" onClick={chiudi}>Home</Link>
