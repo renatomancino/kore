@@ -1111,6 +1111,10 @@ html.lenis.lenis-stopped { overflow: clip; }
 .footer-directory > div,
 .footer-directory nav { display: flex; flex-direction: column; align-items: flex-start; }
 .footer-directory p { margin: 0 0 10px; }
+/* Un recapito che ancora non c'e' resta testo: e' quello che fa gia' il
+   blocco su /idea, e un link che promette "Telefono" per poi portare al
+   modulo del brief e' una promessa che il sito non mantiene. */
+.footer-directory .footer-mancante { opacity: .5; }
 .footer-directory a,
 .footer-directory span {
   /* Erano alti 18px: meno della meta' dei 44 minimi per un bersaglio
@@ -3428,6 +3432,10 @@ body { font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif; }
 }
 
 .stanza {
+  /* Da quando la barra dei servizi punta alla singola stanza, questa e' un
+     bersaglio di ancora: senza margine di scorrimento arriverebbe sotto la
+     testata, che e' fissa e alta 76. Stesso rimedio gia' usato su .progetto. */
+  scroll-margin-top: clamp(96px, 10vw, 144px);
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);

@@ -79,7 +79,9 @@ export default function Home() {
 
       <nav className="service-index-bar" aria-label="Indice dei servizi Kore">
         {services.map((service, index) => (
-          <a href="#servizi" key={service.name}>
+          /* Ognuno al suo servizio: prima erano sei nomi diversi che portavano
+             tutti in testa alla sezione, cioe' sei volte lo stesso posto. */
+          <a href={`#${service.id}`} key={service.id}>
             <span>0{index + 1}</span>{service.name}
           </a>
         ))}

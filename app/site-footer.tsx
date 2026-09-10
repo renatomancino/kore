@@ -50,15 +50,17 @@ export function SiteFooter() {
             <Link href="/#mondo">Agenzia</Link>
           </nav>
           {/* Le tre voci portavano tutte a "/#contatti", una sezione che di
-              recapiti non ne aveva: adesso o sono il recapito vero, o portano
-              dove i recapiti stanno. */}
+              recapiti non ne aveva. Ora o sono il recapito vero, o dicono che
+              manca — e restano testo, come nel blocco su /idea: un link
+              "Telefono · da inserire" che porta al modulo del brief promette
+              un numero e consegna un questionario. */}
           <div>
             <p>Contatti</p>
             {vociRecapito().map((voce) =>
               voce.href ? (
                 <a href={voce.href} key={voce.chiave}>{voce.etichetta} · {voce.valore}</a>
               ) : (
-                <Link href="/idea" key={voce.chiave}>{voce.etichetta} · da inserire</Link>
+                <span className="footer-mancante" key={voce.chiave}>{voce.etichetta} · da inserire</span>
               ),
             )}
           </div>

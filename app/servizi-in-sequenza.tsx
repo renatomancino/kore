@@ -27,7 +27,7 @@ export function ServiziInSequenza({ title }: { title: string }) {
 
       <ol className="servizi-stanze">
         {services.map((servizio, i) => (
-          <li className="stanza" key={servizio.id}>
+          <li className="stanza" id={servizio.id} key={servizio.id}>
             {/* Il nome grande dietro e' la stessa filigrana di prima, ma una
                 per stanza invece che una per sezione: cosi' ha un motivo per
                 muoversi ed e' lei a portare il movimento orizzontale. */}
