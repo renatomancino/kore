@@ -48,7 +48,7 @@ export function SiteMenu() {
 
   return (
     <>
-      <button className="menu-toggle" type="button" popoverTarget="site-menu">
+      <button className="menu-toggle" type="button" popoverTarget="site-menu" aria-expanded={aperto}>
         <span>{aperto ? "Chiudi" : "Menu"}</span>
         <span className="menu-dot" aria-hidden="true" />
       </button>
@@ -56,7 +56,7 @@ export function SiteMenu() {
       <nav className="menu-panel" id="site-menu" popover="auto" ref={pannello}>
         {/* Il pannello sta nel top layer, quindi copre il tasto della testata:
             la chiusura vive qui dentro, nello stesso punto dello schermo. */}
-        <button className="menu-toggle menu-chiudi" type="button" popoverTarget="site-menu">
+        <button className="menu-toggle menu-chiudi" type="button" popoverTarget="site-menu" aria-expanded>
           <span>Chiudi</span>
           <span className="menu-dot" aria-hidden="true" />
         </button>

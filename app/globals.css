@@ -105,7 +105,29 @@ img { display: block; width: 100%; }
 .wordmark { font-family: var(--serif); font-weight: 900; letter-spacing: -.12em; transform: scaleX(1.08); transform-origin: left; }
 .wordmark-small { font-size: 26px; line-height: 1; }
 .menu-toggle { border: 0; padding: 10px 0; color: inherit; background: transparent; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.menu-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; }
+.menu-dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; transition: transform .38s cubic-bezier(.4, 0, .2, 1), background-color .3s ease; }
+/* Il pallino e' l'unica cosa che si muove. Al passaggio del mouse si stira in
+   un trattino — la prima riga del pannello che sta per scendere — e prende il
+   corallo, cioe' il colore con cui si accendono le voci del menu una volta
+   dentro. Poi ci resta finche' il menu e' aperto: l'invito e lo stato parlano
+   la stessa lingua, e il tasto dice da solo se il pannello e' giu'.
+
+   E' una `transform` e non larghezza e altezza vere, perche' una trasformazione
+   non rifa' il calcolo del riquadro: la pastiglia non si allarga e la scritta
+   non si sposta di un pixel mentre il pallino si allunga.
+
+   L'etichetta non si tocca. Cambiare colore a una scritta mentre una forma le
+   passa accanto e' il modo piu' rapido per renderla illeggibile a meta' strada:
+   qui il segno si muove in fondo alla riga, dove non ha niente sotto. */
+.menu-toggle:hover .menu-dot,
+.menu-toggle:focus-visible .menu-dot,
+.menu-toggle[aria-expanded="true"] .menu-dot {
+  transform: scaleX(2.6) scaleY(.34);
+  background: var(--red);
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-dot { transition: none; }
+}
 
 .hero { min-height: calc(100 * var(--altezza-schermo)); position: relative; overflow: hidden; background: var(--red); }
 /* Niente respiro infinito sull'hero: un ciclo che non finisce mai non
