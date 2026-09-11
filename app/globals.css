@@ -19,12 +19,10 @@
 :root {
   --red: #fe4042; --corallo: #fe4042; --cream: #ffecc5; --ink: #17120d;
   --paper: #f6f0e5; --line: rgba(23,18,13,.24);
-  /* Il carattere dei titoli, in un posto solo — e si chiama per il ruolo, non
-     per la forma: era `--serif`, ma quello che ci sta dentro adesso e' un
-     condensato senza grazie, e quello che ci finira' (Reel) pure. I font di
-     sistema restano in coda come rete: se il caricamento fallisce si cade su
-     un condensato, non su un didone. */
-  --titoli: var(--font-display), "Arial Narrow", Helvetica, Arial, sans-serif;
+  /* Reel Medium e' il carattere primario del marchio, distribuito dal Web
+     Project Adobe Fonts vqb8iez. I font di sistema restano come ripiego se il
+     servizio esterno non e' raggiungibile. */
+  --titoli: "reel-medium", "Arial Narrow", Helvetica, Arial, sans-serif;
   /* Il carattere del testo, in un posto solo. Era scritto in tre modi diversi
      — `var(--font-geist-sans)`, `Arial, Helvetica, sans-serif` e `Arial,
      sans-serif` — e in tredici punti su ventidue vinceva Arial: quei pezzi di

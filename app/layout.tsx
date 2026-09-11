@@ -1,28 +1,8 @@
 import type { Metadata } from "next";
-import { Big_Shoulders, Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { indirizzoSito, sitoPubblicato } from "./site-url";
 import { TransizioniDiVista } from "./transizioni-di-vista";
-
-/* PROVVISORIO. Il carattere dei titoli del marchio e' Reel (Jamie Clarke
-   Type), che arriva da Adobe Fonts e non si puo' ospitare nel sito: aspetta
-   un Web Project sull'abbonamento del cliente. Nel frattempo qui c'e' il piu'
-   somigliante fra i gratuiti — condensato, minuscole alte quasi quanto le
-   maiuscole, aria da manifesto — cosi' il sito ha gia' la stanza giusta e il
-   giorno dello scambio si cambia una riga sola.
-   Prima c'era Bodoni Moda, un didone: bello ma agli antipodi di Reel, quindi
-   tenerlo avrebbe mostrato al cliente un sito che non somiglia al suo marchio.
-   E' variabile su tutti i pesi, percio' le novanta regole che gia' dicono 700
-   o 900 continuano a valere senza toccarle. `opsz`: alle misure grandi passa
-   da sola al taglio da titoli. */
-const titoli = Big_Shoulders({
-  variable: "--font-display",
-  subsets: ["latin"],
-  /* Nessuna lista di pesi: e' variabile, quindi copre da sola 100-900 — ed e'
-     anche la condizione per poter chiedere l'asse `opsz`. */
-  axes: ["opsz"],
-  display: "swap",
-});
 
 /* Il carattere del testo e' Inter perche' e' quello dichiarato dal marchio
    (Kore, 10/09/2026), non una scelta nostra. E' variabile, quindi copre da
@@ -78,10 +58,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    /* Le variabili dei font stanno su <html> e non su <body>: --titoli e'
-       un token di :root, e :root e' <html>. Definendole piu' in basso,
-       var(...) li' sopra non risolveva e ogni titolo tornava al ripiego. */
-    <html lang="it" data-scroll-behavior="smooth" className={`${titoli.variable} ${inter.variable}`}>
+    <html lang="it" data-scroll-behavior="smooth" className={inter.variable}>
+      <head>
+        {/* Web Project Adobe Fonts fornito dal cliente: contiene Reel Short,
+            Medium e Tall. Il sito usa Medium come taglio principale. */}
+        <link rel="preconnect" href="https://use.typekit.net" />
+        <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
+        <link rel="stylesheet" href="https://use.typekit.net/vqb8iez.css" />
+      </head>
       <body
         className="antialiased"
       >

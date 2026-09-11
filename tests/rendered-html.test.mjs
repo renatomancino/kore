@@ -11,6 +11,11 @@ test("keeps the Kore identity and complete editorial structure", async () => {
 
   assert.match(layout, /Kore — Diamo forma alle idee/);
   assert.match(layout, /lang="it"/);
+  assert.match(layout, /https:\/\/use\.typekit\.net\/vqb8iez\.css/);
+  assert.match(layout, /import \{ Inter \} from "next\/font\/google"/);
+  assert.doesNotMatch(layout, /Big_Shoulders/);
+  assert.match(css, /--titoli:\s*"reel-medium"/);
+  assert.match(css, /--testo:\s*var\(--font-testo\)/);
   assert.match(page, /Strategia,/);
   assert.match(page, /e idee vive/);
   assert.match(page, /Non facciamo/);
