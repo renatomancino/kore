@@ -383,7 +383,7 @@ img { display: block; width: 100%; }
 .story { min-height: 0; padding: clamp(62px, 5.6vw, 104px) 5vw; display: grid; grid-template-columns: 1.15fr .85fr; gap: 6vw; background: var(--paper); color: var(--ink); }
 .story h2 { font-size: clamp(36px, 4.4vw, 74px); line-height: .95; }
 .story-copy { padding-top: clamp(20px, 2.4vw, 44px); }
-.story-copy p { margin: 0 0 34px; font-family: var(--titoli); font-size: clamp(19px, 2vw, 32px); line-height: 1.3; letter-spacing: var(--aria-piccola); }
+.story-copy p { margin: 0 0 34px; font-family: var(--testo); font-size: clamp(17px, 1.7vw, 26px); line-height: 1.45; letter-spacing: var(--aria-piccola); }
 /* Rosso leggibile: su carta il corallo pieno faceva 3,07:1. */
 .story-copy .name-origin { padding-top: 30px; border-top: 1px solid var(--line); color: var(--red-testo); }
 
@@ -424,7 +424,7 @@ img { display: block; width: 100%; }
 .map-pin::first-letter { transform: rotate(45deg); }
 .location-copy { padding: clamp(52px, 4.8vw, 88px) 5vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
 .location h2 { font-size: clamp(34px, 4vw, 66px); line-height: .96; }
-.location-copy > p:not(.kicker) { margin: 46px 0; font-family: var(--titoli); font-size: clamp(18px, 1.8vw, 28px); line-height: 1.35; }
+.location-copy > p:not(.kicker) { margin: 46px 0; font-family: var(--testo); font-size: clamp(16px, 1.4vw, 22px); line-height: 1.5; }
 
 .final-cta { padding: clamp(58px, 5.2vw, 96px) 5vw clamp(28px, 2.6vw, 46px); background: var(--red); color: var(--ink); }
 .final-cta h2 { font-size: clamp(42px, 6vw, 104px); line-height: .92; }
@@ -838,13 +838,16 @@ html.lenis.lenis-stopped { overflow: clip; }
 .service-index-bar a span { font-size: 11px; opacity: .6; }
 .service-index-bar a:hover, .service-index-bar a:focus-visible { background: var(--ink); color: var(--cream); }
 
-/* Testi di supporto nello stesso registro tipografico dei titoli. */
+/* Erano nello stesso registro tipografico dei titoli — scelta sensata finche'
+   il carattere dei titoli era un serif. Reel e' un condensato da manifesto:
+   una frase di novanta battute a venti pixel, li' dentro, si decifra invece
+   di leggersi. I titoli gridano, questi si leggono. */
 .hero-actions p,
 .content-note,
 .card-copy p,
 .timeline p {
-  font-family: var(--titoli);
-  letter-spacing: var(--aria-media);
+  font-family: var(--testo);
+  line-height: 1.45;
 }
 .hero-actions p { max-width: 430px; font-size: clamp(17px, 1.5vw, 23px); line-height: 1.3; }
 .content-note { font-size: clamp(16px, 1.35vw, 21px); line-height: 1.4; }
@@ -1304,9 +1307,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .selected-projects-heading h2 em { color: var(--red); }
 .selected-projects-heading > p {
   margin: 0 0 5px;
-  font-family: var(--titoli);
-  font-size: clamp(20px, 1.8vw, 29px);
-  line-height: 1.15;
+  font-family: var(--testo);
+  font-size: clamp(17px, 1.45vw, 23px);
+  line-height: 1.45;
 }
 .selected-projects-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: clamp(34px, 3.2vw, 58px) 2vw; }
 .project-teaser { display: block; color: inherit; }
@@ -1380,7 +1383,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .video-showcase-intro .kicker { color: var(--ink); }
 .video-showcase-intro h2 { margin: 0; font-size: clamp(52px, 6vw, 98px); line-height: .86; }
 .video-showcase-intro h2 em { color: var(--cream); }
-.video-showcase-intro > p:last-child { max-width: 430px; margin: 30px 0 0; font-family: var(--titoli); font-size: clamp(20px, 1.7vw, 28px); line-height: 1.1; }
+.video-showcase-intro > p:last-child { max-width: 430px; margin: 30px 0 0; font-family: var(--testo); font-size: clamp(17px, 1.45vw, 23px); line-height: 1.45; }
 .reel-phone {
   position: relative;
   width: min(100%, 430px);
@@ -1432,7 +1435,7 @@ html.lenis.lenis-stopped { overflow: clip; }
   gap: 30px;
   align-items: end;
 }
-.archive-hero-bottom p { max-width: 610px; margin: 0; font-family: var(--titoli); font-size: clamp(21px, 2vw, 32px); line-height: 1.12; }
+.archive-hero-bottom p { max-width: 610px; margin: 0; font-family: var(--testo); font-size: clamp(17px, 1.5vw, 24px); line-height: 1.5; }
 .archive-hero-bottom span { color: var(--red); text-transform: uppercase; letter-spacing: .15em; font-size: 11px; font-weight: 800; }
 .project-archive-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-bottom: 1px solid var(--ink); }
 .archive-project-card { min-width: 0; padding: clamp(20px, 2.5vw, 42px); border-top: 1px solid var(--ink); }
@@ -3669,7 +3672,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .closing-cta-title { margin: 0; font-family: var(--titoli); font-size: clamp(68px, 9vw, 150px); font-weight: 900; line-height: .7; letter-spacing: var(--aria-grande); text-transform: uppercase; }
 .closing-cta-title > span { display: block; }
 .closing-cta-title em { color: var(--red-testo); font-weight: inherit; }
-.closing-cta-lead { max-width: 720px; margin: clamp(38px, 4vw, 64px) auto 0; color: rgba(23, 18, 13, .64); font-family: var(--titoli); font-size: clamp(19px, 1.75vw, 28px); line-height: 1.35; }
+.closing-cta-lead { max-width: 720px; margin: clamp(38px, 4vw, 64px) auto 0; color: rgba(23, 18, 13, .64); font-family: var(--testo); font-size: clamp(17px, 1.5vw, 23px); line-height: 1.5; }
 .closing-cta-button {
   width: fit-content;
   min-height: 54px;
@@ -3793,7 +3796,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .project-stream-heading .kicker { margin: 0 auto 18px; color: var(--red); }
 .project-stream-heading h2 { margin: 0; font-family: var(--titoli); font-size: clamp(58px, 7vw, 118px); font-weight: 900; line-height: .76; letter-spacing: var(--aria-media); }
 .project-stream-heading em { color: var(--red); font-weight: inherit; }
-.project-stream-note { max-width: 520px; margin: auto 0 0; padding: 22px 26px; border: 1px solid rgba(255,236,197,.2); border-radius: 22px; background: rgba(14,14,13,.72); color: rgba(255,236,197,.76); font-family: var(--titoli); font-size: clamp(17px, 1.45vw, 23px); line-height: 1.35; backdrop-filter: blur(12px); }
+.project-stream-note { max-width: 520px; margin: auto 0 0; padding: 22px 26px; border: 1px solid rgba(255,236,197,.2); border-radius: 22px; background: rgba(14,14,13,.72); color: rgba(255,236,197,.76); font-family: var(--testo); font-size: clamp(17px, 1.45vw, 23px); line-height: 1.5; backdrop-filter: blur(12px); }
 .project-stream-link {
   width: min(620px, 100%);
   margin-top: 24px;
@@ -3919,9 +3922,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .assente-nota {
   margin: clamp(26px, 3vw, 44px) 0 0;
   max-width: 46ch;
-  font-family: var(--titoli);
-  font-size: clamp(18px, 1.7vw, 26px);
-  line-height: 1.3;
+  font-family: var(--testo);
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.5;
 }
 
 .assente-uscite {
@@ -4193,7 +4196,7 @@ html.lenis.lenis-stopped { overflow: clip; }
 .project-detail-gallery { padding: clamp(3.5rem, 6vw, 6rem) var(--margine); background: #e9e0d1; color: #171713; }
 .project-gallery-browser { border-top: 1px solid rgba(23,18,13,.22); padding-top: 18px; }
 .project-gallery-toolbar { margin-bottom: 18px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
-.project-gallery-toolbar > p { flex: 0 0 auto; margin: 8px 0 0; font-family: var(--titoli); font-size: 18px; }
+.project-gallery-toolbar > p { flex: 0 0 auto; margin: 8px 0 0; font-family: var(--testo); font-size: 18px; }
 .project-gallery-toolbar > p span { color: var(--red); font-size: 31px; }
 .project-gallery-filters { display: flex; flex-wrap: wrap; gap: .55rem; }
 .project-gallery-filters button { min-height: 42px; border: 1px solid #17171344; background: transparent; color: inherit; border-radius: 999px; padding: .65rem 1rem; text-transform: uppercase; letter-spacing: .12em; font-size: .68rem; cursor: pointer; transition: transform .2s ease, background .2s ease; }
@@ -4814,9 +4817,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .servizi-apertura-nota {
   max-width: 46ch;
   margin: clamp(26px, 3vw, 46px) 0 0;
-  font-family: var(--titoli);
-  font-size: clamp(19px, 1.9vw, 30px);
-  line-height: 1.25;
+  font-family: var(--testo);
+  font-size: clamp(17px, 1.5vw, 24px);
+  line-height: 1.5;
   color: rgba(255, 236, 197, .78);
 }
 .servizi-sommario {
@@ -4911,9 +4914,9 @@ html.lenis.lenis-stopped { overflow: clip; }
 .atto-titolo > p {
   max-width: 34ch;
   margin: clamp(14px, 1.6vw, 24px) 0 0;
-  font-family: var(--titoli);
-  font-size: clamp(19px, 2vw, 32px);
-  line-height: 1.24;
+  font-family: var(--testo);
+  font-size: clamp(17px, 1.6vw, 25px);
+  line-height: 1.45;
 }
 
 .atto-etichetta {
