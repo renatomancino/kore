@@ -124,7 +124,7 @@ export default function PaginaPrivacy() {
         <section>
           <h2>Chi altro li vede</h2>
           <p>
-            Le richieste che arrivano dal sito <b>le legge solo Alfredo Izzo</b>. Non vendiamo
+            Le richieste che arrivano dal sito <b>le legge solo il titolare</b>. Non vendiamo
             dati, non li scambiamo e non li passiamo a nessuno per farci pubblicità.
           </p>
           <p>

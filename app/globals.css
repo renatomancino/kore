@@ -5220,3 +5220,40 @@ html.lenis.lenis-stopped { overflow: clip; }
   .privacy-apertura { padding: 104px 18px 40px; }
   .privacy-testo { padding: 44px 18px 64px; gap: 34px; }
 }
+
+/* ============================================================
+   Stampa — vale per la privacy, che e' l'unica pagina che qualcuno stampa
+   davvero: un commercialista che la rilegge, un cliente che la archivia.
+   Su carta il manifesto nero non aiuta nessuno e si mangia una pagina intera
+   di toner, quindi qui la pagina torna nera su bianco e i comandi spariscono.
+   ============================================================ */
+@media print {
+  .site-header,
+  .menu-panel,
+  .adaptive-brand,
+  .site-footer,
+  .footer-particles { display: none !important; }
+
+  .pagina-privacy { background: #fff; color: #000; }
+
+  .privacy-apertura {
+    padding: 0 0 18pt;
+    border-bottom: 1pt solid #999;
+    background: #fff;
+    color: #000;
+  }
+  .privacy-apertura h1 { max-width: none; font-size: 26pt; line-height: 1.05; }
+  .privacy-apertura h1 em { color: #000; }
+  .privacy-occhiello { max-width: none; color: #333; font-size: 10pt; }
+  .privacy-apertura .kicker { color: #000; }
+
+  .privacy-testo { width: 100%; padding: 18pt 0 0; gap: 16pt; }
+  .privacy-testo h2 { font-size: 14pt; }
+  .privacy-testo p, .privacy-elenco { max-width: none; font-size: 10pt; line-height: 1.45; }
+  .privacy-nota { border-left: 2pt solid #999; background: none; }
+  .privacy-testo a { color: #000; }
+
+  /* Un paragrafo spezzato a meta' fra due fogli si rilegge due volte. */
+  .privacy-testo section { break-inside: avoid; }
+  .privacy-testo h2 { break-after: avoid; }
+}
