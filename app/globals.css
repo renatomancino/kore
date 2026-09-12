@@ -2467,12 +2467,15 @@ html.lenis.lenis-stopped { overflow: clip; }
   align-items: baseline;
   justify-content: space-between;
 }
+/* Anche questa e' una frase da leggere, non un titolo: spiega a chi arriva
+   che quello non e' un modulo di contatto ma il brief vero. In Reel, alla
+   misura di un testo, si decifrava invece di leggersi. */
 .brief-apertura-sotto p {
   max-width: 620px;
   margin: 0;
-  font-family: var(--titoli);
-  font-size: clamp(19px, 1.9vw, 30px);
-  line-height: 1.24;
+  font-family: var(--testo);
+  font-size: clamp(17px, 1.6vw, 25px);
+  line-height: 1.38;
 }
 .brief-apertura-sotto span {
   color: var(--red-testo);
@@ -2741,13 +2744,17 @@ html.lenis.lenis-stopped { overflow: clip; }
   color: var(--cream);
 }
 .brief-riepilogo .kicker { margin-bottom: 16px; color: var(--red); font-weight: 800; }
+/* Il carattere del testo, non quello dei titoli: qui dentro c'e' la mail che
+   la persona sta per spedire, ed e' il punto in cui la rilegge prima di
+   premere invio. Reel e' un condensato da manifesto: a 15px, panna su
+   inchiostro, si decifra invece di leggersi. */
 .brief-riepilogo pre, .brief-esito-testo pre {
   margin: 0;
   max-height: 62vh;
   overflow: auto;
-  font-family: var(--titoli);
+  font-family: var(--testo);
   font-size: clamp(15px, 1.15vw, 18px);
-  line-height: 1.5;
+  line-height: 1.55;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
