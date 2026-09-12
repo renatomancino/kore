@@ -5128,3 +5128,95 @@ html.lenis.lenis-stopped { overflow: clip; }
 @media (max-width: 600px) {
   .closing-cta-main > .pulsante-vivo { width: 100%; margin-top: 28px; justify-content: flex-start; }
 }
+
+/* ============================================================
+   La pagina privacy — /privacy
+   Un'informativa e' un testo che si legge per intero solo quando serve
+   davvero, e allora deve essere facile: colonna stretta, righe larghe,
+   titoli che si distinguono da lontano per trovare il punto giusto senza
+   leggere tutto. Il corpo e' il carattere del testo, non quello dei titoli:
+   qui la leggibilita' viene prima del registro.
+   ============================================================ */
+.pagina-privacy { background: var(--paper); color: var(--ink); }
+
+.privacy-apertura {
+  padding: clamp(120px, 15vh, 210px) 5vw clamp(46px, 5vw, 80px);
+  background: var(--ink);
+  color: var(--cream);
+}
+.privacy-apertura h1 {
+  max-width: 16ch;
+  margin: clamp(18px, 2vw, 30px) 0 0;
+  font-family: var(--titoli);
+  font-weight: 900;
+  font-size: clamp(46px, 7.6vw, 128px);
+  line-height: .86;
+  letter-spacing: var(--aria-grande);
+}
+.privacy-apertura h1 em { font-style: normal; color: var(--red); }
+.privacy-occhiello {
+  max-width: 52ch;
+  margin: clamp(24px, 3vw, 42px) 0 0;
+  font-size: clamp(16px, 1.4vw, 21px);
+  line-height: 1.5;
+  color: rgba(255, 236, 197, .78);
+}
+
+.privacy-testo {
+  /* Allineata al margine della pagina, non centrata: l'apertura qui sopra
+     parte da sinistra e tutto il sito e' impaginato cosi'. */
+  width: min(880px, 100%);
+  padding: clamp(54px, 7vw, 100px) 5vw clamp(70px, 8vw, 120px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(38px, 4.5vw, 64px);
+}
+.privacy-testo h2 {
+  margin: 0 0 clamp(14px, 1.6vw, 22px);
+  font-family: var(--titoli);
+  font-weight: 900;
+  font-size: clamp(26px, 3vw, 42px);
+  line-height: 1;
+  letter-spacing: var(--aria-piccola);
+}
+/* ~65 battute per riga: oltre, l'occhio perde il capo della riga dopo. */
+.privacy-testo p { max-width: 65ch; margin: 0 0 1.05em; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.65; }
+.privacy-testo p:last-child { margin-bottom: 0; }
+.privacy-testo a { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.privacy-testo a:hover, .privacy-testo a:focus-visible { color: var(--red-testo); }
+
+/* Il riquadro e' per il punto che quasi nessuno si aspetta: che il modulo non
+   spedisca a un server nostro. Uno solo, se no non e' piu' un'eccezione. */
+.privacy-nota {
+  padding: clamp(16px, 2vw, 24px) clamp(18px, 2.2vw, 28px);
+  border-left: 3px solid var(--red);
+  background: rgba(254, 64, 66, .06);
+}
+
+.privacy-elenco {
+  max-width: 65ch;
+  margin: 0 0 1.05em;
+  padding-left: 1.15em;
+  display: flex;
+  flex-direction: column;
+  gap: .6em;
+  font-size: clamp(15px, 1.15vw, 17px);
+  line-height: 1.6;
+}
+.privacy-elenco::marker, .privacy-elenco li::marker { color: var(--red); }
+.privacy-url { white-space: nowrap; }
+
+/* La casella facoltativa del brief: staccata da quella obbligatoria e
+   visibilmente meno importante, perche' non lo e'. */
+.brief-consenso-facoltativo {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  opacity: .88;
+}
+
+@media (max-width: 600px) {
+  .privacy-apertura { padding: 104px 18px 40px; }
+  .privacy-testo { padding: 44px 18px 64px; gap: 34px; }
+}

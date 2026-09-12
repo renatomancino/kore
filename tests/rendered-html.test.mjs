@@ -85,6 +85,31 @@ test("is configured as a Next.js project published on Netlify", async () => {
   assert.deepEqual(mancanti, [], `il codice cita file che non esistono in public/: ${mancanti.join(", ")}`);
 });
 
+test("publishes a privacy notice wired to the form and the footer", async () => {
+  const [privacy, azienda, footer, modulo] = await Promise.all([
+    readFile(new URL("../app/privacy/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/azienda.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/site-footer.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/idea/brief-form.tsx", import.meta.url), "utf8"),
+  ]);
+
+  /* I dati dell'azienda stanno in un posto solo: se qualcuno li riscrive a
+     mano nella pagina, prima o poi le due copie divergono. */
+  assert.match(azienda, /partitaIva: "11148821215"/);
+  assert.doesNotMatch(privacy, /11148821215/);
+  assert.match(privacy, /AZIENDA\.partitaIva/);
+
+  /* Il footer non deve tornare a stampare "Privacy" come testo morto. */
+  assert.match(footer, /href="\/privacy"/);
+  assert.match(footer, /AZIENDA\.partitaIva/);
+
+  /* Il consenso alle novita' e' una casella separata e facoltativa: non deve
+     finire fra i campi obbligatori, o smette di essere un consenso libero. */
+  assert.match(modulo, /novita: boolean/);
+  assert.match(modulo, /href="\/privacy"/);
+  assert.doesNotMatch(modulo, /richiesti: \(keyof Modulo\)\[\] = \[[^\]]*"novita"/);
+});
+
 test("provides a projects archive without individual project routes", async () => {
   const [home, archive, elenco, data] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),

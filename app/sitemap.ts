@@ -16,5 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${indirizzoSito}/idea`, lastModified: oggi, changeFrequency: "yearly", priority: 0.9 },
     { url: `${indirizzoSito}/servizi`, lastModified: oggi, changeFrequency: "monthly", priority: 0.85 },
     { url: `${indirizzoSito}/progetti`, lastModified: oggi, changeFrequency: "monthly", priority: 0.8 },
+    /* Bassa, ma c'e': e' la pagina che si cerca per nome quando serve. */
+    { url: `${indirizzoSito}/privacy`, lastModified: oggi, changeFrequency: "yearly", priority: 0.2 },
   ];
 }

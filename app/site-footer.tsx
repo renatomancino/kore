@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AZIENDA } from "./azienda";
 import { vociRecapito } from "./recapiti";
 
 /**
@@ -68,8 +69,14 @@ export function SiteFooter() {
         </div>
       </div>
 
+      {/* Erano tre parole morte: "Privacy · Cookie · P.IVA", senza link e senza
+          numero, mentre il sito raccoglieva dati da un modulo. Ora la privacy
+          e' una pagina vera e la partita IVA e' scritta. I cookie non hanno una
+          pagina loro perche' non ci sono cookie: se ne parla dentro la privacy. */}
       <div className="footer-legal">
-        <span>Privacy · Cookie · P.IVA</span>
+        <span>
+          <Link href="/privacy">Privacy e cookie</Link> · P.IVA {AZIENDA.partitaIva}
+        </span>
         <span>© {new Date().getFullYear()} Kore Studio</span>
       </div>
     </footer>

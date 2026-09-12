@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BUDGET, CANALI, MINIMO_PROGETTO, OBIETTIVI, SERVIZI, TEMPI, type Voce } from "./brief-data";
 import { RECAPITI } from "../recapiti";
@@ -28,12 +29,13 @@ type Modulo = {
   tempi: string;
   canale: string;
   consenso: boolean;
+  novita: boolean;
 };
 
 const VUOTO: Modulo = {
   nome: "", azienda: "", email: "", telefono: "",
   servizi: [], obiettivo: "", progetto: "", riferimenti: "",
-  budget: "", tempi: "", canale: "", consenso: false,
+  budget: "", tempi: "", canale: "", consenso: false, novita: false,
 };
 
 const PASSI = [
@@ -74,6 +76,12 @@ function componiBrief(m: Modulo) {
   const recapiti = [m.email.trim(), m.telefono.trim()].filter(Boolean);
   if (recapiti.length) righe.push("", `Rispondetemi a ${recapiti.join(" oppure ")}.`);
   if (m.canale) righe.push(`(Vi ho trovati così: ${nomeDi(CANALI, m.canale).toLowerCase()}.)`);
+
+  /* Anche il "no" va scritto: e' l'unica traccia di cosa ha scelto chi manda
+     il brief, e senza quella nessuno dei due sa piu' cosa era stato detto. */
+  righe.push("", m.novita
+    ? "Sì, voglio ricevere da Kore Studio novità, iniziative e proposte commerciali via email."
+    : "No: scrivetemi solo per questo progetto, niente novità o proposte commerciali.");
 
   return righe.join("\n").trim();
 }
@@ -432,10 +440,25 @@ export function BriefForm() {
                   />
                   <span>
                     Acconsento al trattamento dei dati per essere ricontattato su questo progetto.
-                    Non li usiamo per altro e non li diamo a nessuno.
+                    Come li trattiamo sta scritto nella <Link href="/privacy">privacy</Link>.
                   </span>
                 </label>
               </Campo>
+
+              {/* Facoltativa, staccata e vuota di default: il consenso a farsi
+                  scrivere per altro non puo' viaggiare dentro a quello per
+                  avere una risposta. Chi la lascia vuota riceve comunque il
+                  preventivo — e non puo' essere contattato per altro. */}
+              <label className="brief-consenso brief-consenso-facoltativo">
+                <input
+                  type="checkbox" checked={modulo.novita}
+                  onChange={(e) => scrivi("novita", e.target.checked)}
+                />
+                <span>
+                  Voglio ricevere da Kore Studio novità, iniziative e proposte commerciali
+                  via email. <b>Facoltativo:</b> senza, la risposta al progetto arriva lo stesso.
+                </span>
+              </label>
 
               {Object.keys(errori).length > 0 && (
                 <div className="brief-mancanze" role="alert">
