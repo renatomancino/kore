@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prova tacca — Kore</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #ffecc5; color: #17120d; font: 15px/1.45 -apple-system, system-ui, sans-serif; }
+  /* La barra della prova: fissa in alto, come la testata del sito. Se il
+     telefono usa tutto lo schermo, il verde arriva fin sopra l'orologio. */
+  .barra {
+    position: fixed; inset: 0 0 auto; z-index: 10;
+    height: calc(64px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    display: flex; align-items: center; justify-content: center;
+    background: #0a7d2f; color: #fff; font-weight: 700; letter-spacing: .06em;
+  }
+  .strisce { height: 240vh; background: repeating-linear-gradient(#fe4042 0 34px, #17120d 34px 68px); }
+  .scheda {
+    position: relative; z-index: 20;
+    margin: calc(96px + env(safe-area-inset-top)) 14px 30px;
+    padding: 18px; border: 2px solid #17120d; border-radius: 16px; background: #fffdf8;
+  }
+  h1 { margin: 0 0 12px; font-size: 19px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 6px 4px; border-bottom: 1px solid rgba(23,18,13,.18); text-align: left; vertical-align: top; }
+  th { width: 47%; font-weight: 600; }
+  td { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .nota { margin: 14px 0 0; font-size: 13px; line-height: 1.5; }
+</style>
+</head>
+<body>
+  <div class="barra">BARRA FISSA · top 0</div>
+  <div class="scheda">
+    <h1>Prova della fascia in alto</h1>
+    <table id="dati"></table>
+    <p class="nota">Manda uno screenshot di questa scheda <b>e</b> uno che si veda la barra verde in cima.
+      Se il verde arriva sotto l'orologio, il telefono sta usando tutto lo schermo.</p>
+  </div>
+  <div class="strisce"></div>
+<script>
+  const leggi = (nome) => {
+    const p = document.createElement("div");
+    p.style.cssText = "position:fixed;top:0;left:0;height:0;width:" + nome;
+    document.body.appendChild(p);
+    const v = getComputedStyle(p).width;
+    p.remove();
+    return v;
+  };
+  const barra = document.querySelector(".barra").getBoundingClientRect();
+  const righe = [
+    ["safe-area top", leggi("env(safe-area-inset-top, 0px)")],
+    ["safe-area bottom", leggi("env(safe-area-inset-bottom, 0px)")],
+    ["safe-area left / right", leggi("env(safe-area-inset-left, 0px)") + " / " + leggi("env(safe-area-inset-right, 0px)")],
+    ["barra verde: da y", Math.round(barra.top) + " alta " + Math.round(barra.height)],
+    ["finestra", innerWidth + " × " + innerHeight],
+    ["schermo", screen.width + " × " + screen.height],
+    ["viewport visibile", visualViewport ? Math.round(visualViewport.width) + " × " + Math.round(visualViewport.height) + " (offset " + Math.round(visualViewport.offsetTop) + ")" : "—"],
+    ["meta viewport", document.querySelector('meta[name=viewport]').content],
+    ["browser", navigator.userAgent.replace(/^Mozilla\/5\.0 \(|\) .*Version\//, " ").slice(0, 70)],
+  ];
+  document.getElementById("dati").innerHTML = righe.map(([k, v]) => "<tr><th>" + k + "</th><td>" + v + "</td></tr>").join("");
+</script>
+</body>
+</html>

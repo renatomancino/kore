@@ -12,6 +12,7 @@ const eslintConfig = defineConfig([
     ".next/**",
     "dist/**",
     "out/**",
+    "aruba/sito/**",
     "build/**",
     "outputs/**",
     "work/**",

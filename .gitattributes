@@ -1,0 +1,2 @@
+# La copia del sito su Aruba resta byte per byte com e sul server
+aruba/sito/** -text

@@ -1,0 +1,6 @@
+:HL["/_next/static/chunks/0d1zsq95gvtwn.css","style"]
+:HL["/_next/static/chunks/1y5apep2urkw9.css","style"]
+:HL["https://use.typekit.net/vqb8iez.css","style"]
+:HL["/images/corallo.webp","image"]
+:HL["/brand/kore-logo-cream.png","image"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"/_not-found","param":null,"prefetchHints":4192,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}}}},"staleTime":300,"buildId":"sP4nd1zCneNpTb5yoIGZT"}
