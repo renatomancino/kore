@@ -210,7 +210,7 @@ export function VideoShowcase() {
   };
 
   return (
-    <section className="video-showcase" id="showreel" ref={sectionRef} data-titolo="Showreel">
+    <section className="video-showcase" id="showreel" ref={sectionRef}>
       <div className="video-showcase-shell">
         <div className="video-showcase-intro">
           <p className="kicker">Video / Showreel</p>

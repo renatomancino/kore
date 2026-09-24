@@ -3,13 +3,13 @@ import Link from "next/link";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
-import { AttiDeiServizi } from "./atti";
-import { serviziPagina } from "./servizi-pagina";
+import { ServiziInSequenza } from "../servizi-in-sequenza";
+import { services } from "../services-data";
 import { Freccia } from "../freccia";
 
 const TITOLO = "Servizi — Kore Studio";
 const DESCRIZIONE =
-  "Branding, social, video, web, advertising ed eventi: sei mestieri che Kore tiene sotto una regia sola.";
+  "Brand identity, social media, web ed e-commerce, grafica, foto e video per eventi, consulenza, advertising e AI: otto competenze che Kore tiene sotto una regia sola.";
 
 export const metadata: Metadata = {
   title: TITOLO,
@@ -29,15 +29,15 @@ export default function PaginaServizi() {
 
       <section className="servizi-apertura">
         <p className="kicker">Prima analizziamo. Poi comunichiamo.</p>
-        <h1>Sei mestieri.<br /><em>Una regia sola.</em></h1>
+        <h1>Otto competenze.<br /><em>Una regia sola.</em></h1>
         <p className="servizi-apertura-nota">
           Non un catalogo di voci separate: le competenze si chiamano fra loro, e quale
           serva davvero lo decide il progetto.
         </p>
 
-        {/* Il sommario e' anche un indice: sei ancore verso i sei atti. */}
-        <nav className="servizi-sommario" aria-label="I sei servizi">
-          {serviziPagina.map((servizio, i) => (
+        {/* Il sommario e' anche un indice: un'ancora per ogni servizio. */}
+        <nav className="servizi-sommario" aria-label="I servizi">
+          {services.map((servizio, i) => (
             <a href={`#${servizio.id}`} key={servizio.id}>
               <span aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
               {servizio.name}
@@ -46,7 +46,7 @@ export default function PaginaServizi() {
         </nav>
       </section>
 
-      <AttiDeiServizi servizi={serviziPagina} />
+      <ServiziInSequenza title="Le competenze giuste, insieme." />
 
       <section className="servizi-chiusura">
         <p className="kicker">Il prossimo progetto</p>

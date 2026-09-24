@@ -1,8 +1,8 @@
 import { ImageResponse } from "next/og";
 import { INCHIOSTRO, MISURA, PANNA, ROSSO, TIPO, marchioPanna } from "../og-materiali";
-import { serviziPagina as services } from "./servizi-pagina";
+import { services } from "../services-data";
 
-export const alt = "I sei servizi di Kore Studio";
+export const alt = "I servizi di Kore Studio";
 export const size = MISURA;
 export const contentType = TIPO;
 
@@ -38,14 +38,14 @@ export default async function AnteprimaServizi() {
 
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", color: PANNA, fontSize: 92, fontWeight: 700, letterSpacing: -3 }}>
-            Sei mestieri.
+            Otto competenze.
           </div>
           <div style={{ display: "flex", color: ROSSO, fontSize: 92, fontWeight: 700, letterSpacing: -3 }}>
             Una regia sola.
           </div>
         </div>
 
-        {/* I sei nomi in fila: dicono il contenuto della pagina meglio di una
+        {/* I nomi in fila: dicono il contenuto della pagina meglio di una
             frase, e sono gli stessi che il visitatore trovera' scorrendo. */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
           {services.map((servizio) => (

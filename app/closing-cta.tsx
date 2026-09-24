@@ -43,7 +43,7 @@ export function ClosingCta({ id }: { id: string }) {
   }, []);
 
   return (
-    <section className="closing-cta" id={id} ref={sectionRef} data-titolo="Contatti">
+    <section className="closing-cta" id={id} ref={sectionRef}>
       <div className="closing-cta-rings" aria-hidden="true"><span /><span /><span /></div>
       <div className="closing-cta-main">
         <p className="kicker">Il prossimo progetto</p>

@@ -36,7 +36,7 @@ export default function ProjectsPage() {
 
       {/* Un indice, non una griglia di copertine: una riga per lavoro, che si
           apre sul posto con il racconto e i materiali. */}
-      <section className="archivio-indice" aria-label="Elenco dei progetti" data-titolo="Progetti">
+      <section className="archivio-indice" aria-label="Elenco dei progetti">
         <ol className="indice-progetti">
           {projects.map((progetto, i) => (
             <li key={progetto.slug}>

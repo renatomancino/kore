@@ -6,7 +6,6 @@ import { TestoRivelato } from "./testo-rivelato";
 import { AdaptiveBrand } from "./adaptive-brand";
 import { ClosingCta } from "./closing-cta";
 import { ScrollEffects } from "./scroll-effects";
-import { ServiziInSequenza } from "./servizi-in-sequenza";
 import { services } from "./services-data";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
@@ -23,13 +22,6 @@ const clientSlots = [
   { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.webp", tone: "light" },
   { name: "Primobanco", project: "Primobanco", image: "/clients/primobanco.webp", tone: "light" },
   { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.webp", tone: "dark" },
-];
-
-const process = [
-  ["01", "Parliamo", "Ci racconti cosa vuoi fare."],
-  ["02", "Costruiamo", "Definiamo strategia e progetto."],
-  ["03", "Creiamo", "Entrano in gioco le competenze giuste."],
-  ["04", "Facciamo crescere", "Misuriamo, miglioriamo, sviluppiamo."],
 ];
 
 export default function Home() {
@@ -89,13 +81,13 @@ export default function Home() {
         {services.map((service, index) => (
           /* Ognuno al suo servizio: prima erano sei nomi diversi che portavano
              tutti in testa alla sezione, cioe' sei volte lo stesso posto. */
-          <a href={`#${service.id}`} key={service.id}>
+          <a href={`/servizi#${service.id}`} key={service.id}>
             <span>0{index + 1}</span>{service.name}
           </a>
         ))}
       </nav>
 
-      <section className="clients section-pad" id="clienti" data-titolo="Clienti">
+      <section className="clients section-pad" id="clienti">
         <div className="section-heading">
           <p className="kicker">Al fianco di chi fa impresa</p>
           <h2>Facciamo cose<br />con loro.</h2>
@@ -144,8 +136,6 @@ export default function Home() {
         </div>
       </div>
 
-      <ServiziInSequenza title="Le competenze giuste, insieme." />
-
       <ProjectStream>
         <Link className="project-stream-link" href="/progetti" data-transizione="">
           <span>Archivio completo</span>
@@ -156,9 +146,7 @@ export default function Home() {
 
       <VideoShowcase />
 
-      {/* Il metodo non ha piu' una sezione sua: sta dentro alla storia, come
-          il modo in cui quella storia diventa lavoro. */}
-      <section className="story" id="mondo" data-titolo="Il brand">
+      <section className="story" id="mondo">
         <div className="story-title">
           <p className="kicker">Kore / Il brand</p>
           <h2>Kore, dal cuore<br />alla trasformazione.</h2>
@@ -196,21 +184,9 @@ export default function Home() {
             </TestoRivelato>
           </p>
         </div>
-        <div className="story-metodo" id="metodo">
-          <p className="story-metodo-titolo">Come lavoriamo</p>
-          <ol>
-            {process.map(([number, title, text]) => (
-              <li key={number}>
-                <span aria-hidden="true">{number}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
       </section>
 
-      <section className="partners section-pad" id="partner" data-titolo="Partner">
+      <section className="partners section-pad" id="partner">
         <div className="partner-intro">
           <p className="kicker">Network & partner</p>
           <h2>Un ecosistema di<br />collaborazioni.</h2>

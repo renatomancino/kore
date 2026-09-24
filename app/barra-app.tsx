@@ -36,7 +36,7 @@ const VOCI: Voce[] = [
   {
     href: "/progetti",
     numero: "03",
-    nome: "I nostri lavori",
+    nome: "Progetti",
     icona: (
       <>
         <rect x="3.5" y="5" width="17" height="14" rx="2.4" />

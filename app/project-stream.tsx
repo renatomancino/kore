@@ -52,7 +52,7 @@ const projectImages = Array.from({ length: Math.max(...imageGroups.map((group) =
 
 export function ProjectStream({ children }: { children: ReactNode }) {
   return (
-    <section className="project-stream" id="progetti" aria-labelledby="project-stream-title" data-titolo="Foto / Produzioni">
+    <section className="project-stream" id="progetti" aria-labelledby="project-stream-title">
       <div className="project-stream-heading">
         <p className="kicker">Foto / Produzioni</p>
         <h2 id="project-stream-title">Ogni scatto<br /><em>racconta.</em></h2>

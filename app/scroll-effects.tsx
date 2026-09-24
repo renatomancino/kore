@@ -16,7 +16,6 @@ const REVEAL_GROUPS = [
   ".reel-phone",
   ".story-title",
   ".story-copy",
-  ".story-metodo",
   ".partner-intro",
   ".partner-rail",
 ].join(",");

@@ -34,7 +34,7 @@ export default function IdeaPage() {
         </div>
       </section>
 
-      <section className="brief-corpo" aria-label="Il brief" data-titolo="Il brief">
+      <section className="brief-corpo" aria-label="Il brief">
         <BriefForm />
       </section>
 
