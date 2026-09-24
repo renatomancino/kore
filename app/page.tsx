@@ -19,7 +19,7 @@ import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button
 const clientSlots = [
   { name: "Centro Revisioni TRIM", project: "Centro Revisioni TRIM", image: "/clients/trim.webp", tone: "light" },
   { name: "L’isola che non c’è", project: "L’isola che non c’è", image: "/clients/isola-che-non-ce.webp", tone: "dark" },
-  { name: "Panariello", project: "Panariello · Falegnameria sartoriale", image: "/clients/panariello.webp", tone: "light" },
+  { name: "Panariello", project: "Panariello · Social Media Marketing", image: "/clients/panariello.webp", tone: "light" },
   { name: "Pastry & Coffee", project: "Pastry & Coffee Laboratory", image: "/clients/pastry-coffee.webp", tone: "light" },
   { name: "Primobanco", project: "Primobanco", image: "/clients/primobanco.webp", tone: "light" },
   { name: "Osteria Annunziata", project: "Osteria Annunziata", image: "/clients/osteria-annunziata.webp", tone: "dark" },
@@ -49,11 +49,15 @@ export default function Home() {
       <div className="apertura">
         <section className="hero" id="top" aria-labelledby="hero-title">
           <div className="hero-art" aria-hidden="true">
+            <div className="hero-arco" />
             <div className="hero-halo hero-halo-one" />
             <div className="hero-halo hero-halo-two" />
-            <span className="hero-pearl hero-pearl-one" />
-            <span className="hero-pearl hero-pearl-two" />
-            <span className="hero-pearl hero-pearl-three" />
+            {/* Al posto delle perle, i simboli di casa: tre cornetti e il
+                telefono. */}
+            <img className="hero-cornetto hero-cornetto-one" src="/images/cornetto.webp" alt="" />
+            <img className="hero-cornetto hero-cornetto-two" src="/images/cornetto.webp" alt="" />
+            <img className="hero-cornetto hero-cornetto-three" src="/images/cornetto.webp" alt="" />
+            <img className="hero-telefono" src="/images/telefono.webp" alt="" />
             <img className="hero-cameo hero-cameo-one" src="/images/cammeo-kore.webp" alt="" />
             <img className="hero-cameo hero-cameo-two" src="/images/cammeo-kore.webp" alt="" />
             <img className="hero-cameo hero-cameo-three" src="/images/cammeo-kore.webp" alt="" />
@@ -62,15 +66,19 @@ export default function Home() {
             <img className="hero-cameo hero-cameo-quattro" src="/images/cammeo-kore.webp" alt="" />
         </div>
         <div className="hero-copy">
-          <p className="eyebrow">Creative agency · Torre del Greco / Ovunque</p>
+          <p className="eyebrow">Agenzia di comunicazione – Torre del Greco / Casoria / Ovunque</p>
           <h1 id="hero-title">
-            <span>Strategia,</span>
-            <span>immagini</span>
-            <span className="hero-title-accent">e idee vive.</span>
+            <span>Marketing,</span>
+            <span>comunicazione</span>
+            <span>e pubblicità</span>
+            <span className="hero-title-accent">(creatività).</span>
           </h1>
           <div className="hero-actions">
-            <p>Una regia creativa per brand, contenuti, esperienze e progetti digitali che lasciano il segno.</p>
-            <InteractiveHoverButton href="/idea" text="Raccontaci la tua idea" />
+            <p>
+              Kore affianca brand, professionisti, piccole, medie e grandi imprese nella costruzione di una
+              comunicazione coerente, riconoscibile e funzionale agli obiettivi da raggiungere.
+            </p>
+            <InteractiveHoverButton href="/idea" text="Raccontaci di cosa ti occupi." data-transizione="" />
           </div>
         </div>
         <div className="scroll-cue" aria-hidden="true">Scorri ↓</div>
@@ -87,11 +95,11 @@ export default function Home() {
         ))}
       </nav>
 
-      <section className="clients section-pad" id="clienti">
+      <section className="clients section-pad" id="clienti" data-titolo="Clienti">
         <div className="section-heading">
-          <p className="kicker">Chi ci ha dato fiducia</p>
+          <p className="kicker">Al fianco di chi fa impresa</p>
           <h2>Facciamo cose<br />con loro.</h2>
-          <p className="content-note">Brand e realtà del territorio che hanno scelto la regia creativa di Kore.</p>
+          <p className="content-note">Brand e realtà che hanno scelto la consulenza di Kore.</p>
         </div>
         <div className="client-stage">
           <div className={`client-preview ${clientSlots[activeClient].tone}`} aria-live="polite">
@@ -136,10 +144,10 @@ export default function Home() {
         </div>
       </div>
 
-      <ServiziInSequenza title="Non facciamo solo una cosa." />
+      <ServiziInSequenza title="Le competenze giuste, insieme." />
 
       <ProjectStream>
-        <Link className="project-stream-link" href="/progetti">
+        <Link className="project-stream-link" href="/progetti" data-transizione="">
           <span>Archivio completo</span>
           <strong>Vedi tutti i progetti</strong>
           <i aria-hidden="true"><Freccia /></i>
@@ -148,38 +156,69 @@ export default function Home() {
 
       <VideoShowcase />
 
-      <section className="process section-pad" id="metodo">
-        <p className="kicker">Come lavoriamo</p><h2>Un processo chiaro.<br />Ogni volta diverso.</h2>
-        <div className="timeline">
-          {process.map(([number, title, text]) => (
-            <article key={number}>
-              <span className="tappa-numero" aria-hidden="true">{number}</span>
-              <div className="tappa-testo">
-                <p className="tappa-passo">Passo {number}</p>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="story" id="mondo">
+      {/* Il metodo non ha piu' una sezione sua: sta dentro alla storia, come
+          il modo in cui quella storia diventa lavoro. */}
+      <section className="story" id="mondo" data-titolo="Il brand">
         <div className="story-title">
-          <p className="kicker">Kore / La storia</p>
-          <h2>Le persone giuste.<br />Per il progetto giusto.</h2>
+          <p className="kicker">Kore / Il brand</p>
+          <h2>Kore, dal cuore<br />alla trasformazione.</h2>
         </div>
         <div className="story-copy">
-          <p><TestoRivelato>Kore non è un ufficio pieno di persone che fingono di essere un’agenzia.</TestoRivelato></p>
-          <p><TestoRivelato>È una struttura agile che mette insieme le competenze giuste per ogni progetto. Una regia unica, un network vivo, nessuna formula prefabbricata.</TestoRivelato></p>
-          <p className="name-origin"><TestoRivelato>Kore significa “fanciulla”: energia che nasce, cambia forma e diventa possibilità.</TestoRivelato></p>
+          <p>
+            <TestoRivelato>
+              Kore nasce a Torre del Greco, ma parte da un’idea che va oltre un luogo: arrivare al cuore di ciò che
+              un’attività è, prima di decidere come raccontarla. Il nome racchiude due significati che sentiamo nostri.
+              Kore richiama il cuore, il centro da cui partire: conoscere un’attività, comprenderne gli obiettivi e
+              costruire una comunicazione che abbia una direzione precisa.
+            </TestoRivelato>
+          </p>
+          <p>
+            <TestoRivelato>
+              Ma Kore guarda al mito greco. Kore è il nome con cui viene indicata Persefone, la fanciulla che
+              attraversa il mondo sotterraneo per poi tornare sulla terra. Il suo ritorno coincide con il rifiorire
+              della natura e l’inizio di un nuovo ciclo: per questo Persefone è legata alla rinascita, alla
+              trasformazione e alla capacità di ripartire. Un significato che, per Kore, incontra inevitabilmente anche
+              Torre del Greco. La città porta con sé da secoli il motto “Post fata resurgo”, espressione della capacità
+              di rialzarsi e rinascere dopo le avversità. Lo stesso concetto di ripartenza che ritroviamo nel mito di
+              Persefone diventa così un altro punto di contatto tra il nome Kore e il nostro modo di lavorare. A volte
+              serve riavvolgere il nastro per ripartire e allinearsi con gli obiettivi. E questo vale anche nella
+              comunicazione. Soprattutto quando si fa impresa.
+            </TestoRivelato>
+          </p>
+          <p className="name-origin">
+            <TestoRivelato>
+              Oggi Kore è un’agenzia di comunicazione a Torre del Greco costruita intorno a competenze diverse:
+              consulenza, strategia, social media, design, fotografia, video, web, advertising e intelligenza
+              artificiale. Il nostro modo di lavorare parte sempre dallo stesso punto: capire prima di produrre. Da lì
+              scegliamo strumenti, linguaggi e professionalità utili a ogni attività, coordinandoli attraverso
+              un’unica direzione. Perché per noi comunicare significa questo: partire dal centro, trovare una forma,
+              trasformarsi e ripartire. Mettici il Kore.
+            </TestoRivelato>
+          </p>
+        </div>
+        <div className="story-metodo" id="metodo">
+          <p className="story-metodo-titolo">Come lavoriamo</p>
+          <ol>
+            {process.map(([number, title, text]) => (
+              <li key={number}>
+                <span aria-hidden="true">{number}</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
-      <section className="partners section-pad" id="partner">
+      <section className="partners section-pad" id="partner" data-titolo="Partner">
         <div className="partner-intro">
           <p className="kicker">Network & partner</p>
-          <h2>Le connessioni giuste,<br />quando servono.</h2>
+          <h2>Un ecosistema di<br />collaborazioni.</h2>
+          <p className="content-note">
+            Attraverso il nostro media network possiamo integrare alla strategia di comunicazione anche campagne e
+            spazi pubblicitari sulle testate con cui collaboriamo, coordinandone pianificazione, creatività e
+            pubblicazione.
+          </p>
         </div>
         <div className="partner-rail" aria-label="Partner Kore">
           <div>

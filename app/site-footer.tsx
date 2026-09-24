@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { AZIENDA } from "./azienda";
-import { vociRecapito } from "./recapiti";
+import { RECAPITI, vociRecapito } from "./recapiti";
 
 /**
  * Il footer del sito, uno solo per tutte le pagine.
@@ -33,22 +33,20 @@ export function SiteFooter() {
           <div className="footer-official-logo">
             <img src="/brand/kore-logo-cream.png" alt="Kore Studio - marketing e comunicazione" />
           </div>
-          <p>Strategia, immagine<br />e idee vive.</p>
-          <span>Creative agency · Torre del Greco / ovunque</span>
+          <span>Agenzia di comunicazione – Torre del Greco / Casoria / Ovunque</span>
         </div>
 
         <div className="footer-directory">
           <div>
             <p>Studio</p>
-            <span>Torre del Greco — Napoli</span>
+            <span>{RECAPITI.luogo}</span>
             <span>Campania — Italia</span>
           </div>
           <nav aria-label="Navigazione footer">
             <p>Esplora</p>
-            <Link href="/servizi">Servizi</Link>
-            <Link href="/progetti">Progetti</Link>
-            <Link href="/#metodo">Metodo</Link>
-            <Link href="/#mondo">Agenzia</Link>
+            <Link href="/servizi" data-transizione="">Servizi</Link>
+            <Link href="/progetti" data-transizione="">I nostri lavori</Link>
+            <Link href="/#mondo">Il brand</Link>
             <Link href="/#partner">Partner</Link>
           </nav>
           {/* Le tre voci portavano tutte a "/#contatti", una sezione che di
@@ -60,7 +58,15 @@ export function SiteFooter() {
             <p>Contatti</p>
             {vociRecapito().map((voce) =>
               voce.href ? (
-                <a href={voce.href} key={voce.chiave}>{voce.etichetta} · {voce.valore}</a>
+                /* I profili social si aprono in una scheda nuova: chi li apre
+                   non sta lasciando il sito. */
+                <a
+                  href={voce.href}
+                  key={voce.chiave}
+                  {...(voce.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
+                >
+                  {voce.etichetta} · {voce.valore}
+                </a>
               ) : (
                 <span className="footer-mancante" key={voce.chiave}>{voce.etichetta} · da inserire</span>
               ),

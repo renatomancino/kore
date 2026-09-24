@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { type MouseEvent, useEffect, useRef, useState } from "react";
 import { Freccia } from "./freccia";
 
 /**
@@ -60,7 +60,14 @@ export function SiteMenu() {
     return () => { document.body.style.overflow = ""; };
   }, [aperto]);
 
-  const chiudi = () => pannello.current?.hidePopover();
+  /* Si chiude il pannello e si carica la pagina per intero, senza passare dal
+     router: e' cosi' che il sito naviga anche dai link delle pagine (vedi
+     TransizioniDiVista). */
+  const vai = (evento: MouseEvent<HTMLAnchorElement>) => {
+    evento.preventDefault();
+    pannello.current?.hidePopover();
+    window.location.href = evento.currentTarget.href;
+  };
 
   return (
     <>
@@ -78,20 +85,19 @@ export function SiteMenu() {
         </button>
         <div className="menu-column">
           <p>Kore</p>
-          <Link href="/" onClick={chiudi}>Home</Link>
-          <Link href="/servizi" onClick={chiudi}>Servizi</Link>
-          <Link href="/progetti" onClick={chiudi}>Progetti</Link>
-          <Link href="/#metodo" onClick={chiudi}>Metodo</Link>
-          <Link href="/#mondo" onClick={chiudi}>Agenzia</Link>
-          <Link href="/#partner" onClick={chiudi}>Partner</Link>
+          <Link href="/" onClick={vai} data-transizione="">Home</Link>
+          <Link href="/servizi" onClick={vai} data-transizione="">Servizi</Link>
+          <Link href="/progetti" onClick={vai} data-transizione="">I nostri lavori</Link>
+          <Link href="/#mondo" onClick={vai}>Il brand</Link>
+          <Link href="/#partner" onClick={vai}>Partner</Link>
         </div>
 
         {/* Il recapito non e' l'ultima voce dell'elenco: e' l'altra meta' del
             pannello. Sta fuori dalla colonna perche' deve occupare una cella
             sua nella griglia — un campo corallo a tutta altezza, che e' anche
             cio' che riempie il vuoto lasciato dalla colonna dei servizi. */}
-        <Link className="menu-contact" href="/idea" onClick={chiudi}>
-          <span className="menu-contact-testo">Raccontaci la tua idea</span>
+        <Link className="menu-contact" href="/idea" onClick={vai} data-transizione="">
+          <span className="menu-contact-testo">Raccontaci di cosa ti occupi.</span>
           <span className="menu-contact-freccia" aria-hidden="true"><Freccia /></span>
         </Link>
       </nav>

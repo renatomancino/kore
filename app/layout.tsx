@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { indirizzoSito, sitoPubblicato } from "./site-url";
 import { TransizioniDiVista } from "./transizioni-di-vista";
+import { BarraApp } from "./barra-app";
 
 /* Il carattere del testo e' Inter perche' e' quello dichiarato dal marchio
    (Kore, 10/09/2026), non una scelta nostra. E' variabile, quindi copre da
@@ -15,7 +16,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const TITOLO = "Kore — Diamo forma alle idee";
+const TITOLO = "Kore Studio – Marketing e Comunicazione";
 const DESCRIZIONE =
   "Kore è una creative agency agile: branding, social, content, web, advertising ed eventi.";
 
@@ -31,9 +32,17 @@ export const metadata: Metadata = {
   title: TITOLO,
   description: DESCRIZIONE,
   icons: {
-    icon: "/favicon.png",
-    shortcut: "/favicon.png",
+    icon: [
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon-32.png",
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180" },
   },
+  /* Aggiunto alla schermata Home, il sito si apre a tutto schermo come
+     un'app, col nome corto sotto l'icona. */
+  manifest: "/manifest.webmanifest",
+  appleWebApp: { capable: true, title: "Kore", statusBarStyle: "black-translucent" },
   /* L'immagine non e' elencata qui: la genera app/opengraph-image.tsx, e Next
      la aggancia da sola a questa pagina e a tutte quelle che non ne hanno una
      propria. */
@@ -50,6 +59,15 @@ export const metadata: Metadata = {
     title: TITOLO,
     description: DESCRIZIONE,
   },
+};
+
+/* `viewport-fit=cover`: sui telefoni con la tacca la pagina arriva fino ai
+   bordi, e sono le safe area del CSS a tenere lontano il contenuto. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#17120d",
 };
 
 export default function RootLayout({
@@ -71,6 +89,7 @@ export default function RootLayout({
       >
         <TransizioniDiVista />
         {children}
+        <BarraApp />
       </body>
     </html>
   );

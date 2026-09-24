@@ -20,3 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${indirizzoSito}/privacy`, lastModified: oggi, changeFrequency: "yearly", priority: 0.2 },
   ];
 }
+
+/* Il sito e' un export statico: questo file si genera una volta, al build. */
+export const dynamic = "force-static";

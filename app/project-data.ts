@@ -15,19 +15,13 @@ export const projects: Project[] = [
   {
     slug: "trim-identita-digitale",
     client: "Centro Revisioni TRIM",
-    title: "Identità e presenza digitale",
-    category: "Branding · Web",
+    title: "Brand Identity",
+    category: "Brand Identity",
     year: "2025",
     cover: "/clients/trim.webp",
     tone: "light",
-    summary: "Un sistema riconoscibile per rendere più chiari servizi, contatti e presenza sul territorio.",
+    summary: "Un’identità visiva pensata per rendere TRIM più riconoscibile, coerente e immediato.",
     services: ["Direzione creativa", "Identità visiva", "Presenza digitale"],
-    /* Erano nove immagini con la stessa didascalia — "Applicazione del
-       rebranding TRIM 1..9" — e un raggruppamento che divideva le prime tre
-       dalle altre senza che nulla, nelle immagini, lo giustificasse: sono
-       tutte e nove applicazioni del marchio. Scritte una per una perche' la
-       didascalia e' cio' che legge chi non vede la figura, e "applicazione
-       numero 4" non e' una descrizione. */
     gallery: [
       { src: "/projects/trim/trim-01.jpg", alt: "Biglietti da visita TRIM", group: "Stampa" },
       { src: "/projects/trim/trim-09.jpg", alt: "Carta intestata con il timbro dell’officina", group: "Stampa" },
@@ -43,12 +37,12 @@ export const projects: Project[] = [
   {
     slug: "isola-che-non-ce-racconto",
     client: "L’isola che non c’è",
-    title: "Un racconto che prende spazio",
-    category: "Content · Social",
+    title: "Content Creation",
+    category: "Content Creation",
     year: "2025",
     cover: "/clients/isola-che-non-ce.webp",
     tone: "dark",
-    summary: "Contenuti e linguaggio visivo costruiti per dare continuità al racconto del brand.",
+    summary: "Una presenza social continua attraverso contenuti fotografici, video e un piano editoriale pensato per raccontare attività, feste e servizi.",
     services: ["Strategia editoriale", "Content design", "Social media"],
     gallery: [
       { src: "/clients/isola-che-non-ce.webp", alt: "Identità visiva de L’isola che non c’è", group: "Identità", fit: "contain" },
@@ -57,12 +51,12 @@ export const projects: Project[] = [
   {
     slug: "panariello-falegnameria-sartoriale",
     client: "Panariello",
-    title: "Falegnameria sartoriale",
-    category: "Branding · Content",
+    title: "Social Media Marketing",
+    category: "Social Media Marketing",
     year: "2025",
     cover: "/clients/panariello.webp",
     tone: "light",
-    summary: "Un’identità capace di comunicare precisione artigianale, materia e progetto su misura.",
+    summary: "Abbiamo rinnovato l’identità di Panariello e ne curiamo la comunicazione social attraverso contenuti, piano editoriale e analisi dei dati a supporto delle campagne Meta Ads.",
     services: ["Posizionamento", "Sistema visivo", "Contenuti"],
     gallery: [
       { src: "/projects/panariello/logo-social.jpg", alt: "Logo Panariello nel formato social", group: "Identità" },
@@ -78,12 +72,12 @@ export const projects: Project[] = [
   {
     slug: "pastry-coffee-experience",
     client: "Pastry & Coffee",
-    title: "Un’esperienza da raccontare",
-    category: "Photo · Social",
+    title: "Content Creation",
+    category: "Content Creation",
     year: "2024",
     cover: "/clients/pastry-coffee.webp",
     tone: "light",
-    summary: "Immagini e contenuti pensati per trasformare prodotto, atmosfera e gesti in una storia coerente.",
+    summary: "Ideiamo e realizziamo contenuti verticali pensati per il linguaggio di TikTok.",
     services: ["Art direction", "Produzione fotografica", "Social content"],
     gallery: [
       { src: "/clients/pastry-coffee.jpg", alt: "Atmosfera fotografica di Pastry & Coffee", group: "Fotografie" },
@@ -93,12 +87,12 @@ export const projects: Project[] = [
   {
     slug: "primobanco-comunicazione",
     client: "Primobanco",
-    title: "Comunicazione in primo piano",
-    category: "Content · Advertising",
+    title: "Branding e Social Media Management",
+    category: "Branding e Social Media Management",
     year: "2024",
     cover: "/clients/primobanco.webp",
     tone: "light",
-    summary: "Una presenza visiva più ordinata e immediata, progettata per accompagnare campagne e contenuti.",
+    summary: "Abbiamo costruito l’identità di PrimoBanco e ne curiamo la comunicazione sui social attraverso contenuti e pianificazione editoriale.",
     services: ["Creative direction", "Campagne", "Content design"],
     gallery: [
       { src: "/projects/primobanco/logo-esteso.webp", alt: "Il logo esteso di Primobanco", group: "Identità", fit: "contain" },
@@ -120,12 +114,12 @@ export const projects: Project[] = [
   {
     slug: "osteria-annunziata-territorio",
     client: "Osteria Annunziata",
-    title: "Il territorio a tavola",
-    category: "Branding · Photo",
+    title: "Content Creation e Gestione Social",
+    category: "Content Creation e Gestione Social",
     year: "2024",
     cover: "/clients/osteria-annunziata.webp",
     tone: "dark",
-    summary: "Un racconto visivo che mette insieme cucina, luogo e carattere senza perdere autenticità.",
+    summary: "Ideiamo e realizziamo contenuti per raccontare l’identità dell’osteria e ne curiamo la presenza sui social attraverso una gestione editoriale continua.",
     services: ["Identità", "Fotografia", "Contenuti"],
     gallery: [
       { src: "/projects/osteria-annunziata/osteria-1.jpg", alt: "Atmosfera e piatti di Osteria Annunziata", group: "Fotografie" },
@@ -139,13 +133,13 @@ export const projects: Project[] = [
   },
   {
     slug: "gender-evento-live",
-    client: "Gender",
-    title: "L’energia dell’evento, fotogramma per fotogramma",
-    category: "Eventi · Photo",
+    client: "Eventi privati",
+    title: "Foto, video e molto altro",
+    category: "Foto, video e molto altro",
     year: "2025",
     cover: "/projects/gender-event/gender-01.jpg",
     tone: "photo",
-    summary: "Un racconto fotografico dal vivo che restituisce persone, atmosfera e dettagli dell’esperienza.",
+    summary: "Realizziamo contenuti fotografici e video per raccontare eventi privati, curando immagini, dettagli e momenti pensati per essere vissuti e condivisi.",
     services: ["Produzione eventi", "Reportage fotografico", "Content selection"],
     gallery: Array.from({ length: 48 }, (_, index) => ({
       src: `/projects/gender-event/gender-${String(index + 1).padStart(2, "0")}.jpg`,
@@ -155,24 +149,26 @@ export const projects: Project[] = [
   {
     slug: "copa-servizi-grafiche",
     client: "C.O.P.A.",
-    title: "Un segno per i servizi",
-    category: "Branding · Graphic",
+    title: "Content Creation",
+    category: "Content Creation",
     year: "2025",
     cover: "/projects/additional/copa-servizi-grafiche.png",
     tone: "dark",
-    summary: "Una grafica istituzionale pronta a vivere nei materiali di comunicazione del progetto.",
+    summary: "Ideiamo e realizziamo contenuti per raccontare C.O.P.A. e ne curiamo la comunicazione sui social attraverso una gestione editoriale continua e coordinata.",
     services: ["Graphic design", "Identità visiva", "Materiali di comunicazione"],
-    gallery: [{ src: "/projects/additional/copa-servizi-grafiche.png", alt: "Grafica COPA Servizi" }],
+    gallery: [
+      { src: "/projects/additional/copa-servizi-grafiche.png", alt: "Grafica COPA Servizi" },
+    ],
   },
   {
     slug: "disconnection-2-pomigliano",
     client: "Disconnection 2.0",
-    title: "Un’identità che accende la notte",
-    category: "Branding · Eventi",
+    title: "Content Creation",
+    category: "Content Creation",
     year: "2025",
     cover: "/projects/additional/disconnection-pomigliano.png",
     tone: "dark",
-    summary: "Sistema grafico e varianti del marchio per un’esperienza live riconoscibile.",
+    summary: "Contenuti visivi pensati per raccontare l’esperienza di Disconnection 2.0.",
     services: ["Naming", "Logo design", "Visual identity"],
     gallery: [
       { src: "/projects/additional/disconnection-pomigliano.png", alt: "Logo Disconnection 2.0 Pomigliano" },

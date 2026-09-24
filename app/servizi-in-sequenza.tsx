@@ -2,7 +2,7 @@ import { ServiceShowcase } from "./service-showcase";
 import { services } from "./services-data";
 
 /**
- * I sei servizi, uno sotto l'altro.
+ * Gli otto servizi, uno sotto l'altro.
  *
  * Prima erano un nastro orizzontale: la sezione si incollava in cima e la
  * pagina smetteva di scorrere mentre il nastro scivolava di lato. Misurato su
@@ -19,9 +19,9 @@ import { services } from "./services-data";
  */
 export function ServiziInSequenza({ title }: { title: string }) {
   return (
-    <section className="servizi" id="servizi" aria-labelledby="servizi-titolo">
+    <section className="servizi" id="servizi" aria-labelledby="servizi-titolo" data-titolo="Servizi">
       <header className="servizi-intro">
-        <p className="kicker">Competenze, non compartimenti</p>
+        <p className="kicker">Prima analizziamo. Poi comunichiamo.</p>
         <h2 id="servizi-titolo">{title}</h2>
       </header>
 

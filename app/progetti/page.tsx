@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { projects } from "../project-data";
 import { AdaptiveBrand } from "../adaptive-brand";
 import { SiteFooter } from "../site-footer";
 import { SiteHeader } from "../site-header";
 import { Freccia } from "../freccia";
+import { RigaProgetto } from "../riga-progetto";
 
 const TITOLO = "Progetti — Kore Studio";
 const DESCRIZIONE =
@@ -26,66 +26,29 @@ export default function ProjectsPage() {
       <AdaptiveBrand />
       <SiteHeader />
 
-      <section className="archive-hero">
-        <Image
-          className="archive-hero-media"
-          src="/projects/gender-event/gender-01.jpg"
-          alt="Reportage di un evento curato da Kore"
-          fill
-          priority
-          sizes="100vw"
-        />
-        <div className="archive-hero-shade" aria-hidden="true" />
-        <div className="archive-hero-topline">
-          <p className="kicker">Archivio / lavori selezionati</p>
-          <p>Portfolio · 2024—2025</p>
-        </div>
-        <h1><span>Progetti con</span><em>qualcosa da dire.</em></h1>
-        <div className="archive-hero-bottom">
-          <Link href="/idea">Inizia un progetto <span aria-hidden="true">→</span></Link>
-          <p>Identità, contenuti, immagini ed esperienze costruite intorno alle persone e agli obiettivi reali.</p>
-        </div>
+      <section className="archivio-apertura">
+        <p className="kicker">Archivio / lavori selezionati</p>
+        <h1>Dal pensiero alla<em>forma.</em></h1>
+        <p className="archivio-apertura-nota">
+          Una selezione dei lavori realizzati da Kore. Apri ogni lavoro per scoprirne materiali e dettagli.
+        </p>
       </section>
 
-      <section className="work-catalogue">
-        <header className="work-catalogue-heading">
-          <div>
-            <p className="kicker">Case study</p>
-            <h2>Progetti<br />selezionati.</h2>
-          </div>
-          <p>Ogni progetto parte da un obiettivo concreto e diventa un sistema visivo capace di farsi riconoscere, usare e ricordare.</p>
-        </header>
-
-        <div className="work-grid">
-          {projects.map((project, index) => {
-            const visual = project.gallery?.find((item) => item.kind !== "video");
-            const visualSrc = visual?.src ?? project.cover;
-            const visualFit = visual?.fit ?? (visualSrc.endsWith(".png") ? "contain" : "cover");
-
-            return (
-              <article className="work-card" key={project.slug}>
-                <div className="work-card-media" data-fit={visualFit}>
-                  <Image
-                    src={visualSrc}
-                    alt={visual?.alt ?? `Identità di ${project.client}`}
-                    fill
-                    sizes="(max-width: 800px) 100vw, 50vw"
-                  />
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                </div>
-                <div className="work-card-copy">
-                  <p>{project.category}</p>
-                  <h3>{project.client}</h3>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+      {/* Un indice, non una griglia di copertine: una riga per lavoro, che si
+          apre sul posto con il racconto e i materiali. */}
+      <section className="archivio-indice" aria-label="Elenco dei progetti" data-titolo="Progetti">
+        <ol className="indice-progetti">
+          {projects.map((progetto, i) => (
+            <li key={progetto.slug}>
+              <RigaProgetto progetto={progetto} numero={i + 1} />
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section className="archive-cta">
-        <p>Il prossimo progetto potrebbe essere il tuo.</p>
-        <Link href="/idea">Parliamone <span aria-hidden="true"><Freccia /></span></Link>
+        <p>Partiamo da qui.</p>
+        <Link href="/idea" data-transizione="">Parliamone <span aria-hidden="true"><Freccia /></span></Link>
       </section>
 
       <SiteFooter />

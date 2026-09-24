@@ -1,4 +1,4 @@
-import type { Service } from "../service-showcase";
+import type { ServizioPagina } from "./servizi-pagina";
 import { MockupServizio } from "./mockup";
 
 /* Il colore di ogni atto. Sei stanze che si alternano chiaro e scuro, e il
@@ -22,11 +22,12 @@ const TONI = ["chiaro", "scuro", "chiaro", "scuro", "chiaro", "corallo"] as cons
  * di parole di comodo. Un testo finto che sembra vero e' peggio di un buco
  * ammesso, perche' nessuno si accorge che manca e finisce online.
  */
-export function AttiDeiServizi({ servizi }: { servizi: Service[] }) {
+export function AttiDeiServizi({ servizi }: { servizi: ServizioPagina[] }) {
   return (
     <div className="atti">
       {servizi.map((servizio, i) => (
         <section
+          data-titolo={servizio.name}
           className={`atto atto-${TONI[i]}`}
           id={servizio.id}
           key={servizio.id}

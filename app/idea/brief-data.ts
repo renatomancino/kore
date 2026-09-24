@@ -52,6 +52,3 @@ export const CANALI: Voce[] = [
   { id: "gia-noti", nome: "Vi conoscevo già", nota: "" },
   { id: "altro", nome: "Altro", nota: "" },
 ];
-
-/** Il minimo di caratteri per cui la descrizione e' un brief e non una riga. */
-export const MINIMO_PROGETTO = 80;

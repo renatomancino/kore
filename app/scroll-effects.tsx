@@ -14,9 +14,9 @@ const REVEAL_GROUPS = [
   ".selected-projects-heading",
   ".video-showcase-intro",
   ".reel-phone",
-  ".process > .kicker, .process > h2",
   ".story-title",
   ".story-copy",
+  ".story-metodo",
   ".partner-intro",
   ".partner-rail",
 ].join(",");
@@ -55,12 +55,18 @@ export function ScrollEffects() {
           "-=0.72",
         );
 
+      /* Su schermo grande e col mouse i blocchi arrivano anche da una leggera
+         sfocatura; su telefono no, il filtro costa troppo durante lo
+         scorrimento. */
+      const sfoca = window.matchMedia("(min-width: 901px) and (pointer: fine)").matches;
       gsap.utils.toArray<HTMLElement>(REVEAL_GROUPS).forEach((element) => {
         gsap.from(element, {
           y: 44,
           opacity: 0,
+          ...(sfoca ? { filter: "blur(10px)" } : {}),
           duration: 0.82,
           ease: "power3.out",
+          clearProps: sfoca ? "filter" : "",
           scrollTrigger: {
             trigger: element,
             start: "top 86%",

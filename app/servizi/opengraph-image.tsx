@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { INCHIOSTRO, MISURA, PANNA, ROSSO, TIPO, marchioPanna } from "../og-materiali";
-import { services } from "../services-data";
+import { serviziPagina as services } from "./servizi-pagina";
 
 export const alt = "I sei servizi di Kore Studio";
 export const size = MISURA;
@@ -72,3 +72,6 @@ export default async function AnteprimaServizi() {
     size,
   );
 }
+
+/* Il sito e' un export statico: questo file si genera una volta, al build. */
+export const dynamic = "force-static";

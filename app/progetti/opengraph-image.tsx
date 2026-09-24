@@ -85,3 +85,6 @@ export default async function AnteprimaArchivio() {
     size,
   );
 }
+
+/* Il sito e' un export statico: questo file si genera una volta, al build. */
+export const dynamic = "force-static";

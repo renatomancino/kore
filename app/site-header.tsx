@@ -1,8 +1,10 @@
 import { SiteBrand } from "./site-brand";
 import { SiteMenu } from "./site-menu";
+import { TitoloTestata } from "./titolo-testata";
 
 /**
- * La testata del sito: marchio a sinistra, menu a destra, e nient'altro.
+ * La testata del sito: marchio a sinistra, menu a destra, e in mezzo il
+ * titolo della sezione che si sta leggendo.
  *
  * Ce n'erano quattro versioni — fissa sulla home, assoluta sull'archivio, nel
  * flusso sul dettaglio e sul brief — con imbottiture diverse, quindi i due
@@ -14,6 +16,7 @@ export function SiteHeader() {
   return (
     <header className="site-header">
       <SiteBrand />
+      <TitoloTestata />
       <SiteMenu />
     </header>
   );

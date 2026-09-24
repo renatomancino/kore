@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
@@ -44,23 +43,17 @@ export function ClosingCta({ id }: { id: string }) {
   }, []);
 
   return (
-    <section className="closing-cta" id={id} ref={sectionRef}>
+    <section className="closing-cta" id={id} ref={sectionRef} data-titolo="Contatti">
       <div className="closing-cta-rings" aria-hidden="true"><span /><span /><span /></div>
       <div className="closing-cta-main">
         <p className="kicker">Il prossimo progetto</p>
         <h2 className="closing-cta-title">
-          <span>Progettiamo</span>
-          <span><em>il tuo prossimo</em></span>
-          <span>successo.</span>
+          <span>Partiamo da ciò che fai.</span>
+          <span><em>Costruiamo come</em></span>
+          <span>raccontarlo.</span>
         </h2>
-        <p className="closing-cta-lead">Una regia creativa, le competenze giuste e un progetto costruito intorno a ciò che vuoi far crescere.</p>
-        <InteractiveHoverButton href="/idea" text="Raccontaci la tua idea" />
-      </div>
-
-      <div className="closing-cta-bottom">
-        <span>01 / Pronti quando lo sei</span>
-        <Link href="/idea">Iniziamo il progetto <i aria-hidden="true">→</i></Link>
-        <span>Torre del Greco — ovunque</span>
+        <p className="closing-cta-lead">Consulenza, strategia e competenze coordinate intorno agli obiettivi della tua attività.</p>
+        <InteractiveHoverButton href="/idea" text="Raccontaci di cosa ti occupi." data-transizione="" />
       </div>
     </section>
   );

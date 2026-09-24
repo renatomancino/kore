@@ -42,15 +42,18 @@ export function TransizioniDiVista() {
 
       const destinazione = link.getAttribute("href");
       if (!destinazione?.startsWith("/")) return;
-      if (!document.startViewTransition) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+      /* Per ora si carica la pagina per intero: la transizione qui sotto resta
+         pronta ma spenta, finche' non si decide di riaccenderla. */
       evento.preventDefault();
-      document.startViewTransition(
+      window.location.href = link.href;
+      return;
+
+      const transizione = document.startViewTransition(
         () =>
           new Promise<void>((risolvi) => {
             chiudi.current = risolvi;
-            router.push(destinazione);
+            router.push(destinazione ?? "/");
             /* Rete di sicurezza: finche' la promessa non si chiude il browser
                tiene a schermo l'istantanea della pagina vecchia. Se la
                navigazione non arriva — rete lenta, errore — senza questo si
@@ -61,6 +64,10 @@ export function TransizioniDiVista() {
             }, 1500);
           }),
       );
+      /* A transizione finita la testata ricalcola i propri colori
+         (AdaptiveBrand ascolta questo evento). */
+      transizione.ready.catch(() => {});
+      transizione.finished.catch(() => {}).then(() => window.dispatchEvent(new Event("kore:vista-cambiata")));
     };
 
     /* In cattura, non in risalita: <Link> di Next annulla il clic nel proprio

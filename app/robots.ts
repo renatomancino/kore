@@ -20,3 +20,6 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: `${indirizzoSito}/sitemap.xml`,
   };
 }
+
+/* Il sito e' un export statico: questo file si genera una volta, al build. */
+export const dynamic = "force-static";

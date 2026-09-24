@@ -57,7 +57,7 @@ export default function NonTrovata() {
           </Link>
           <Link href="/idea">
             <span>03</span>
-            <b>Raccontaci la tua idea</b>
+            <b>Raccontaci di cosa ti occupi.</b>
             <i>Il brief, in quattro passi</i>
           </Link>
           <Link href="/servizi">

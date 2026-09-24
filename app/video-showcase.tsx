@@ -48,6 +48,27 @@ const reels: Reel[] = [
 
 const orbitItems = [...reels, ...reels];
 
+/* Lo scorrimento "smooth" del browser dura quanto vuole lui, e su una sezione
+   agganciata sembrava non arrivare mai: qui dura al massimo 380ms, con una
+   frenata finale, e salta del tutto se il movimento e' minimo o se chi
+   guarda ha chiesto meno animazioni. */
+function scorriA(destinazione: number) {
+  const partenza = window.scrollY;
+  const distanza = destinazione - partenza;
+  if (Math.abs(distanza) < 2 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    window.scrollTo({ top: destinazione, behavior: "instant" });
+    return;
+  }
+  const durata = Math.min(380, 200 + Math.abs(distanza) * 0.08);
+  const inizio = performance.now();
+  const passo = (adesso: number) => {
+    const t = Math.min(1, (adesso - inizio) / durata);
+    window.scrollTo({ top: partenza + distanza * (1 - (1 - t) ** 3), behavior: "instant" });
+    if (t < 1) requestAnimationFrame(passo);
+  };
+  requestAnimationFrame(passo);
+}
+
 export function VideoShowcase() {
   const [activeReel, setActiveReel] = useState(0);
   /* I quattro video pesano 3,5 MB — il 98% di tutta la pagina — e con
@@ -127,7 +148,7 @@ export function VideoShowcase() {
         trigger: section,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.8,
+        scrub: 0.3,
         onUpdate: ({ progress }) => positionCards(progress),
         onRefresh: ({ progress }) => positionCards(progress),
       });
@@ -141,18 +162,23 @@ export function VideoShowcase() {
     if (!section) return;
 
     if (window.matchMedia("(max-width: 600px)").matches) {
-      const cards = orbitRef.current?.querySelectorAll<HTMLElement>(
-        '.orbit-card:not([aria-hidden="true"])',
-      );
-      cards?.[index]?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      /* Si scorre solo la fila dei reel, non la pagina: scrollIntoView
+         spostava anche la pagina in verticale per "centrare" la carta. */
+      const orbit = orbitRef.current;
+      const card = orbit?.querySelectorAll<HTMLElement>('.orbit-card:not([aria-hidden="true"])')[index];
+      if (orbit && card) {
+        orbit.scrollTo({
+          left: card.offsetLeft + card.offsetWidth / 2 - orbit.clientWidth / 2,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+        });
+      }
       activeRef.current = index;
       setActiveReel(index);
       return;
     }
 
     const travel = Math.max(0, section.offsetHeight - window.innerHeight);
-    const top = section.offsetTop + travel * (index / (reels.length - 1));
-    window.scrollTo({ top, behavior: "smooth" });
+    scorriA(section.offsetTop + travel * (index / (reels.length - 1)));
   };
 
   const updateMobileReel = () => {
@@ -184,11 +210,11 @@ export function VideoShowcase() {
   };
 
   return (
-    <section className="video-showcase" id="showreel" ref={sectionRef}>
+    <section className="video-showcase" id="showreel" ref={sectionRef} data-titolo="Showreel">
       <div className="video-showcase-shell">
         <div className="video-showcase-intro">
           <p className="kicker">Video / Showreel</p>
-          <h2>Il lavoro,<br /><em>in movimento.</em></h2>
+          <h2>Portiamo il tuo lavoro<br /><em>dentro lo schermo.</em></h2>
           <p>Ogni progetto occupa la scena, uno alla volta.</p>
         </div>
 

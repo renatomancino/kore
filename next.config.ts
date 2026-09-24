@@ -12,6 +12,12 @@ const radice = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
   turbopack: { root: radice },
+  /* Il sito vive su un hosting Aruba che serve file e PHP, non Node: il build
+     produce file statici in out/, da caricare cosi' come sono. Le immagini
+     restano quelle di public/, senza il ridimensionamento che vorrebbe un
+     server. */
+  output: "export",
+  images: { unoptimized: true },
 };
 
 export default nextConfig;

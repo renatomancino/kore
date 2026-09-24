@@ -33,4 +33,4 @@ export function sedePerEsteso() {
 export const MESI_CONSERVAZIONE = 24;
 
 /** L'ultima volta che il testo dell'informativa è cambiato. */
-export const AGGIORNATA_IL = "12 settembre 2026";
+export const AGGIORNATA_IL = "15 settembre 2026";

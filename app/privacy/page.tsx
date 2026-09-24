@@ -69,11 +69,10 @@ export default function PaginaPrivacy() {
             trovati. Niente di più, e niente che tu non abbia digitato.
           </p>
           <p className="privacy-nota">
-            Una cosa che vale la pena sapere, perché non è come funziona sulla maggior
-            parte dei siti: <b>quel modulo non manda niente a un nostro server</b>. Quando
-            premi invio si apre il tuo programma di posta con il brief già scritto dentro, e
-            sei tu a spedirlo. I tuoi dati arrivano a noi come una normale email, e prima di
-            quel momento non li abbiamo mai avuti.
+            Quando premi «Manda il brief» il sito lo spedisce come email direttamente nella
+            nostra casella, senza passare dal tuo programma di posta. <b>Il sito non lo
+            conserva</b>: non finisce in un database né in un archivio, lo inoltra e basta. Da
+            quel momento sta nella nostra casella di posta, e vale quello che trovi qui sotto.
           </p>
           <p>
             Mentre lo compili, il modulo tiene una copia della bozza <b>sul tuo dispositivo</b>,
@@ -93,7 +92,8 @@ export default function PaginaPrivacy() {
           <p>
             <b>Per risponderti.</b> Se ci chiedi un preventivo dobbiamo poterti ricontattare e
             preparare la proposta: è il motivo per cui ci hai scritto, e senza quei dati non
-            possiamo farlo.
+            possiamo farlo. Appena spedisci il brief ti arriva anche una sola email automatica,
+            per confermarti che l&rsquo;abbiamo ricevuto.
           </p>
           <p>
             {/* Lo spazio va scritto cosi': un testo JSX che continua su piu' righe
@@ -128,15 +128,14 @@ export default function PaginaPrivacy() {
             dati, non li scambiamo e non li passiamo a nessuno per farci pubblicità.
           </p>
           <p>
-            Ci sono però tre aziende che, facendo funzionare il sito e la posta, toccano
+            Ci sono però due aziende che, facendo funzionare il sito e la posta, toccano
             tecnicamente quei dati. Le nominiamo perché è giusto sapere chi sono:
           </p>
           <ul className="privacy-elenco">
             <li>
-              <b>Aruba</b> &mdash; tiene la casella di posta su cui arrivano i brief.
-            </li>
-            <li>
-              <b>Netlify</b> &mdash; ospita il sito e ne conserva i registri tecnici.
+              <b>Aruba</b> &mdash; ospita il sito, compreso il pezzo che riceve il brief e lo passa
+              alla casella di posta, e tiene la casella stessa. Il brief non viene salvato sul
+              sito; restano solo i registri tecnici del server.
             </li>
             <li>
               <b>Adobe</b> &mdash; fornisce i caratteri tipografici del sito, che il tuo browser
@@ -184,8 +183,8 @@ export default function PaginaPrivacy() {
           <h2>Se questa pagina cambia</h2>
           <p>
             La data in cima dice l&rsquo;ultima volta che è cambiata. Se un domani il sito
-            comincerà a raccogliere qualcosa di diverso &mdash; statistiche, un modulo che spedisce
-            da solo, un servizio esterno in più &mdash; questa pagina cambierà prima, non dopo.
+            comincerà a raccogliere qualcosa di diverso &mdash; statistiche, un servizio esterno in
+            più, un posto dove i brief vengono salvati &mdash; questa pagina cambierà prima, non dopo.
           </p>
         </section>
       </div>

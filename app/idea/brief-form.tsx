@@ -2,41 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { BUDGET, CANALI, MINIMO_PROGETTO, OBIETTIVI, SERVIZI, TEMPI, type Voce } from "./brief-data";
+import { BUDGET, CANALI, OBIETTIVI, SERVIZI, TEMPI } from "./brief-data";
+import { componiBrief, type Modulo, TRAPPOLA, VUOTO } from "./brief-testo";
 import { RECAPITI } from "../recapiti";
 import { Freccia } from "../freccia";
 
-/* L'indirizzo a cui arriva il brief, dalla fonte unica dei recapiti: prima
-   stava qui in una costante sua, e sarebbe stato il terzo posto in cui
-   scrivere la stessa mail il giorno in cui arriva.
-   Finche' e' vuoto il modulo non finge di spedire: mette il brief negli
-   appunti e lo dice. Meglio un passaggio in piu' che una richiesta persa in
-   un mailto senza destinatario. */
+/* L'indirizzo a cui arriva il brief, dalla fonte unica dei recapiti. Il
+   modulo spedisce da solo (api/brief.php); questo serve al `mailto:` di
+   riserva, se la spedizione non va. */
 const EMAIL_KORE: string = RECAPITI.email;
 
 const BOZZA = "kore-brief-bozza";
-
-type Modulo = {
-  nome: string;
-  azienda: string;
-  email: string;
-  telefono: string;
-  servizi: string[];
-  obiettivo: string;
-  progetto: string;
-  riferimenti: string;
-  budget: string;
-  tempi: string;
-  canale: string;
-  consenso: boolean;
-  novita: boolean;
-};
-
-const VUOTO: Modulo = {
-  nome: "", azienda: "", email: "", telefono: "",
-  servizi: [], obiettivo: "", progetto: "", riferimenti: "",
-  budget: "", tempi: "", canale: "", consenso: false, novita: false,
-};
 
 const PASSI = [
   { titolo: "Chi sei", sommario: "Come ti chiamiamo e dove ti rispondiamo" },
@@ -45,53 +21,18 @@ const PASSI = [
   { titolo: "Rileggi e manda", sommario: "Il brief che ci arriva, scritto per intero" },
 ];
 
-const nomeDi = (elenco: Voce[], id: string) => elenco.find((v) => v.id === id)?.nome ?? "";
-
 /* Volutamente permissiva: qui non si valida un indirizzo, si intercetta chi ha
    sbagliato a scrivere. Le regex severe bocciano indirizzi validi e rari, che
    e' il modo peggiore di perdere un cliente. */
 const emailPlausibile = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-
-/** Il brief in prosa: quello che il lettore vede crescere e che poi parte. */
-function componiBrief(m: Modulo) {
-  const righe: string[] = [];
-  const chi = m.azienda.trim() ? `${m.nome.trim()}, di ${m.azienda.trim()}` : m.nome.trim();
-  if (chi) righe.push(`Sono ${chi}.`);
-
-  if (m.servizi.length) {
-    const nomi = m.servizi.map((id) => nomeDi(SERVIZI, id).toLowerCase());
-    const elenco = nomi.length === 1 ? nomi[0] : `${nomi.slice(0, -1).join(", ")} e ${nomi.at(-1)}`;
-    righe.push(`Ci serve: ${elenco}.`);
-  }
-  if (m.obiettivo) righe.push(`L’obiettivo è ${nomeDi(OBIETTIVI, m.obiettivo).toLowerCase()}.`);
-  if (m.progetto.trim()) righe.push("", m.progetto.trim());
-
-  const coda: string[] = [];
-  if (m.budget) coda.push(`Budget: ${nomeDi(BUDGET, m.budget).toLowerCase()}`);
-  if (m.tempi) coda.push(`Tempi: ${nomeDi(TEMPI, m.tempi).toLowerCase()}`);
-  if (coda.length) righe.push("", `${coda.join(". ")}.`);
-
-  if (m.riferimenti.trim()) righe.push("", `Riferimenti: ${m.riferimenti.trim()}`);
-
-  const recapiti = [m.email.trim(), m.telefono.trim()].filter(Boolean);
-  if (recapiti.length) righe.push("", `Rispondetemi a ${recapiti.join(" oppure ")}.`);
-  if (m.canale) righe.push(`(Vi ho trovati così: ${nomeDi(CANALI, m.canale).toLowerCase()}.)`);
-
-  /* Anche il "no" va scritto: e' l'unica traccia di cosa ha scelto chi manda
-     il brief, e senza quella nessuno dei due sa piu' cosa era stato detto. */
-  righe.push("", m.novita
-    ? "Sì, voglio ricevere da Kore Studio novità, iniziative e proposte commerciali via email."
-    : "No: scrivetemi solo per questo progetto, niente novità o proposte commerciali.");
-
-  return righe.join("\n").trim();
-}
 
 export function BriefForm() {
   const [passo, setPasso] = useState(0);
   const [modulo, setModulo] = useState<Modulo>(VUOTO);
   const [toccati, setToccati] = useState<Record<string, boolean>>({});
   const [bozzaRipresa, setBozzaRipresa] = useState(false);
-  const [inviato, setInviato] = useState<"no" | "posta" | "appunti" | "manuale">("no");
+  const [invio, setInvio] = useState<"no" | "invio" | "spedito">("no");
+  const [problema, setProblema] = useState(false);
   const titoloPasso = useRef<HTMLHeadingElement>(null);
   const primoRender = useRef(true);
 
@@ -134,9 +75,7 @@ export function BriefForm() {
     else if (!emailPlausibile(modulo.email)) e.email = "Questo indirizzo non sembra completo: manca la chiocciola o il dominio.";
     if (!modulo.servizi.length) e.servizi = "Scegline almeno uno. Se non sei sicuro, prendi quello che ci somiglia di più.";
     if (!modulo.obiettivo) e.obiettivo = "Anche «non lo so ancora» è una risposta utile.";
-    const scritti = modulo.progetto.trim().length;
-    if (!scritti) e.progetto = "Questa è la parte che leggiamo per prima.";
-    else if (scritti < MINIMO_PROGETTO) e.progetto = `Ancora ${MINIMO_PROGETTO - scritti} caratteri: raccontaci il contesto, non solo la richiesta.`;
+    if (!modulo.progetto.trim()) e.progetto = "Questa è la parte che leggiamo per prima.";
     if (!modulo.budget) e.budget = "Serve un ordine di grandezza. «Preferisco dirlo a voce» va benissimo.";
     if (!modulo.tempi) e.tempi = "Anche «nessuna fretta» ci dice qualcosa.";
     if (!modulo.consenso) e.consenso = "Senza consenso non possiamo trattare i tuoi dati.";
@@ -175,8 +114,9 @@ export function BriefForm() {
     vaiA(Math.min(passo + 1, PASSI.length - 1));
   };
 
-  const invia = async (evento: React.FormEvent) => {
+  const invia = async (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
+    if (invio === "invio") return;
     if (Object.keys(errori).length) {
       setToccati(Object.fromEntries(campiDelPasso.flat().map((c) => [c, true])));
       const primoPassoRotto = campiDelPasso.findIndex((campi) => campi.some((c) => errori[c]));
@@ -184,43 +124,44 @@ export function BriefForm() {
       return;
     }
 
-    const oggetto = `Nuovo brief — ${modulo.azienda.trim() || modulo.nome.trim()}`;
-    if (EMAIL_KORE) {
-      window.location.assign(
-        `mailto:${EMAIL_KORE}?subject=${encodeURIComponent(oggetto)}&body=${encodeURIComponent(brief)}`,
-      );
-      setInviato("posta");
-    } else {
-      try {
-        await navigator.clipboard.writeText(`${oggetto}\n\n${brief}`);
-        setInviato("appunti");
-      } catch {
-        setInviato("manuale");
-      }
+    /* Il campo trappola viaggia com'e': vuoto per una persona, pieno per un
+       programma. Decide il server, qui non si filtra niente. */
+    const trappola = new FormData(evento.currentTarget).get(TRAPPOLA) ?? "";
+    setProblema(false);
+    setInvio("invio");
+    try {
+      const risposta = await fetch("/api/brief.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...modulo, brief, [TRAPPOLA]: trappola }),
+      });
+      if (!risposta.ok) throw new Error(`risposta ${risposta.status}`);
+    } catch {
+      /* Quello che e' stato scritto resta tutto nel modulo, e sotto al
+         bottone compare la strada di riserva. */
+      setInvio("no");
+      setProblema(true);
+      return;
     }
+    setInvio("spedito");
     try { localStorage.removeItem(BOZZA); } catch { /* pazienza */ }
   };
 
-  if (inviato !== "no") {
+  if (invio === "spedito") {
     return (
       <section className="brief-esito" aria-live="polite">
-        <p className="kicker">Brief pronto</p>
+        <p className="kicker">Brief spedito</p>
         <h2>Ci siamo.</h2>
-        {inviato === "posta" && (
-          <p>Si è aperto il tuo programma di posta con il brief già scritto dentro. Controlla che ci sia tutto e premi invia.</p>
-        )}
-        {inviato === "appunti" && (
-          <p>Il brief è negli appunti, per intero. Incollalo in una mail e mandacelo.</p>
-        )}
-        {inviato === "manuale" && (
-          <p>Ecco il brief per intero: copialo da qui e mandacelo per mail.</p>
-        )}
+        <p>
+          Il brief è arrivato nella casella di Kore Studio: ti rispondiamo all’indirizzo che ci hai lasciato. Qui sotto
+          c’è quello che ci hai mandato, per intero.
+        </p>
         <div className="brief-esito-testo">
           <pre>{brief}</pre>
         </div>
-        <button type="button" className="brief-bottone brief-bottone-quieto" onClick={() => { setInviato("no"); vaiA(3); }}>
-          Torna al brief
-        </button>
+        <Link href="/" className="brief-bottone brief-bottone-quieto">
+          Torna alla home
+        </Link>
       </section>
     );
   }
@@ -228,6 +169,17 @@ export function BriefForm() {
   return (
     <div className="brief-impianto">
       <form className="brief-modulo" onSubmit={invia} noValidate>
+        {/* Nascosto a chi guarda e a chi usa la tastiera o un lettore di
+            schermo: lo compila solo un programma. */}
+        <input
+          className="brief-trappola"
+          type="text"
+          name={TRAPPOLA}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          defaultValue=""
+        />
         <nav className="brief-passi" aria-label="Passi del brief">
           <ol>
             {PASSI.map((p, i) => (
@@ -357,13 +309,8 @@ export function BriefForm() {
                   onChange={(e) => scrivi("progetto", e.target.value)}
                   onBlur={() => setToccati((t) => ({ ...t, progetto: true }))}
                   aria-invalid={mostra("progetto") ? true : undefined}
-                  aria-describedby={mostra("progetto") ? "progetto-errore" : "progetto-conta"}
+                  aria-describedby={mostra("progetto") ? "progetto-errore" : undefined}
                 />
-                <p className="brief-conta" id="progetto-conta">
-                  {modulo.progetto.trim().length < MINIMO_PROGETTO
-                    ? `${modulo.progetto.trim().length} / ${MINIMO_PROGETTO} caratteri`
-                    : `${modulo.progetto.trim().length} caratteri — così va bene`}
-                </p>
               </Campo>
 
               <Campo etichetta="Link utili" aiuto="Sito, profili social, una cartella con materiali." id="riferimenti">
@@ -479,6 +426,22 @@ export function BriefForm() {
             </div>
           )}
 
+          {problema && passo === PASSI.length - 1 && (
+            <div className="brief-mancanze" role="alert">
+              <p>Il brief non è partito</p>
+              <p className="brief-problema-testo">
+                Qualcosa si è inceppato mentre lo spedivamo, e quello che hai scritto è ancora tutto qui. Riprova tra un
+                minuto; se continua a non andare,{" "}
+                <a
+                  href={`mailto:${EMAIL_KORE}?subject=${encodeURIComponent(`Nuovo brief — ${modulo.azienda.trim() || modulo.nome.trim()}`)}&body=${encodeURIComponent(brief)}`}
+                >
+                  mandalo dalla tua posta
+                </a>
+                : si apre con il brief già scritto dentro.
+              </p>
+            </div>
+          )}
+
           <div className="brief-comandi">
             {passo > 0 && (
               <button type="button" className="brief-bottone brief-bottone-quieto" onClick={() => vaiA(passo - 1)}>
@@ -490,8 +453,9 @@ export function BriefForm() {
                 Avanti <span aria-hidden="true"><Freccia /></span>
               </button>
             ) : (
-              <button type="submit" className="brief-bottone">
-                Manda il brief <span aria-hidden="true"><Freccia /></span>
+              <button type="submit" className="brief-bottone" disabled={invio === "invio"}>
+                {invio === "invio" ? "Sto spedendo…" : "Manda il brief"}{" "}
+                <span aria-hidden="true"><Freccia /></span>
               </button>
             )}
           </div>
@@ -500,13 +464,15 @@ export function BriefForm() {
 
       <aside className="brief-riepilogo" aria-label="Il brief che ci arriva">
         <p className="kicker">Quello che ci arriva</p>
-        {brief ? (
-          <pre aria-live="polite">{brief}</pre>
-        ) : (
+        {/* Il brief non e' mai vuoto — la riga sulle novita' c'e' sempre — quindi
+            "vuoto" vuol dire: uguale a quello di un modulo appena aperto. */}
+        {componiBrief({ ...modulo, novita: false }) === componiBrief({ ...VUOTO, novita: false }) ? (
           <p className="brief-riepilogo-vuoto">
             Man mano che scrivi, qui si compone il brief per intero. È esattamente il testo che riceviamo:
             niente moduli da decifrare, niente campi nascosti.
           </p>
+        ) : (
+          <pre aria-live="polite">{brief}</pre>
         )}
       </aside>
     </div>

@@ -182,12 +182,21 @@ export function AdaptiveBrand() {
          leggersi — se due sezioni si incontrano a meta' testata vince quella
          sotto al marchio, che e' l'unica che conta per la leggibilita'. */
       const fondo = fondoRegione(x, r.top + r.height / 2) ?? sfondoIn(x, r.top + r.height / 2);
-      if (fondo) testata.style.setProperty("--fondo-testata", `rgb(${scosta(fondo).join(",")})`);
+      if (fondo) {
+        const tinta = scosta(fondo).join(",");
+        /* La barra e' velata (l'80%), ma serve anche la tinta piena, e il
+           testo della testata segue il fondo: scuro sul chiaro, panna sullo
+           scuro. */
+        testata.style.setProperty("--fondo-testata", `rgba(${tinta},.8)`);
+        testata.style.setProperty("--fondo-testata-pieno", `rgb(${tinta})`);
+        testata.style.setProperty("--testo-testata", luminanza(fondo) > 0.18 ? "var(--ink)" : "var(--cream)");
+      }
 
-      if (maschera === ultima) return;
-      corallo.style.maskImage = maschera;
-      corallo.style.webkitMaskImage = maschera;
-      ultima = maschera;
+      if (maschera !== ultima) {
+        corallo.style.maskImage = maschera;
+        corallo.style.webkitMaskImage = maschera;
+        ultima = maschera;
+      }
     };
 
     /* Da qui in poi comanda la misura: il corallo e' sempre acceso e a
@@ -207,10 +216,19 @@ export function AdaptiveBrand() {
     aggiorna();
     addEventListener("scroll", suEvento, { passive: true });
     addEventListener("resize", suEvento);
+    /* Dopo un cambio di pagina, al ritorno sulla scheda e quando immagini e
+       caratteri hanno finito di caricare: in tutti questi casi quello che sta
+       sotto la testata puo' cambiare senza che nessuno scorra. */
+    addEventListener("kore:vista-cambiata", suEvento);
+    document.addEventListener("visibilitychange", suEvento);
+    const ritardi = [400, 1200].map((ms) => setTimeout(suEvento, ms));
     return () => {
       cancelAnimationFrame(inCoda);
+      ritardi.forEach(clearTimeout);
       removeEventListener("scroll", suEvento);
       removeEventListener("resize", suEvento);
+      removeEventListener("kore:vista-cambiata", suEvento);
+      document.removeEventListener("visibilitychange", suEvento);
     };
   }, []);
 

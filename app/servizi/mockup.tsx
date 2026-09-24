@@ -1,4 +1,4 @@
-import type { Service } from "../service-showcase";
+import type { ServizioPagina } from "./servizi-pagina";
 
 /**
  * Un disegno di costruzione per ogni servizio.
@@ -68,27 +68,103 @@ function Branding() {
   );
 }
 
-/* 02 — i tre formati veri dei social, in scala fra loro, con la gabbia di
-   sicurezza dentro cui il contenuto non viene mai tagliato. */
+/* 02 — dal piano alla relazione: il post nel telefono, il calendario
+   editoriale della settimana da cui arriva, e la conversazione che apre. */
+const GIORNI = ["L", "M", "M", "G", "V", "S", "D"];
+const COLONNA = 260 / 7;
+const RIGA = 44;
+/* Il centro della colonna e della riga: le uscite si disegnano da li'. */
+const centroColonna = (c: number) => 300 + ((2 * c + 1) * COLONNA) / 2;
+const centroRiga = (r: number) => 96 + RIGA * r + RIGA / 2;
+/* Riga, colonna e formato di ogni uscita del piano. */
+const USCITE: [number, number, "post" | "reel" | "story"][] = [
+  [0, 0, "post"], [0, 2, "reel"], [0, 4, "story"], [0, 5, "post"],
+  [1, 1, "story"], [1, 3, "post"], [1, 6, "reel"],
+  [2, 0, "reel"], [2, 2, "post"], [2, 4, "story"], [2, 5, "reel"],
+];
+
+function Uscita({ cx, cy, formato }: { cx: number; cy: number; formato: "post" | "reel" | "story" }) {
+  if (formato === "post") {
+    return <rect x={cx - 7} y={cy - 7} width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.25" />;
+  }
+  const pieno = formato === "reel";
+  return (
+    <rect
+      x={cx - 5}
+      y={cy - 10}
+      width="10"
+      height="20"
+      fill={pieno ? "var(--accento-atto)" : "none"}
+      stroke={pieno ? undefined : "var(--accento-atto)"}
+      strokeWidth={pieno ? undefined : "1.25"}
+    />
+  );
+}
+
 function Social() {
-  const formati: [number, number, number, number, string][] = [
-    [56, 150, 160, 160, "1:1"],
-    [248, 118, 152, 190, "4:5"],
-    [440, 84, 118, 210, "9:16"],
-  ];
   return (
     <>
-      {formati.map(([x, y, w, h, nome], i) => (
-        <g key={nome}>
-          <rect x={x} y={y} width={w} height={h} fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <rect x={x + 12} y={y + 12} width={w - 24} height={h - 24} fill="none" stroke="var(--accento-atto)" strokeWidth="1" strokeDasharray="4 4" />
-          <text x={x + w / 2} y={y + h + 22} textAnchor="middle" fontSize="11" letterSpacing="1.6" fill="var(--accento-atto)">{nome}</text>
-          <text x={x} y={y - 10} fontSize="9" letterSpacing="1.4" fill="currentColor" opacity=".6">0{i + 1}</text>
-        </g>
+      {/* Il telefono, col post in 4:5 e la sua gabbia di sicurezza. */}
+      <rect x="56" y="60" width="190" height="360" rx="22" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <rect x="121" y="72" width="60" height="8" rx="4" fill="none" stroke="currentColor" strokeWidth="1" opacity=".6" />
+      <circle cx="84" cy="108" r="9" fill="none" stroke="var(--accento-atto)" strokeWidth="1.25" />
+      <line x1="100" y1="104" x2="170" y2="104" stroke="currentColor" strokeWidth="2" opacity=".55" />
+      <line x1="100" y1="113" x2="140" y2="113" stroke="currentColor" strokeWidth="2" opacity=".3" />
+      <rect x="68" y="128" width="166" height="208" fill="none" stroke="currentColor" strokeWidth="1.25" />
+      <rect x="80" y="140" width="142" height="184" fill="none" stroke="var(--accento-atto)" strokeWidth="1" strokeDasharray="4 4" />
+      <circle cx="151" cy="232" r="34" fill="var(--accento-atto)" opacity=".22" />
+      <circle cx="151" cy="232" r="34" fill="none" stroke="var(--accento-atto)" strokeWidth="1.25" />
+      <text x="151" y="236" textAnchor="middle" fontSize="11" letterSpacing="1.6" fill="var(--accento-atto)">4:5</text>
+      <g fill="none" stroke="currentColor" strokeWidth="1.25" opacity=".8">
+        <circle cx="80" cy="354" r="6" />
+        <rect x="96" y="348" width="14" height="12" rx="3" />
+        <path d="M122 360 L134 348 M126 348 L134 348 L134 356" />
+        <rect x="216" y="347" width="10" height="14" />
+      </g>
+      <line x1="68" y1="378" x2="214" y2="378" stroke="currentColor" strokeWidth="2" opacity=".45" />
+      <line x1="68" y1="390" x2="170" y2="390" stroke="currentColor" strokeWidth="2" opacity=".25" />
+
+      {/* Il piano editoriale della settimana. */}
+      <text x={300} y={62} fontSize="9" letterSpacing="1.6" fill="currentColor" opacity=".65">PIANO EDITORIALE</text>
+      {GIORNI.map((giorno, i) => (
+        <text key={i} x={centroColonna(i)} y="88" textAnchor="middle" fontSize="8.5" fill="currentColor" opacity=".6">{giorno}</text>
       ))}
-      <Quota x1={56} y={400} x2={558} testo="UNA SOLA IDEA, TRE TAGLI" />
-      <Etichetta x={16} y={28}>GABBIE DI SICUREZZA</Etichetta>
-      <Etichetta x={16} y={462}>FASE 01 — IMPAGINAZIONE DEI FORMATI</Etichetta>
+      <rect x="300" y="96" width="260" height="132" fill="none" stroke="currentColor" strokeWidth="1.25" />
+      <g stroke="currentColor" strokeWidth=".75" opacity=".35">
+        {Array.from({ length: 6 }, (_, i) => (
+          <line key={`c${i}`} x1={300 + COLONNA * (i + 1)} y1="96" x2={300 + COLONNA * (i + 1)} y2="228" />
+        ))}
+        <line x1="300" y1="140" x2="560" y2="140" />
+        <line x1="300" y1="184" x2="560" y2="184" />
+      </g>
+      {USCITE.map(([riga, colonna, formato]) => (
+        <Uscita key={`${riga}-${colonna}`} cx={centroColonna(colonna)} cy={centroRiga(riga)} formato={formato} />
+      ))}
+      <g fontSize="8.5" letterSpacing="1.4" fill="currentColor" opacity=".7">
+        <rect x="300" y="243" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.25" />
+        <text x="316" y="252">POST</text>
+        <rect x="370" y="241" width="7" height="14" fill="var(--accento-atto)" />
+        <text x="384" y="252">REEL</text>
+        <rect x="438" y="241" width="7" height="14" fill="none" stroke="var(--accento-atto)" strokeWidth="1.25" />
+        <text x="452" y="252">STORY</text>
+      </g>
+      <path d="M300 118 C 274 118 270 150 246 150" fill="none" stroke="var(--accento-atto)" strokeWidth="1" strokeDasharray="4 4" />
+      <circle cx="300" cy="118" r="2.5" fill="var(--accento-atto)" />
+
+      {/* La conversazione: un commento e la risposta. */}
+      <text x={300} y={284} fontSize="9" letterSpacing="1.6" fill="currentColor" opacity=".65">COMMUNITY</text>
+      <rect x="300" y="294" width="176" height="36" rx="12" fill="none" stroke="currentColor" strokeWidth="1.25" />
+      <line x1="314" y1="308" x2="440" y2="308" stroke="currentColor" strokeWidth="2" opacity=".55" />
+      <line x1="314" y1="318" x2="400" y2="318" stroke="currentColor" strokeWidth="2" opacity=".3" />
+      <rect x="384" y="342" width="176" height="36" rx="12" fill="none" stroke="var(--accento-atto)" strokeWidth="1.5" />
+      <line x1="398" y1="356" x2="524" y2="356" stroke="var(--accento-atto)" strokeWidth="2" />
+      <line x1="398" y1="366" x2="486" y2="366" stroke="var(--accento-atto)" strokeWidth="2" opacity=".5" />
+      <path d="M246 354 C 272 354 276 312 300 312" fill="none" stroke="var(--accento-atto)" strokeWidth="1" strokeDasharray="4 4" />
+      <circle cx="246" cy="354" r="2.5" fill="var(--accento-atto)" />
+
+      <Quota x1={56} y={446} x2={560} testo="DAL PIANO ALLA RELAZIONE" />
+      <Etichetta x={16} y={28}>STRATEGIA, CONTENUTO, CONVERSAZIONE</Etichetta>
+      <Etichetta x={16} y={462}>FASE 02 — DAL CALENDARIO AL PRIMO COMMENTO</Etichetta>
     </>
   );
 }
@@ -211,7 +287,7 @@ function Eventi() {
   );
 }
 
-const TAVOLE: Record<Service["id"], () => React.JSX.Element> = {
+const TAVOLE: Record<ServizioPagina["id"], () => React.JSX.Element> = {
   branding: Branding,
   social: Social,
   video: Video,
@@ -220,7 +296,7 @@ const TAVOLE: Record<Service["id"], () => React.JSX.Element> = {
   eventi: Eventi,
 };
 
-export function MockupServizio({ servizio }: { servizio: Service }) {
+export function MockupServizio({ servizio }: { servizio: ServizioPagina }) {
   const Tavola = TAVOLE[servizio.id];
   return (
     <svg

@@ -2,13 +2,13 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 export type Service = {
-  id: "branding" | "social" | "video" | "web" | "advertising" | "eventi";
+  id: "branding" | "social" | "web" | "grafica" | "eventi" | "strategia" | "advertising" | "ai";
   name: string;
   note: string;
   /* Le tre voci che dicono cosa comprende il servizio. Stanno accanto al
      servizio e non in un `Record` dentro alla sezione che le disegna: li'
      dentro, una seconda sezione che volesse elencarle dovrebbe copiarle. */
-  dettagli: [string, string, string];
+  dettagli: string[];
 };
 
 type ServiceVisual = {
@@ -17,7 +17,10 @@ type ServiceVisual = {
   content: ReactNode;
 };
 
-const VISUALS: Record<Service["id"], ServiceVisual> = {
+/* Non tutti i servizi hanno ancora un'immagine loro: chi non ce l'ha usa il
+   riquadro di ripiego qui sotto. "video" resta per quando tornera' a esserci
+   un servizio a parte. */
+const VISUALS: Partial<Record<Service["id"] | "video", ServiceVisual>> = {
   branding: {
     eyebrow: "Identità / C.O.P.A.",
     title: "Un segno riconoscibile.",
@@ -106,7 +109,11 @@ const VISUALS: Record<Service["id"], ServiceVisual> = {
 };
 
 export function ServiceShowcase({ service }: { service: Service }) {
-  const visual = VISUALS[service.id];
+  const visual = VISUALS[service.id] ?? {
+    eyebrow: "Kore Studio",
+    title: service.name,
+    content: <div className="service-single-media" />,
+  };
 
   return (
     <div className={`service-visual service-visual-${service.id}`}>
