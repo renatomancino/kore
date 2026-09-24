@@ -39,3 +39,6 @@ tsconfig.tsbuildinfo
 
 # Netlify
 .netlify/
+
+# Credenziali della casella: solo sul server Aruba, mai nel repository
+/public/api/config-posta.php

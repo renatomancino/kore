@@ -1,0 +1,61 @@
+# Kore Studio su hosting Aruba Linux (Apache 2.4).
+#
+# Il sito e' esportato da Next come file statici (`output: "export"`): una
+# pagina per file, `servizi.html`, e accanto una cartella `servizi/` con
+# l'immagine di anteprima dei link. Queste regole fanno rispondere gli
+# indirizzi del sito cosi' come li scrive il codice (`/servizi`, senza .html
+# e senza barra finale) e mostrano la 404 del sito.
+#
+# http -> https e la radice -> www li fa gia' Aruba: qui non si ripetono.
+
+Options -Indexes
+DirectoryIndex index.html
+
+# Queste regole, e quelle di api/, non si leggono dal browser. Aruba di solito
+# lo impedisce gia'; provato su un Apache locale, senza questa riga
+# /api/.htaccess si scaricava.
+<FilesMatch "^\.ht">
+  Require all denied
+</FilesMatch>
+ErrorDocument 404 /404.html
+
+# Con la cartella servizi/ accanto a servizi.html, Apache aggiungerebbe da solo
+# la barra finale e cercherebbe una pagina dentro la cartella.
+DirectorySlash Off
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Un indirizzo solo per pagina: /servizi/ diventa /servizi.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+  # /servizi risponde con servizi.html.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
+
+# Le immagini di anteprima dei link escono dal build senza estensione.
+<FilesMatch "^opengraph-image$">
+  ForceType image/png
+</FilesMatch>
+
+AddType image/webp .webp
+AddType image/svg+xml .svg
+AddType video/mp4 .mp4
+AddType font/woff2 .woff2
+AddType application/manifest+json .webmanifest
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+  # Le pagine (html e i .txt che Next legge navigando) vanno sempre ricontrollate:
+  # cosi' dopo un aggiornamento nessuno resta con la versione vecchia, senza
+  # bisogno di aggiungere ?v= agli script (che rompe il caricamento di Next).
+  <FilesMatch "\.(html|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

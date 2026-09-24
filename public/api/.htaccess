@@ -1,0 +1,5 @@
+# Il file con la password della casella si legge solo da brief.php, sul
+# server: dal browser non si apre, nemmeno come PHP.
+<Files "config-posta.php">
+  Require all denied
+</Files>
